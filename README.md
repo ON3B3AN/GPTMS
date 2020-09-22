@@ -8,6 +8,7 @@ The product name will be Golf Player Time Manager (GPTM). This software will hav
 - Provide helpful hints about the course based on the location of the player.
 - System shall allow players to login and register their device
 - System shall monitor player behavior and provide a player dashboard.
+
 Mobile phone application (IOS, Android)
 - Downloadable application from standard stores
 - Players login and register at golf ranges
