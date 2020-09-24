@@ -8,7 +8,7 @@ import { AuthGuard } from './auth.guard';
 
 /* use to route where the app with land initially and afterwards*/
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login'},
+  { path: '', pathMatch: 'full', redirectTo: 'admin'},
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
