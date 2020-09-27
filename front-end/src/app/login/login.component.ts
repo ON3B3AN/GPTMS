@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   signIn(): void {
     this.isSubmitted = true;
-    if(this.authForm.invalid){
+    if (this.authForm.invalid){
       return;
     }
     this.authService.signIn(this.authForm.value);
