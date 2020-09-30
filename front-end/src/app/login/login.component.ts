@@ -29,6 +29,6 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.authService.signIn(this.authForm.value);
-    this.router.navigateByUrl('/admin');
+    this.router.navigateByUrl('/landing');
   }
 }
