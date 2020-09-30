@@ -15,6 +15,7 @@ import { CourseComponent } from './course/course.component';
 import { TrackComponent } from './track/track.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { PlayComponent } from './play/play.component';
     CourseComponent,
     TrackComponent,
     NavbarComponent,
-    PlayComponent
+    PlayComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
