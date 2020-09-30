@@ -27,12 +27,12 @@ export class SignupComponent implements OnInit {
   }
   get formControls() { return this.authForm.controls; }
 
-  signIn(): void {
+  signUp(): void {
     this.isSubmitted = true;
     if(this.authForm.invalid){
       return;
     }
-    this.authService.signIn(this.authForm.value);
-    this.router.navigateByUrl('/admin');
+    this.authService.signUp(this.authForm.value);
+    this.router.navigateByUrl('/login');
   }
 }
