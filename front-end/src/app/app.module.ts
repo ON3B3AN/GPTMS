@@ -9,7 +9,11 @@ import { AppComponent } from './app.component';
 import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { HomeComponent } from './home/home.component';
+import { LandingComponent } from './landing/landing.component';
+import { HistoryComponent } from './history/history.component';
+import { CourseComponent } from './course/course.component';
+import { TrackComponent } from './track/track.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,11 @@ import { HomeComponent } from './home/home.component';
     LoginComponent,
     AdminComponent,
     SignupComponent,
-    HomeComponent
+    LandingComponent,
+    HistoryComponent,
+    CourseComponent,
+    TrackComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

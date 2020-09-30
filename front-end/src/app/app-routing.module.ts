@@ -2,17 +2,23 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 
-import { SignupComponent } from './signup/signup.component';
-import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
-import { HomeComponent } from './home/home.component';
+import { CourseComponent } from './course/course.component';
+import { HistoryComponent } from './history/history.component';
+import { LandingComponent } from './landing/landing.component';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
+import { TrackComponent } from './track/track.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'signup'},
+  { path: '', pathMatch: 'full', redirectTo: 'login'},
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
+  { path: 'landing', component: LandingComponent, canActivate: [AuthGuard] },
+  { path: 'course', component: CourseComponent, canActivate: [AuthGuard] },
+  { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
+  { path: 'track', component: TrackComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
 ];
 

@@ -7,10 +7,10 @@ import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.sass']
+  templateUrl: './landing.component.html',
+  styleUrls: ['./landing.component.sass']
 })
-export class HomeComponent implements OnInit {
+export class LandingComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   onResize(e) {
