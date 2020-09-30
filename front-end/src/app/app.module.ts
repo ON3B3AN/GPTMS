@@ -14,6 +14,7 @@ import { HistoryComponent } from './history/history.component';
 import { CourseComponent } from './course/course.component';
 import { TrackComponent } from './track/track.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { PlayComponent } from './play/play.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     HistoryComponent,
     CourseComponent,
     TrackComponent,
-    NavbarComponent
+    NavbarComponent,
+    PlayComponent
   ],
   imports: [
     BrowserModule,
