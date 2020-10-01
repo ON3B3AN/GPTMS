@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map } from "rxjs/operators";
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {catchError, map} from "rxjs/operators";
 import {User} from "./user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost/GPTMS/GPTMS/api';  // URL to web api
-  private userSubject: BehaviorSubject<User>;
+  private baseUrl = 'http://localhost';  // URL to web api
+  private userSubject: BehaviorSubject<any>;
   public user: Observable<User>;
 
 
@@ -24,15 +24,14 @@ export class AuthService {
   }
 
   public login(userData: User){
-    console.log(JSON.stringify({ action: 'login', data: userData }));
-    return this.http.post('${this.baseUrl}/User/profileController.php', { action: 'login', data: userData })
-      .pipe(map(user => {
+    return this.http.post(this.baseUrl + '/index.php', { action: 'login', data: userData })
+      .pipe(map((user) => {
         // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
         return user;
-        this.router.navigate(['/landing']);
-      }));
+      }),
+        catchError(this.handleError));
   }
   public isLoggedIn(){
     return localStorage.getItem('user') !== null;
@@ -43,5 +42,12 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
   public signUp(userData: User){
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.log(error);
+
+    // return an observable with a user friendly message
+    return throwError('Error! something went wrong.');
   }
 }
