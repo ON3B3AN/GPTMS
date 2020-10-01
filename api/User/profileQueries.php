@@ -2,32 +2,16 @@
 
 function login($email, $pwd) {
     global $db;
-    $query = 'SELECT * FROM user WHERE email = :email AND password = :pwd';
+    $query = 'SELECT * FROM user WHERE email = ? AND password = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bindValue(':email', $email);
-        $statement->bindValue(':pwd', $pwd);
+        $statement->bind_param('ss', $email, $pwd);
         $statement->execute();
-        $result = $statement->fetchAll();
-        $statement->closeCursor();
-        return $result;
+        $result = $statement->get_result();
+        $res = $result->fetch_assoc();
+        $statement->close();
+        return $res;
     } catch (Exception $ex) {
         exit;
     }  
 }
-
-//function signup($fName, $lName, $email, $pwd, $phone, $) {
-//    global $db;
-//    $query = 'SELECT * FROM user WHERE email = :email AND password = :pwd';
-//    try {
-//        $statement = $db->prepare($query);
-//        $statement->bindValue(':email', $email);
-//        $statement->bindValue(':pwd', $pwd);
-//        $statement->execute();
-//        $result = $statement->fetchAll();
-//        $statement->closeCursor();
-//        return $result;
-//    } catch (Exception $ex) {
-//        exit;
-//    }  
-//}
