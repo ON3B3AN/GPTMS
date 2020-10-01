@@ -1,10 +1,11 @@
 <?php
-$dsn = 'mysql:host=localhost;dbname=mydb';
+$host = 'localhost';
+$dbName = 'mydb';
 $username = 'root';
 $password = '';
 
 try {
-    $db = new PDO($dsn, $username, $password);
-} catch (PDOException $e) {
+    $db = new mysqli($host, $username, $password, $dbName);
+} catch (mysqli_sql_exception $e) {
     exit;
 }
