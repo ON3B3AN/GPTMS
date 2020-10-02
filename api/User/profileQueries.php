@@ -1,7 +1,6 @@
 <?php
-global $db;
 function login($email, $pwd) {
-    //global $db;
+    global $db;
     $query = 'SELECT * FROM user WHERE email = ? AND password = ?';
     try {
         $statement = $db->prepare($query);
@@ -16,14 +15,27 @@ function login($email, $pwd) {
     }  
 }
 
-function signup($fname, $lname, $email, $pwd, $employee){
-    //global $db;
-    $query = 'INSERT INTO user (first_name, last_name, email, password, employee)'
-            . 'VALUES ($fname, $lname, $email, $pwd, $employee)';
-    
-    if($db->query($query) == TRUE) {
-        echo "User created Successfully";
-    } else {
-        echo "Error: " . $db . "<br>" . $db->error;
+function signup($user){
+    global $db;
+    $query = 'INSERT INTO user 
+                (first_name, last_name, email, password, phone)
+             VALUES 
+                ($fName, $lName, $email, $pwd, $phone)';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':fName', $user->getFName());
+        $statement->bindValue(':lName', $user->getLName());
+        $statement->bindValue(':email', $user->getEmail());
+        $statement->bindValue(':pwd', $user->getPwd());
+        $statement->bindValue(':phone', $user->getPhone());
+        $statement->execute();
+        $statement->closeCursor();
+
+        // Get the last user ID that was inserted
+        $usr_id = $db->lastInsertId();
+        return $usr_id;
+    } catch (Exception $ex) {
+        exit;
     }
+
 }

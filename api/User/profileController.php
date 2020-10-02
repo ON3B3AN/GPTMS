@@ -1,6 +1,7 @@
 <?php
 require('../db/databaseConnect.php');
 require('./profileQueries.php');
+require ('./User.php');
 
 /*********************************************
  * Get request from user
@@ -37,6 +38,24 @@ switch ($action) {
         else {
             header('WWW-Authenticate: Basic;realm="Access to the landing page";charset=UTF-8');
             echo http_response_code(401);
+        }
+        break;
+    case 'signup':
+        $fName = $input->data->firstname;
+        $lName = $input->data->lastname;
+        $phone = $input->data->phone;
+        $email = $input->data->email;
+        $pwd = $input->data->password;
+        $user = new User($fName, $lName, $phone, $email, $pwd);
+        $result = signup($user);
+        
+        if ($result != NULL) {
+            header('WWW-Authenticate: Basic;realm="Access to the landing page";charset=UTF-8');
+            echo http_response_code(201);
+        } 
+        else {
+            header('WWW-Authenticate: Basic;realm="Access to the landing page";charset=UTF-8');
+            echo http_response_code(501);
         }
         break;
         
