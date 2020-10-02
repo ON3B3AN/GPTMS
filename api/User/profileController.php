@@ -46,8 +46,8 @@ switch ($action) {
         $phone = $input->data->phone;
         $email = $input->data->email;
         $pwd = $input->data->password;
-        $user = new User($fName, $lName, $phone, $email, $pwd);
-        $result = signup($user);
+        //$new_user = new User($fName, $lName, $phone, $email, $pwd);
+        $result = signup($fName, $lName, $email, $pwd, $phone);
         
         if ($result != NULL) {
             header('WWW-Authenticate: Basic;realm="Access to the landing page";charset=UTF-8');

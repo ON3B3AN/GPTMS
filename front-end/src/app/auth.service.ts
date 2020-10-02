@@ -10,7 +10,7 @@ import {User} from "./user";
 })
 export class AuthService {
   private baseUrl = 'http://localhost/GPTMS/GPTMS/api';  // URL to web api
-  private userSubject: BehaviorSubject<User>;
+  private userSubject: BehaviorSubject<any>;
   public user: Observable<User>;
 
 

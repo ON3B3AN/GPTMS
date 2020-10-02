@@ -15,24 +15,17 @@ function login($email, $pwd) {
     }  
 }
 
-function signup($user){
+function signup($fName, $lName, $email, $pwd, $phone){
     global $db;
-    $query = 'INSERT INTO user 
-                (first_name, last_name, email, password, phone)
-             VALUES 
-                ($fName, $lName, $email, $pwd, $phone)';
+    $query = 'INSERT INTO user (first_name, last_name, email, password, phone) VALUES (?, ?, ?, ?, ?)';
     try {
         $statement = $db->prepare($query);
-        $statement->bindValue(':fName', $user->getFName());
-        $statement->bindValue(':lName', $user->getLName());
-        $statement->bindValue(':email', $user->getEmail());
-        $statement->bindValue(':pwd', $user->getPwd());
-        $statement->bindValue(':phone', $user->getPhone());
+        $statement->bind_param('sssss', $fName, $lName, $email, $pwd, $phone);
         $statement->execute();
-        $statement->closeCursor();
+        $statement->close();
 
         // Get the last user ID that was inserted
-        $usr_id = $db->lastInsertId();
+        $usr_id = $db->insert_id;
         return $usr_id;
     } catch (Exception $ex) {
         exit;
