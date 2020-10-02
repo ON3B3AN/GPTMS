@@ -7,12 +7,16 @@ require('./profileQueries.php');
  **********************************************/
 
 $action = strtolower(filter_input(INPUT_POST, 'action'));
+$input = json_decode(file_get_contents("php://input"));
+
 if ($action == NULL) {
     $action = strtolower(filter_input(INPUT_GET, 'action'));
     if ($action == NULL) {
-        $action = '';
+        $action = 'login';
     }
 }
+
+$action = $input->action;
 
 /**********************************************
  * Build and execute requested query
@@ -20,12 +24,12 @@ if ($action == NULL) {
 
 switch ($action) {
     case 'login':
-        
         // get row
-        $email = filter_input(INPUT_POST, 'email');
-        $pwd = filter_input(INPUT_POST, 'password');
+        $email = $input->data->email;
+        $pwd = $input->data->password;
+
         $result = login($email, $pwd);
-        
+
         if ($result != NULL) {
             header('Content-Type: application/json;charset=UTF-8');
             echo json_encode($result);
