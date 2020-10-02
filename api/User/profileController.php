@@ -3,7 +3,7 @@ require('../db/databaseConnect.php');
 require('./profileQueries.php');
 require ('./User.php');
 
-/**********************************************
+/*********************************************
  * Get request from user
  **********************************************/
 
