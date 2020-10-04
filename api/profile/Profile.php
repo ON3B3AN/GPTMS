@@ -1,6 +1,6 @@
 <?php
 
-Class User {
+Class Profile {
     
     private $fName, $lName, $phone, $email, $pwd; 
     
