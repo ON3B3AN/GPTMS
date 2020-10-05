@@ -24,8 +24,8 @@ if ($action == NULL) {
 
 switch ($action) {
     case 'signup':
-        $fName = $input->data->firstname;
-        $lName = $input->data->lastname;
+        $fName = $input->data->first_name;
+        $lName = $input->data->last_name;
         $phone = $input->data->phone;
         $email = $input->data->email;
         $pwd = $input->data->password;
@@ -43,6 +43,7 @@ switch ($action) {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
             header('Access-Control-Allow-Origin: *');
             header('WWW-Authenticate: Basic;realm="Access to the landing page"');
+            header('Accept: application/json');
             http_response_code(501);
             echo http_response_code().": Error, profile not created";
         }

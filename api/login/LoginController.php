@@ -38,9 +38,10 @@ switch ($action) {
         else {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
             header('Access-Control-Allow-Origin: *');
+            header('Accept: application/json, charset=utf-8');
             header('WWW-Authenticate: Basic; realm="Access to the landing page"');
             http_response_code(401);
-            echo http_response_code().": Error, login failed";
+            echo http_response_code().": Login failed";
         }
         break;
     case 'error':
