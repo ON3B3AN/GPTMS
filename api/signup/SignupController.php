@@ -43,6 +43,7 @@ switch ($action) {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
             header('Access-Control-Allow-Origin: *');
             header('WWW-Authenticate: Basic;realm="Access to the landing page"');
+            header('Accept: application/json');
             http_response_code(501);
             echo http_response_code().": Error, profile not created";
         }
