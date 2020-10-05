@@ -2,7 +2,7 @@
 
 require('../db/databaseConnect.php');
 require('../history/HistoryQueries.php');
-
+require ('../profile/Profile.php');
 
 /*********************************************
  * Get request from user
@@ -21,13 +21,14 @@ if ($action == NULL) {
     
 switch ($action) {
     case 'history' :
-        $user_id = $input->data->userID;
+        $user_id = $input->data->user_id;
         $result = history($user_id);
          if ($result != NULL) {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
             header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json, charset=utf-8');
             echo json_encode($result);
+            echo 'hit first';
         } 
         else {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');

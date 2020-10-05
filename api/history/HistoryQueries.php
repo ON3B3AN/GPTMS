@@ -7,7 +7,7 @@ function history($user_id) {
         ON s.score_id = h.Score_score_id 
         JOIN Party p
         ON p.party_id = h.Party_party_id
-        AND p.party_etime != NULL
+        AND p.party_etime IS NOT NULL
         JOIN Course c
         ON  c.course_id = h.Score_Hole_course_id
         JOIN Hole ho
