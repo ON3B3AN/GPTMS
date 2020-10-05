@@ -1,11 +1,18 @@
 <?php
 function history($user_id) {
     global $db;
-    $query = 'SELECT (Course.course_name, Party.party_etime, Score.stroke, Hole.hole_number) FROM History JOIN Score JOIN Party JOIN Course JOIN Hole'
-            . 'WHERE History.Score_Hole_course_id = Course.course_id and'
-            . 'History.Party_party_id = Party.party_id and History.Score_score_id = Score.score_id and'
-            . 'History.Score_Hole_hole_id = Hole.hole_id and'
-            . 'History.user_id = ? and Party.party_etime != NULL';
+    $query = 'SELECT course_name, party_etime, stroke, hole_number 
+        FROM History h 
+        JOIN Score s 
+        ON s.score_id = h.Score_score_id 
+        JOIN Party p
+        ON p.party_id = h.Party_party_id
+        AND p.party_etime != NULL
+        JOIN Course c
+        ON  c.course_id = h.Score_Hole_course_id
+        JOIN Hole ho
+        ON  ho.hole_id = h.Score_Hole_hole_id
+        WHERE h.user_id = ?;';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('i', $user_id);
