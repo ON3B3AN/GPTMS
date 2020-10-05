@@ -51,6 +51,4 @@ Class Profile {
     function setPwd($pwd) {
         $this->pwd = $pwd;
     }
-
 }
-

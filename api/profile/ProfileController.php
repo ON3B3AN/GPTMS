@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 require('../db/databaseConnect.php');
 require('../profile/ProfileQueries.php');
 require('../profile/Profile.php');
@@ -54,3 +55,7 @@ switch ($action) {
         echo http_response_code(404).": Error, action value not specified";
         break;
 }
+=======
+
+echo 'This is the Profile controller';
+>>>>>>> 53d437eed948d17a5589861db637be03e6dc7328
