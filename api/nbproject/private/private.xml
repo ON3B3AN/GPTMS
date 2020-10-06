@@ -3,9 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/GPTMS/api/db/databaseConnect.php</file>
-            <file>file:/C:/xampp/htdocs/GPTMS/api/User/profileQueries.php</file>
-            <file>file:/C:/xampp/htdocs/GPTMS/api/User/profileController.php</file>
+            <file>file:/C:/xampp/htdocs/GPTMS/api/login/LoginController.php</file>
         </group>
     </open-files>
 </project-private>
