@@ -6,12 +6,12 @@ require('../login/LoginQueries.php');
  * Get request from user
  **********************************************/
 
-// Request and parse the URL to find Collection and Service
+// Request and parse the server URL to identify Collection
 $url = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
 $collection = $url[2];
 echo "Collection: ".$collection."\n";
 
-// Check if URL includes a Collection, Service, or Service Parameters
+// Check if URL includes a Service and/or Service Parameters
 if (count($url) == 4) {
     $service = $url[3];
     $pos = strpos($service, "?=");
@@ -30,12 +30,12 @@ elseif (count($url) == 3) {
     $service = NULL;
 }
 
-// Check input for HTTP method POST and JSON decode it
+// Check input for HTTP method POST, and JSON decode it
 $input = json_decode(file_get_contents("php://input"));
 $data = strtolower(filter_input(INPUT_POST, 'data'));
 $data = $input->data;
 
-// Check input for HTTP method GET and JSON decode it.
+// Check input for HTTP method GET, and JSON decode it
 if ($data == NULL) {
     $data = strtolower(filter_input(INPUT_GET, 'data'));
     $data = $input->data;
@@ -53,7 +53,8 @@ switch ($service) {
     case 'error':
         header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
         header('Access-Control-Allow-Origin: *');
-        http_response_code(501);
+        header('Accept: application/json, charset=utf-8');
+        http_response_code(404);
         echo http_response_code().": Error, service not recognized";
         break;
     default:
