@@ -1,4 +1,4 @@
-DirectoryIndex SignupController.php
+DirectoryIndex /GPTMS/api/signup/SignupController.php 
 
 Options +FollowSymlinks -MultiViews
 RewriteEngine On

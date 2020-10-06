@@ -1,3 +1,1 @@
 IndexIgnore *
-#Redirect /GPTMS/api/login/user /GPTMS/api/login/
-#Redirect /GPTMS/api/login/user http://localhost/GPTMS/api/login/

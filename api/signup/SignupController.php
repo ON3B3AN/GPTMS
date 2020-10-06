@@ -7,14 +7,45 @@ require ('../profile/Profile.php');
  * Get request from user
  **********************************************/
 
-$input = json_decode(file_get_contents("php://input"));
-$action = strtolower(filter_input(INPUT_POST, 'action'));
-$action = $input->action;
+// Request and parse the server URL to identify Collection
+$url = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
+$collection = $url[2];
+echo "Collection: ".$collection."\n";
 
-if ($action == NULL) {
-    $action = strtolower(filter_input(INPUT_GET, 'action'));
-    if ($action == NULL) {
-        $action = 'error';
+// Check if URL includes a Service and/or Service Parameters
+if (count($url) == 4) {
+    $service = $url[3];
+    $pos = strpos($service, "?=");
+    if ($pos == TRUE) {
+        $service_url = explode("?=", $service);
+        $service = $service_url[0];
+        echo "Service: ".$service."\n";
+        $param = $service_url[1];
+        echo "Service Parameter: ".$param."\n";
+    }
+    elseif ($pos == FALSE) {
+        echo "Service: ".$service."\n";
+    }
+}
+elseif (count($url) == 3) {
+    $service = NULL;
+}
+
+// Check input for HTTP method POST, and JSON decode it
+$input = json_decode(file_get_contents("php://input"));
+$data = strtolower(filter_input(INPUT_POST, 'data'));
+if ($data != NULL) {
+    $data = $input->data;
+}
+// Check input for HTTP method GET, and JSON decode it
+elseif ($data == NULL) {
+    $data = strtolower(filter_input(INPUT_GET, 'data'));
+    if ($data != NULL) {
+        $data = $input->data;
+    }
+    // Set error case if input POST/GET data is NULL
+    elseif ($data == NULL) {
+        $service = 'error';
     }
 }
 
@@ -22,14 +53,25 @@ if ($action == NULL) {
  * Build and execute requested query
  **********************************************/
 
-switch ($action) {
-    case 'signup':
+switch ($service) {
+    case 'error':
+        header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
+        header('Access-Control-Allow-Origin: *');
+        http_response_code(404);
+        echo http_response_code().": Error, action not recognized";
+        break;
+    default:
+        // Get JSON data
         $fName = $input->data->first_name;
         $lName = $input->data->last_name;
         $phone = $input->data->phone;
         $email = $input->data->email;
         $pwd = $input->data->password;
-        //$profile = new Profile($fName, $lName, $phone, $email, $pwd);
+        
+        // Instantiate new Profile
+        $profile = new Profile($fName, $lName, $phone, $email, $pwd);
+        
+        // Get result from SQL query
         $result = signup($fName, $lName, $email, $pwd, $phone);
         
         if ($result != NULL) {
@@ -48,10 +90,5 @@ switch ($action) {
             echo http_response_code().": Error, profile not created";
         }
         break;
-    case 'error':
-        header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-        header('Access-Control-Allow-Origin: *');
-        http_response_code(501);
-        echo http_response_code().": Error, action not recognized";
-        break;
+        
 }
