@@ -17,7 +17,7 @@ if ($action == NULL) {
     if ($action == NULL) {
         $action = 'error';
     }
-    
+} 
     
 switch ($action) {
     case 'history' :
@@ -28,7 +28,7 @@ switch ($action) {
             header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json, charset=utf-8');
             echo json_encode($result);
-            echo 'hit first';
+    
         } 
         else {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
@@ -46,4 +46,3 @@ switch ($action) {
         echo http_response_code().": Error, action not recognized";
         break;
     }
-}
