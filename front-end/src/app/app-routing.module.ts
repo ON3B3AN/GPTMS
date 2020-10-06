@@ -9,7 +9,6 @@ import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignupComponent } from './signup/signup.component';
 import { TrackComponent } from './track/track.component';
-import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
