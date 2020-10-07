@@ -6,6 +6,10 @@ require('../history/HistoryQueries.php');
  * Get request from user
  **********************************************/
 
+// Initialize local variables
+$param = NULL;
+$result = NULL;
+
 // Request and parse the server URL to identify Collection
 $url = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
 $collection = $url[2];
@@ -48,30 +52,40 @@ elseif ($data == NULL) {
         $service = 'error';
     }
 }
+
+/**********************************************
+ * Build and execute requested query
+ **********************************************/
     
 switch ($service) {
     case 'error':
         header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
         header('Access-Control-Allow-Origin: *');
-        http_response_code(404);
-        echo http_response_code().": Error, action not recognized";
+        http_response_code(501);
+        echo http_response_code().": Error, service not recognized";
         break;
     default:
-        $user_id = $input->data->user_id;
-        $result = history($user_id);
-         if ($result != NULL) {
+        // Get/check for service param
+        if ($param != NULL) {
+            $user_id = $param;
+            
+            // Get history from SQL query
+            $result = history($user_id);
+        }
+        
+        if ($result != NULL) {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
             header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json, charset=utf-8');
+            
+            // Return history data as JSON array
             echo json_encode($result);
-    
         } 
         else {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
             header('Access-Control-Allow-Origin: *');
             header('Accept: application/json, charset=utf-8');
-            header('WWW-Authenticate: Basic; realm="Access to the landing page"');
-            http_response_code(404);
+            http_response_code(500);
             echo http_response_code().": No user history";
         }
         break;

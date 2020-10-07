@@ -58,7 +58,7 @@ switch ($service) {
         header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
         header('Access-Control-Allow-Origin: *');
         header('Accept: application/json, charset=utf-8');
-        http_response_code(404);
+        http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
     default :
@@ -68,11 +68,24 @@ switch ($service) {
 
         // Get result from SQL query
         $result = login($email, $pwd);
+        $json_result = json_decode($result);
+        $usr_id = $json_result->user_id;
 
         if ($result != NULL) {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
             header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json, charset=utf-8');
+            
+//            $value = 'something from somewhere';
+//            setcookie("TestCookie", $value, time()+3600, "/GPTMS/api/login/", "localhost", 1);
+//            
+//            // Print an individual cookie
+//            echo $_COOKIE["TestCookie"];
+//
+//            // Another way to debug/test is to view all cookies
+//            print_r($_COOKIE);
+            echo $usr_id;
+            // Return user data as JSON array
             echo json_encode($result);
         } 
         else {

@@ -58,8 +58,8 @@ switch ($service) {
     case 'error':
         header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
         header('Access-Control-Allow-Origin: *');
-        http_response_code(404);
-        echo http_response_code().": Error, action not recognized";
+        http_response_code(501);
+        echo http_response_code().": Error, service not recognized";
         break;
     default:
         // Get JSON data
@@ -87,7 +87,7 @@ switch ($service) {
             header('Access-Control-Allow-Origin: *');
             header('WWW-Authenticate: Basic;realm="Access to the landing page"');
             header('Accept: application/json');
-            http_response_code(501);
+            http_response_code(500);
             echo http_response_code().": Error, profile not created";
         }
         break; 
