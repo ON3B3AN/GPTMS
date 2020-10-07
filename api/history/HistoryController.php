@@ -33,6 +33,7 @@ elseif (count($url) == 3) {
 // Check input for HTTP method POST, and JSON decode it
 $input = json_decode(file_get_contents("php://input"));
 $data = strtolower(filter_input(INPUT_POST, 'data'));
+$data = $input->data;
 if ($data != NULL) {
     $data = $input->data;
 }
