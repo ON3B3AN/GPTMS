@@ -74,6 +74,7 @@ switch ($service) {
         if ($result != NULL) {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
             header('Access-Control-Allow-Origin: *');
+            header('WWW-Authenticate: Basic; realm="Access to the landing page"');
             header('Content-Type: application/json, charset=utf-8');
             
 //            $value = 'something from somewhere';
@@ -86,6 +87,7 @@ switch ($service) {
 //            print_r($_COOKIE);
             echo $usr_id;
             // Return user data as JSON array
+            http_response_code(200);
             echo json_encode($result);
         } 
         else {
