@@ -79,6 +79,7 @@ switch ($service) {
             header('Content-Type: application/json, charset=utf-8');
             
             // Return history data as JSON array
+            http_response_code(200);
             echo json_encode($result);
         } 
         else {
