@@ -89,7 +89,7 @@ switch ($service) {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
             header('Access-Control-Allow-Origin: *');
             http_response_code(404);
-            echo http_response_code().": No courses found";
+            echo http_response_code().": No course with id=$param found";
         }
         
         break;
