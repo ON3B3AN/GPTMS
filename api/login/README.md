@@ -6,10 +6,10 @@
 #### Example Input (app/json): {"data":{"email":"tthayer@oakland.edu","password":"1234"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/josn): Returns all user data associated with email and password
+    * Body (app/json): Returns all user data associated with email and password
 #### Output: Unsuccessful
     * Header: 401 Unauthorized 
-    * Body: 401: Login failed
+    * Body (text/html): 401: Login failed
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body: 501: Error, service not recognized
+    * Body (text/html): 501: Error, service not recognized
