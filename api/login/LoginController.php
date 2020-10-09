@@ -66,6 +66,7 @@ switch ($service) {
         $email = $input->data->email;
         $pwd = $input->data->password;
         
+        // Check if email is valid and password is not empty
         if (filter_var(trim($email), FILTER_VALIDATE_EMAIL) && empty(trim($pwd)) === FALSE) {
 
             // Get result from SQL query
@@ -83,6 +84,7 @@ switch ($service) {
                 // Set/Start session variable for user id
                 $_SESSION["user"] = $user_id;
 
+                // Check if session was set
                 if (!isset($user_id)) {
                     break;
                 }
