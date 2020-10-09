@@ -1,1 +1,9 @@
-DirectoryIndex CourseController.php
+DirectoryIndex /GPTMS/api/course/CourseController.php
+
+Options +FollowSymlinks -MultiViews
+RewriteEngine On
+RewriteBase /
+# Next condition is met when the requested file doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-f
+# If previous condition was met, use the next rule
+RewriteRule ^(.*)$         /GPTMS/api/course/CourseController.php [L,NC]
