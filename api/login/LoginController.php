@@ -65,31 +65,35 @@ switch ($service) {
         // Get JSON data
         $email = $input->data->email;
         $pwd = $input->data->password;
+        
+        if (filter_var(trim($email), FILTER_VALIDATE_EMAIL) && empty(trim($pwd)) === FALSE) {
 
-        // Get result from SQL query
-        $result = login($email, $pwd);
-        $json_result = json_decode($result);
-        $usr_id = $json_result->user_id;
+            // Get result from SQL query
+            $result = login($email, $pwd);
 
-        if ($result != NULL) {
-            header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
-            header('Access-Control-Allow-Origin: *');
-            header('WWW-Authenticate: Basic; realm="Access to the landing page"');
-            header('Content-Type: application/json, charset=utf-8');
-            
-//            $value = 'something from somewhere';
-//            setcookie("TestCookie", $value, time()+3600, "/GPTMS/api/login/", "localhost", 1);
-//            
-//            // Print an individual cookie
-//            echo $_COOKIE["TestCookie"];
-//
-//            // Another way to debug/test is to view all cookies
-//            print_r($_COOKIE);
-            echo $usr_id;
-            // Return user data as JSON array
-            http_response_code(200);
-            echo json_encode($result);
-        } 
+            if ($result != NULL) {
+                header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
+                header('Access-Control-Allow-Origin: *');
+                header('WWW-Authenticate: Basic; realm="Access to the landing page"');
+                header('Content-Type: application/json, charset=utf-8');
+
+                // Get user id from SQL query
+                $user_id = $result["user_id"];
+
+                // Set/Start session variable for user id
+                $_SESSION["user"] = $user_id;
+
+                if (!isset($user_id)) {
+                    break;
+                }
+                else {
+                    session_start();
+                    // Return user data as JSON array
+                    http_response_code(200);
+                    echo json_encode($result);
+                }
+            }
+        }
         else {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
             header('Access-Control-Allow-Origin: *');
