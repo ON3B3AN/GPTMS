@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   public login(userData: User){
-    return this.http.post(this.baseUrl + '/index.php', { action: 'login', data: userData })
+    return this.http.post(this.baseUrl + '/login', {data: userData})
       .pipe(map((user) => {
         // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
