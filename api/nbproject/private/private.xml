@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/xampp/htdocs/GPTMS/api/login/LoginController.php</file>
             <file>file:/C:/xampp/htdocs/GPTMS/api/login/LoginQueries.php</file>
+            <file>file:/C:/xampp/htdocs/GPTMS/api/signup/SignupController.php</file>
         </group>
     </open-files>
 </project-private>

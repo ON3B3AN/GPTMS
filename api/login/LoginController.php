@@ -30,23 +30,32 @@ elseif (count($url) == 3) {
     $service = NULL;
 }
 
-// Check input for HTTP method POST, and JSON decode it
+// Prepare input for JSON decode, and check input for HTTP method POST
 $input = json_decode(file_get_contents("php://input"));
 $data = strtolower(filter_input(INPUT_POST, 'data'));
-$data = $input->data;
+
+// Validate collection or serivce for its respective GET/POST
+if (isset($data) && $_SERVER['REQUEST_METHOD'] == "POST") {
+    if ($collection == "login") {
+        $service = "login";
+        $data = $input->data;
+    }
+}
+elseif (isset($data) && $_SERVER['REQUEST_METHOD'] == "POST") {
+    if ($collection == "logout") {
+        $service = "logout";
+    }
+}
+else {
+    $service = "error";
+}
+
+// Check if data exists, is so decode it
 if ($data != NULL) {
     $data = $input->data;
 }
-// Check input for HTTP method GET, and JSON decode it
-elseif ($data == NULL) {
-    $data = strtolower(filter_input(INPUT_GET, 'data'));
-    if ($data != NULL) {
-        $data = $input->data;
-    }
-    // Set error case if input POST/GET data is NULL
-    elseif ($data == NULL) {
-        $service = 'error';
-    }
+else {
+    $service = "error";
 }
 
 /**********************************************
@@ -61,7 +70,7 @@ switch ($service) {
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
-    default :
+    default:
         // Get JSON data
         $email = $input->data->email;
         $pwd = $input->data->password;
@@ -71,8 +80,8 @@ switch ($service) {
 
             // Get result from SQL query
             $result = login($email, $pwd);
-
-            if ($result != NULL) {
+            //echo $result;
+            if ($result != NULL && empty($result) === FALSE) {
                 header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
                 header('Access-Control-Allow-Origin: *');
                 header('WWW-Authenticate: Basic; realm="Access to the landing page"');
@@ -81,6 +90,9 @@ switch ($service) {
                 // Get user id from SQL query
                 $user_id = $result["user_id"];
 
+                // Start session
+                session_start();
+                
                 // Set/Start session variable for user id
                 $_SESSION["user"] = $user_id;
 
@@ -89,7 +101,6 @@ switch ($service) {
                     break;
                 }
                 else {
-                    session_start();
                     // Return user data as JSON array
                     http_response_code(200);
                     echo json_encode($result);
@@ -104,5 +115,11 @@ switch ($service) {
             http_response_code(401);
             echo http_response_code().": Login failed";
         }
-        break;      
+        break;
+    case "logout":
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: ../index.php");
+        break;
 }
