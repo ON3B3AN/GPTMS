@@ -22,7 +22,7 @@ if ($action == NULL) {
  **********************************************/
 
 switch ($action) {
-    case 'loginn':
+    case 'login':
         // get row
         $email = $input->data->email;
         $pwd = $input->data->password;
