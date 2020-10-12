@@ -123,4 +123,3 @@ switch ($service) {
         header("Location: ../index.php");
         break;
 }
->>>>>>> 4dcb2ef3f4ec061dc609023639e9f932f3b2796f
