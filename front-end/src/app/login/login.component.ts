@@ -28,13 +28,7 @@ export class LoginComponent implements OnInit {
     if (this.authForm.invalid){
       return;
     }
-    this.authService.login(this.authForm.value).subscribe(
-      (res: User) => {
-        this.router.navigateByUrl('/landing');
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.authService.signIn(this.authForm.value);
+    this.router.navigateByUrl('/landing');
   }
 }
