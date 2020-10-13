@@ -97,27 +97,33 @@ VALUES
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
 `Hole_course_id`,
+`Golf_Game_game_id`,
 `stroke`)
 VALUES
 (1,
+1,
 1,
 3);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
 `Hole_course_id`,
+`Golf_Game_game_id`,
 `stroke`)
 VALUES
 (2,
+1,
 1,
 4);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
 `Hole_course_id`,
+`Golf_Game_game_id`,
 `stroke`)
 VALUES
 (3,
+1,
 1,
 5);
 
@@ -159,3 +165,12 @@ VALUES
 3,
 3,
 1);
+
+SELECT course_name, party_etime, stroke, hole_number 
+FROM History h 
+JOIN Score s ON s.score_id = h.Score_score_id 
+JOIN Party p
+ON p.party_id = h.Party_party_id AND p.party_etime IS NOT NULL
+JOIN Course c ON  c.course_id = h.Score_Hole_course_id
+JOIN Hole ho ON  ho.hole_id = h.Score_Hole_hole_id
+WHERE h.user_id = 1;
