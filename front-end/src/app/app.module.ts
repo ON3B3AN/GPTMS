@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {HttpClientModule} from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -15,7 +16,6 @@ import { TrackComponent } from './track/track.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
-import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [

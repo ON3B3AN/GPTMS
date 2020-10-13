@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./navbar.component.sass']
 })
 export class NavbarComponent implements OnInit {
+  navbarOpen = false;
 
   constructor(private authService: AuthService, public router: Router) { }
 
@@ -16,5 +17,9 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
   }
 }
