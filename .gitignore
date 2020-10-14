@@ -1,5 +1,7 @@
 
-docs/.DS_Store
-.DS_Store
-.idea/
-api/nbproject/private/private.xml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/GPTMS.iml
+.idea/codeStyles/codeStyleConfig.xml
