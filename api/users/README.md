@@ -15,7 +15,7 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [LOGOUT]
-### URL [GET] : http://localhost/users/logout
+### URL [DELETE] : http://localhost/users/logout
 * This URL requests the “users” collection and the “logout” service. This request must not include any data.
 #### Example Input: N/A
 #### Output: N/A
