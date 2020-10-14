@@ -17,13 +17,19 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUser(id: number): Observable<User> { }
+  getUser(id: number): Observable<User> {
+    return new Observable();
+  }
 
-  getUserHistory(id: number): Observable<any> { }
+  getUserHistory(id: number): Observable<any> {
+    return new Observable();
+  }
 
   /**** Saving ****/
 
   addUser(user: User) { } // signup form submission
 
-  updateUser(user: User): Observable<any> { } // user profile update
+  updateUser(user: User): Observable<any> {
+    return new Observable();
+  } // user profile update
 }
