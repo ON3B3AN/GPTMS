@@ -1,27 +1,46 @@
-<div *ngIf="router.url !== '/login'">
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-  <a class="navbar-brand" routerLink="/" routerLinkActive="active">GPTMS</a>
-  <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/landing" routerLinkActive="active">Dashboard</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/history" routerLinkActive="active">Player History</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/courses" routerLinkActive="active">Courses</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)="logout()">Logout</a>
-      </li>
-    </ul>
-  </div>
+    <a class="navbar-brand" href="#">
+  GPTMS
+</a>
+
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
+  <span class="navbar-toggler-icon"></span>
+</button>
+
+
+    <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/landing" routerLinkActive="active">Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/play" routerLinkActive="active">Play</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/history" routerLinkActive="active">History</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" routerLink="profile" routerLinkActive="active">Profile</a>
+            </li>
+
+            <li class="nav-item dropdown">
+
+                <div ngbDropdown>
+                    <a class="btn bg-primary" ngbDropdownToggle>Courses</a>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button ngbDropdownItem>Course 1</button>
+                        <button ngbDropdownItem>Course 2</button>
+                        <button ngbDropdownItem>Course 3</button>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <button class="btn bg-primary" (click)="logout()">Logout</button>
+            </li>
+        </ul>
+    </div>
 </nav>
-</div>
