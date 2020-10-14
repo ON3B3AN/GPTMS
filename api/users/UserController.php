@@ -4,45 +4,52 @@ require('./UserQueries.php');
 require ('./Profile.php');
 
 /*********************************************
+ * Initialize Local Variables
+ **********************************************/
+
+$url = NULL;
+$collection = NULL;
+$serviceParam = NULL;
+$service = NULL;
+$subService = NULL;
+$subServiceParam = NULL;
+
+/*********************************************
  * Get URL
  **********************************************/
 
 // Get and parse the server URL
-$url = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
+$url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
 
-// -------- URL Mapping --------
-// URL length [3] -> Collection
-// URL length [4] -> Collection, Service Param
-// URL length [5] -> Collection, Service Param, Service
-// URL length [6] -> Collection, Service Param, Service, Sub-Serivce
-// URL length [7] -> Collection, Service Param, Service, Sub-Serivce, Sub-Serivce Param
+/*********************************************
+ * -------- URL Path Naming --------
+ * http://localhost/collection/{serviceParam}/service?subService={subServiceParam}
+ * -------- Service Mapping --------
+ * URL length [3] -> Collection
+ * URL length [4] -> Collection, Service Param
+ * URL length [5] -> Collection, Service Param, Service, Sub-Serivce, Sub-Serivce Param
+ **********************************************/
 
 switch (count($url)) {
     case 3:
         $collection = $url[2];
-        echo "Collection: ".$collection."\n";
-        $service = "error";
+        $service = $collection;
         break;
     case 4:
         $collection = $url[2];
-        echo "Collection: ".$collection."\n";
         $serviceParam = $url[3];
-        echo "Service Parameter: ".$serviceParam."\n";
-        $service = "error";
+        $service = $serviceParam;
         break;
     case 5:
         $collection = $url[2];
-        echo "Collection: ".$collection."\n";
         $serviceParam = $url[3];
-        echo "Service Parameter: ".$serviceParam."\n";
         $service = $url[4];
         
-        // Check the Service Parameter for a Sub-Service and/or Sub-Service Parameter(s)
+        // Check the Service for a Sub-Service
         $pos = strpos($service, "?");
         if ($pos == TRUE) {
             $serviceExploded = explode("?", $service);
             $service = $serviceExploded[0];
-            echo "Service: ".$service."\n";
             $subService = $serviceExploded[1];
             
             // Check the Sub-Service for a Sub-Service Parameter(s)
@@ -51,19 +58,11 @@ switch (count($url)) {
                 $subServiceExploded = explode("=", $subService);
                 $subService = $subServiceExploded[0];
                 $subServiceParam = $subServiceExploded[1];
-                echo "Sub-Service: ".$subService."\n";
-                echo "Sub-Service Param: ".$subServiceParam."\n";
             }
-            elseif ($pos == FALSE) {
-                echo "Sub-Service: ".$subService."\n";
-            }
-        }
-        elseif ($pos == FALSE) {
-            echo "Service: ".$service."\n";
         }
         break;
     default:
-        $service = NULL;
+        $service = "error";
         break;
 }
 
@@ -74,7 +73,7 @@ switch (count($url)) {
 // Prepare input
 $input = json_decode(file_get_contents("php://input"));
 
-// Check if data exists, if so decode it
+// Check input GET/POST/SERVER for data, if data exists then decode it
 $data = strtolower(filter_input(INPUT_POST, 'data'));
 if ($data != NULL) {
     $data = $input->data;
@@ -84,43 +83,58 @@ elseif ($data == NULL) {
     if ($data != NULL) {
         $data = $input->data;
     }
+    elseif ($data == NULL) {
+        $data = strtolower(filter_input(INPUT_SERVER, 'data'));
+        if ($data != NULL) {
+            $data = $input->data;
+        }
+    }
 }
 
-// Validate service for its respective GET/POST/DELETE/PUT
-if (isset($data)) {
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if ($service == "login") {
-            $service = "login";
-        }
-        elseif ($service == "signup") {
-            $service = "signup";
-        }
-        else {
-            $service = "error";
-        }
+/**********************************************
+ * Validate and assign a service to its respective GET/POST/DELETE/PUT
+ * A boolean converted to a string will be 1 for "true" and (empty) for "false"
+ **********************************************/
+
+if (empty($input->data)) {
+    $exists = FALSE;
+}
+else {
+    $exists = TRUE;
+}
+
+if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
+    if ($service == "login" && $subService == NULL && $subServiceParam == NULL) {
+        $service = "login";
     }
-    elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
-        if ($service == "history") {
-            $service = "history";
-        }
-        else {
-            $service = "error";
-        }
-    }
-    elseif ($_SERVER['REQUEST_METHOD'] == "PUT") {
-        $service = "error";
-    }
-    elseif ($_SERVER['REQUEST_METHOD'] == "DELETE") {
-        if ($service == "logout") {
-            $service = "logout";
-        }
-        else {
-            $service = "error";
-        }
+    elseif ($service == "signup" && $subService == NULL && $subServiceParam == NULL) {
+        $service = "signup";
     }
     else {
         $service = "error";
     }
+}
+elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
+    if ($service == "history" && $subService == NULL && $subServiceParam == NULL) {
+        $service = "history";
+    }
+    else {
+        $service = "error";
+    }
+}
+elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
+    $service = "error";
+}
+elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
+    if ($service == "logout" && $subService == NULL && $subServiceParam == NULL) {
+        $service = "logout";
+    }
+    else {
+        $service = "error";
+    }
+}
+else {
+    $service = "error";
 }
 
 /**********************************************
@@ -145,7 +159,7 @@ switch ($service) {
 
             // Get result from SQL query
             $result = login($email, $pwd);
-            //echo $result;
+            
             if ($result != NULL && empty($result) === FALSE) {
                 header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
                 header('Access-Control-Allow-Origin: *');
@@ -217,11 +231,10 @@ switch ($service) {
         }
         break;
     case "history":
-        session_start();
-
         // Get/check for service param
         if ($serviceParam != NULL) {
             $user_id = $serviceParam;
+            
             // Get history from SQL query
             $result = historySelectAll($user_id);
         }
@@ -244,3 +257,22 @@ switch ($service) {
         }
         break;
 }
+
+/*********************************************
+ * Troubleshooting
+ **********************************************/
+
+//echo "\n\n"."URL ";
+//print_r($url);
+//echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
+//echo "\n"."URL count: ".count($url)."\n";
+//echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
+//if ($exists == "TRUE") {
+//    echo "Data: "."\n";
+//    print_r($input->data);
+//}
+//echo "Collection: ".$collection."\n";
+//echo "Service Parameter: ".$serviceParam."\n";
+//echo "Service: ".$service."\n";
+//echo "Sub-Service: ".$subService."\n";
+//echo "Sub-Service Param: ".$subServiceParam."\n";

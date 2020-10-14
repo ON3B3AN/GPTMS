@@ -3,56 +3,141 @@ require('../db/databaseConnect.php');
 require('./CourseQueries.php');
 
 /*********************************************
- * Get request from user
+ * Initialize Local Variables
  **********************************************/
 
-// Initialize local variables
-$param = NULL;
-$result = NULL;
-$service = NULL;
+$url = NULL;
 $collection = NULL;
+$serviceParam = NULL;
+$service = NULL;
+$subService = NULL;
+$subServiceParam = NULL;
 
-// Request and parse the server URL to identify Collection
-$url = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
-$collection = $url[2];
-echo "Collection: ".$collection."\n";
+/*********************************************
+ * Get URL
+ **********************************************/
 
-// Check if URL includes a Service and/or Service Parameters
-if (count($url) == 4) {
-    $service = $url[3];
-    $pos = strpos($service, "?=");
-    if ($pos == TRUE) {
-        $service_url = explode("?=", $service);
-        $service = $service_url[0];
-        echo "Service: ".$service."\n";
-        $param = $service_url[1];
-        echo "Service Parameter: ".$param."\n";
-    }
-    elseif ($pos == FALSE) {
-        echo "Service: ".$service."\n";
-    }
+// Get and parse the server URL
+$url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
+
+/*********************************************
+ * -------- URL Path Naming --------
+ * http://localhost/collection/{serviceParam}/service?subService={subServiceParam}
+ * -------- Service Mapping --------
+ * URL length [3] -> Collection
+ * URL length [4] -> Collection, Service Param
+ * URL length [5] -> Collection, Service Param, Service, Sub-Serivce, Sub-Serivce Param
+ **********************************************/
+
+switch (count($url)) {
+    case 3:
+        $collection = $url[2];
+        $service = $collection;
+        break;
+    case 4:
+        $collection = $url[2];
+        $serviceParam = $url[3];
+        $service = $serviceParam;
+        break;
+    case 5:
+        $collection = $url[2];
+        $serviceParam = $url[3];
+        $service = $url[4];
+        
+        // Check the Service for a Sub-Service
+        $pos = strpos($service, "?");
+        if ($pos == TRUE) {
+            $serviceExploded = explode("?", $service);
+            $service = $serviceExploded[0];
+            $subService = $serviceExploded[1];
+            
+            // Check the Sub-Service for a Sub-Service Parameter(s)
+            $pos = strpos($subService, "=");
+            if ($pos == TRUE) {
+                $subServiceExploded = explode("=", $subService);
+                $subService = $subServiceExploded[0];
+                $subServiceParam = $subServiceExploded[1];
+            }
+        }
+        break;
+    default:
+        $service = "error";
+        break;
 }
-elseif (count($url) == 3) {
-    $service = NULL;
-}
 
-// Check input for HTTP method POST, and JSON decode it
+/*********************************************
+ * Get request & data from user
+ **********************************************/
+
+// Prepare input
 $input = json_decode(file_get_contents("php://input"));
+
+// Check input GET/POST/SERVER for data, if data exists then decode it
 $data = strtolower(filter_input(INPUT_POST, 'data'));
-$data = $input->data;
 if ($data != NULL) {
     $data = $input->data;
 }
-// Check input for HTTP method GET, and JSON decode it
 elseif ($data == NULL) {
     $data = strtolower(filter_input(INPUT_GET, 'data'));
     if ($data != NULL) {
         $data = $input->data;
     }
-    // Set error case if input POST/GET data is NULL
     elseif ($data == NULL) {
-        $service = 'error';
+        $data = strtolower(filter_input(INPUT_SERVER, 'data'));
+        if ($data != NULL) {
+            $data = $input->data;
+        }
     }
+}
+
+/**********************************************
+ * Validate whether data exists and assign a service to its respective GET/POST/DELETE/PUT
+ **********************************************/
+
+if (empty($input->data)) {
+    $exists = FALSE;
+}
+else {
+    $exists = TRUE;
+}
+
+if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
+    if ($service == "courses" && $serviceParam == NULL && $subService == NULL && $subServiceParam == NULL) {
+        $service = "insert";
+    }
+    else {
+        $service = "error";
+    }
+}
+elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
+    if ($service == "courses" && $serviceParam == NULL && $subService == NULL && $subServiceParam == NULL) {
+        $service = "selectall";
+    }
+    elseif ($service == "courses" && $serviceParam != NULL && $subService == NULL && $subServiceParam == NULL) {
+        $service = "select";
+    }
+    else {
+        $service = "error";
+    }
+}
+elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
+    if ($service == "courses" && $serviceParam != NULL && $subService == NULL && $subServiceParam == NULL) {
+        $service = "update";
+    }
+    else {
+        $service = "error";
+    }
+}
+elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
+    if ($service == "courses" && $serviceParam != NULL && $subService == NULL && $subServiceParam == NULL) {
+        $service = "delete";
+    }
+    else {
+        $service = "error";
+    }
+}
+else {
+    $service = "error";
 }
 
 /**********************************************
@@ -69,8 +154,8 @@ switch ($service) {
         break;
     case 'select':
         // Get/check for service param
-        if($param != NULL) {
-            $course_id = $param;
+        if($serviceParam != NULL) {
+            $course_id = $serviceParam;
             
             // Get results from SQL query
             $result = select($course_id);
@@ -99,8 +184,8 @@ switch ($service) {
         $address = $input->data->address;
         $phone = $input->data->phone_number;
         
-        if ($param != NULL && $param != "") {
-            $course_id = $param;
+        if ($serviceParam != NULL) {
+            $course_id = $serviceParam;
 
             // Get the updated row count from the SQL query
             $result = update($course_name, $address, $phone, $course_id);
@@ -150,8 +235,8 @@ switch ($service) {
         break;
     case 'delete':
         // Get/check for service param
-        if ($param != NULL) {
-            $course_id = $param;
+        if ($serviceParam != NULL) {
+            $course_id = $serviceParam;
 
             // Get number of rows affected from SQL query
             $result = delete($course_id);
@@ -170,8 +255,7 @@ switch ($service) {
             echo http_response_code().": Error, course not deleted";
         }
         break;
-    // Default SelectAll
-    default:       
+    case "selectall":       
         // Get result from SQL query
         $result = selectall();
 
@@ -192,3 +276,22 @@ switch ($service) {
         }
         break;      
 }
+
+/*********************************************
+ * Troubleshooting
+ **********************************************/
+
+//echo "\n\n"."URL ";
+//print_r($url);
+//echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
+//echo "\n"."URL count: ".count($url)."\n";
+//echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
+//if ($exists == "TRUE") {
+//    echo "Data: "."\n";
+//    print_r($input->data);
+//}
+//echo "Collection: ".$collection."\n";
+//echo "Service Parameter: ".$serviceParam."\n";
+//echo "Service: ".$service."\n";
+//echo "Sub-Service: ".$subService."\n";
+//echo "Sub-Service Param: ".$subServiceParam."\n";

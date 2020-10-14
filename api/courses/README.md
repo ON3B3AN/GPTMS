@@ -1,7 +1,7 @@
 # Courses Route/Endpoint
 
 ## [SELECT ALL]
-### URL [GET] : http://localhost/course/
+### URL [GET] : http://localhost/courses/
 * This URL requests the “course” collection but does not query a particular service, therefore a default service is called, which is select all.
 #### Example Input: N/A
 #### Output: Successful
@@ -15,7 +15,7 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [SELECT]
-### URL [GET] : http://localhost/course/select?=1
+### URL [GET] : http://localhost/courses/1
 * This URL requests the “course” collection and calls the “select” service with a value of “1”, therefore a course with a course id of 1 is returned.
 #### Example Input: N/A
 #### Output: Successful
@@ -29,7 +29,7 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [INSERT]
-### URL [POST] : http://localhost/course/insert
+### URL [POST] : http://localhost/courses/insert
 * This URL requests the “course” collection and calls the “insert” service that doesn’t accept a value.
 #### Example Input: {"data":{"course_name":"Billy's Home","address":"105 Billy Home Lane","phone_number":"000-123-7030"}}
 #### Output: Successful
@@ -43,7 +43,7 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [UPDATE]
-### URL [POST] : http://localhost/course/update?=1
+### URL [PUT] : http://localhost/courses/1
 * This URL requests the “course” collection and calls the “update” service with a value of “1”.; therefore a course with the id of 1 is updated if successful.
 #### Example Input: {"data":{"course_name":"Billy's Other Home","address":"105 Billy Other Home Lane","phone_number":"000-123-5000"}}
 #### Output: Successful
@@ -60,7 +60,7 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [DELETE]
-### URL [POST] : http://localhost/course/delete?=1
+### URL [DELETE] : http://localhost/courses/1
 * This URL requests the “course” collection and calls the “delete” service with a value of “1”; therefore a course with the id of 1 is deleted if successful.
 #### Example Input: N/A
 #### Output: Successful
@@ -72,5 +72,3 @@
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
-
-

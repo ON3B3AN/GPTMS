@@ -1,1 +1,6 @@
 IndexIgnore *
+
+# If directory doesn't exist, redirect user ot error page
+ErrorDocument 404 /GPTMS/api/errors/404.php
+RewriteCond %{REQUEST_URI} ^/404/$
+RewriteRule ^(.*)$ /GPTMS/api/errors/404.php [L]
