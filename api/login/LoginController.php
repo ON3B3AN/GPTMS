@@ -20,29 +20,42 @@ if (count($url) == 4) {
         $service = $service_url[0];
         echo "Service: ".$service."\n";
         $param = $service_url[1];
-        echo "Service Parameter: ".$param."\n\n";
+        echo "Service Parameter: ".$param."\n";
     }
     elseif ($pos == FALSE) {
-        echo "Service: ".$service."\n\n";
+        echo "Service: ".$service."\n";
     }
 }
 elseif (count($url) == 3) {
     $service = NULL;
 }
 
-// Check input for HTTP method POST, and JSON decode it
+// Prepare input for JSON decode, and check input for HTTP method POST
 $input = json_decode(file_get_contents("php://input"));
 $data = strtolower(filter_input(INPUT_POST, 'data'));
-$data = $input->data;
 
-// Check input for HTTP method GET, and JSON decode it
-if ($data == NULL) {
-    $data = strtolower(filter_input(INPUT_GET, 'data'));
-    $data = $input->data;
-    // Set error case if input POST/GET data is NULL
-    if ($data == NULL) {
-        $service = 'error';
+// Validate collection or serivce for its respective GET/POST
+if (isset($data) && $_SERVER['REQUEST_METHOD'] == "POST") {
+    if ($collection == "login") {
+        $service = "login";
+        $data = $input->data;
     }
+}
+elseif (isset($data) && $_SERVER['REQUEST_METHOD'] == "POST") {
+    if ($collection == "logout") {
+        $service = "logout";
+    }
+}
+else {
+    $service = "error";
+}
+
+// Check if data exists, is so decode it
+if ($data != NULL) {
+    $data = $input->data;
+}
+else {
+    $service = "error";
 }
 
 /**********************************************
@@ -54,23 +67,46 @@ switch ($service) {
         header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
         header('Access-Control-Allow-Origin: *');
         header('Accept: application/json, charset=utf-8');
-        http_response_code(404);
+        http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
     default:
-        // get row
+        // Get JSON data
         $email = $input->data->email;
         $pwd = $input->data->password;
+        
+        // Check if email is valid and password is not empty
+        if (filter_var(trim($email), FILTER_VALIDATE_EMAIL) && empty(trim($pwd)) === FALSE) {
 
-        // Get result from SQL query
-        $result = login($email, $pwd);
+            // Get result from SQL query
+            $result = login($email, $pwd);
+            //echo $result;
+            if ($result != NULL && empty($result) === FALSE) {
+                header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
+                header('Access-Control-Allow-Origin: *');
+                header('WWW-Authenticate: Basic; realm="Access to the landing page"');
+                header('Content-Type: application/json, charset=utf-8');
 
-        if ($result != NULL) {
-            header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
-            header('Access-Control-Allow-Origin: *');
-            header('Content-Type: application/json, charset=utf-8');
-            echo json_encode($result);
-        } 
+                // Get user id from SQL query
+                $user_id = $result["user_id"];
+
+                // Start session
+                session_start();
+                
+                // Set/Start session variable for user id
+                $_SESSION["user"] = $user_id;
+
+                // Check if session was set
+                if (!isset($user_id)) {
+                    break;
+                }
+                else {
+                    // Return user data as JSON array
+                    http_response_code(200);
+                    echo json_encode($result);
+                }
+            }
+        }
         else {
             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
             header('Access-Control-Allow-Origin: *');
@@ -79,5 +115,11 @@ switch ($service) {
             http_response_code(401);
             echo http_response_code().": Login failed";
         }
+        break;
+    case "logout":
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: ../index.php");
         break;
 }
