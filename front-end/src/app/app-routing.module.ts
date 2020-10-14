@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+
 import { AdminComponent } from './admin/admin.component';
 import { CourseComponent } from './course/course.component';
 import { HistoryComponent } from './history/history.component';
@@ -20,9 +21,9 @@ const routes: Routes = [
   { path: 'course', component: CourseComponent, canActivate: [AuthGuard] },
   { path: 'courses', component: CourseComponent, canActivate: [AuthGuard] },
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
-  { path: 'play', component: PlayComponent, canActivate: [AuthGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'track', component: TrackComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'play', component: PlayComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
 ];
 
