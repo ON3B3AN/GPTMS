@@ -36,7 +36,7 @@
 
 ## [HISTORY SELECT ALL]
 ### URL [GET] : http://localhost/users/1/history
-* This URL requests the “users” collection, service parameter "1" (which represents a user_id), and the "history" service. This request must not include any data.
+* This URL requests the “users” collection and the "history" service including a service parameter of "1" (which represents a user_id). This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
