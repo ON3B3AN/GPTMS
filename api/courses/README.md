@@ -1,4 +1,4 @@
-# Course Route/Endpoint
+# Courses Route/Endpoint
 
 ## [SELECT ALL]
 ### URL [GET] : http://localhost/course/
