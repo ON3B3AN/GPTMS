@@ -2,7 +2,7 @@
 
 ## [LOGIN]
 ### URL [POST] : http://localhost/users/login
-* This URL requests the "users" collection and the "login" service. This request must include relative data.
+* This URL requests the "users" collection and the "login" service. This request must include relevant data.
 #### Example Input (app/json): {"data":{"email":"tthayer@oakland.edu","password":"1234"}}
 #### Output: Successful
     * Header: 200: Ok
@@ -22,7 +22,7 @@
 
 ## [SIGNUP]
 ### URL [POST] : http://localhost/users/signup
-* This URL requests the “users” collection and the “signup” service.  This request must include relative data.
+* This URL requests the “users” collection and the “signup” service.  This request must include relevant data.
 #### Example Input (app/json): {"data":{"first_name":"Joe","last_name":"Blow","phone":"298-999-4343","email":"email@gmail.com","password":"1234"}}
 #### Output: Successful 
     * Header: 201 Created
