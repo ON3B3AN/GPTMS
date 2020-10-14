@@ -1,14 +1,10 @@
 <?php
 require('../db/databaseConnect.php');
-require('../history/HistoryQueries.php');
+require('../login/History.php');
 
 /*********************************************
  * Get request from user
  **********************************************/
-
-// Initialize local variables
-$param = NULL;
-$result = NULL;
 
 // Request and parse the server URL to identify Collection
 $url = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
@@ -34,23 +30,35 @@ elseif (count($url) == 3) {
     $service = NULL;
 }
 
-// Check input for HTTP method POST, and JSON decode it
+// Prepare input for JSON decode, and check input for HTTP method POST
 $input = json_decode(file_get_contents("php://input"));
 $data = strtolower(filter_input(INPUT_POST, 'data'));
-$data = $input->data;
+
+// Validate collection or serivce for its respective GET/POST
+if (isset($data) && $_SERVER['REQUEST_METHOD'] == "POST") {
+    if ($collection == "history") {
+        $service = "insert";
+        $data = $input->data;
+    }
+}
+elseif (isset($data) && $_SERVER['REQUEST_METHOD'] == "GET") {
+    if ($collection == "history" && $service == NULL) {
+        $service = NULL;
+    }
+    elseif($service != NULL ){
+        $service = "select";
+    }
+}
+else {
+    $service = "error";
+}
+
+// Check if data exists, is so decode it
 if ($data != NULL) {
     $data = $input->data;
 }
-// Check input for HTTP method GET, and JSON decode it
-elseif ($data == NULL) {
-    $data = strtolower(filter_input(INPUT_GET, 'data'));
-    if ($data != NULL) {
-        $data = $input->data;
-    }
-    // Set error case if input POST/GET data is NULL
-    elseif ($data == NULL) {
-        $service = 'error';
-    }
+else {
+    $service = "error";
 }
 
 /**********************************************
@@ -64,13 +72,19 @@ switch ($service) {
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
+    case 'update':
+        break;
+    case 'insert':
+        break;
+    case 'delete':
+        break;
     default:
         // Get/check for service param
         if ($param != NULL) {
             $user_id = $param;
             
             // Get history from SQL query
-            $result = history($user_id);
+            $result = selectall($user_id);
         }
         
         if ($result != NULL) {

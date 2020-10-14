@@ -1,5 +1,5 @@
 <?php
-function history($user_id) {
+function selectall($user_id) {
     global $db;
     $query = 'SELECT course_name, party_etime, stroke, hole_number 
         FROM History h 
