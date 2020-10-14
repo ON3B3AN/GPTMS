@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import { Router } from "@angular/router";
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {catchError, map} from "rxjs/operators";
 import {User} from "./user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private baseUrl = 'http://localhost';  // URL to web api
+  private userSubject: BehaviorSubject<any>;
+  public user: Observable<User>;
 
-  constructor() { }
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -28,12 +34,20 @@ export class AuthService {
         catchError(this.handleError));
   }
   public isLoggedIn(){
-    return localStorage.getItem('ACCESS_TOKEN') !== null;
+    return localStorage.getItem('user') !== null;
   }
   public logout(){
-    localStorage.removeItem('ACCESS_TOKEN');
+    localStorage.removeItem('user');
+    this.userSubject.next(null);
+    this.router.navigate(['/login']);
   }
   public signUp(userData: User){
-    localStorage.setItem('ACCESS_TOKEN', 'access_token');
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.log(error);
+
+    // return an observable with a user friendly message
+    return throwError('Error! something went wrong.');
   }
 }

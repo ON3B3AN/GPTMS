@@ -18,4 +18,3 @@ export class LandingComponent implements OnInit {
   }
 
 }
->>>>>>> 7749aae4b0c29c595f3b752765187b0964b3212b
