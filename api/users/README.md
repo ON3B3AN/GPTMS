@@ -1,4 +1,4 @@
-# User Route/Endpoint
+# Users Route/Endpoint
 
 ## [LOGIN]
 ### URL [POST] : http://localhost/login/

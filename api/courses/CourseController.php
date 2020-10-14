@@ -1,6 +1,6 @@
 <?php
 require('../db/databaseConnect.php');
-require('../course/CourseQueries.php');
+require('./CourseQueries.php');
 
 /*********************************************
  * Get request from user

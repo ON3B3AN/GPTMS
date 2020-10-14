@@ -12,36 +12,38 @@ $url = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
 
 // -------- URL Mapping --------
 // URL length [3] -> Collection
-// URL length [4] -> Collection, Service
-// URL length [5] -> Collection, Service, Service Param
-// URL length [6] -> Collection, Service, Service Param, Sub-Serivce
-// URL length [7] -> Collection, Service, Service Param, Sub-Serivce, Sub-Serivce Param
+// URL length [4] -> Collection, Service Param
+// URL length [5] -> Collection, Service Param, Service
+// URL length [6] -> Collection, Service Param, Service, Sub-Serivce
+// URL length [7] -> Collection, Service Param, Service, Sub-Serivce, Sub-Serivce Param
 
 switch (count($url)) {
     case 3:
         $collection = $url[2];
         echo "Collection: ".$collection."\n";
+        $service = "error";
         break;
     case 4:
         $collection = $url[2];
         echo "Collection: ".$collection."\n";
-        $service = $url[3];
-        echo "Service: ".$service."\n";
+        $serviceParam = $url[3];
+        echo "Service Parameter: ".$serviceParam."\n";
+        $service = "error";
         break;
     case 5:
         $collection = $url[2];
         echo "Collection: ".$collection."\n";
-        $service = $url[3];
-        echo "Service: ".$service."\n";
-        $serviceParam = $url[4];
+        $serviceParam = $url[3];
+        echo "Service Parameter: ".$serviceParam."\n";
+        $service = $url[4];
         
         // Check the Service Parameter for a Sub-Service and/or Sub-Service Parameter(s)
-        $pos = strpos($serviceParam, "?");
+        $pos = strpos($service, "?");
         if ($pos == TRUE) {
-            $serviceParamExploded = explode("?", $serviceParam);
-            $serviceParam = $serviceParamExploded[0];
-            echo "Service Parameter: ".$serviceParam."\n";
-            $subService = $serviceParamExploded[1];
+            $serviceExploded = explode("?", $service);
+            $service = $serviceExploded[0];
+            echo "Service: ".$service."\n";
+            $subService = $serviceExploded[1];
             
             // Check the Sub-Service for a Sub-Service Parameter(s)
             $pos = strpos($subService, "=");
@@ -57,7 +59,7 @@ switch (count($url)) {
             }
         }
         elseif ($pos == FALSE) {
-            echo "Service Parameter: ".$serviceParam."\n";
+            echo "Service: ".$service."\n";
         }
         break;
     default:
@@ -79,7 +81,9 @@ if ($data != NULL) {
 }
 elseif ($data == NULL) {
     $data = strtolower(filter_input(INPUT_GET, 'data'));
-    $data = $input->data;
+    if ($data != NULL) {
+        $data = $input->data;
+    }
 }
 
 // Validate service for its respective GET/POST/DELETE/PUT
