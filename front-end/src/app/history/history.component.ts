@@ -12,7 +12,8 @@ export class HistoryComponent implements OnInit {
   constructor(private userService: UserService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.playerHistory = this.userService.getUserHistory(this.authService.currentUser.id);
+    this.userService.getUserHistory(this.authService.currentUser.user_id)
+      .subscribe(data => this.playerHistory = data);
   }
 
 }
