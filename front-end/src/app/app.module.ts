@@ -3,6 +3,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatCardModule} from '@angular/material/card';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,6 +38,7 @@ import { ProfileComponent } from './profile/profile.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    MatCardModule,
     MatToolbarModule,
     NgbModule,
     ReactiveFormsModule

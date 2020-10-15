@@ -6,10 +6,13 @@ function selectall() {
         $statement = $db->prepare($query);
         $statement->execute();
         $result = $statement->get_result();
-        $result = $result->fetch_all();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
         $statement->close();
         
-        return $result;
+        return $res;
     } catch (Exception $ex) {
         exit;
     }  
