@@ -8,7 +8,7 @@ import {User} from "./user";
   providedIn: 'root'
 })
 export class UserService {
-  private userUrl = 'http://localhost/users';  // URL to web api
+  private userUrl = 'http://localhost/GPTMS/api/users';  // URL to web api
 
 
   httpOptions = {
