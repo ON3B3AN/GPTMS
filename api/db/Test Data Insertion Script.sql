@@ -1,4 +1,3 @@
-
 INSERT INTO `mydb`.`user`
 (`first_name`,
 `last_name`,
@@ -7,155 +6,263 @@ INSERT INTO `mydb`.`user`
 `phone`,
 `employee`)
 VALUES
-('Dustin',
-'Bramos',
-'bramosd@yahoo.com',
-'a',
-5555555555,
-0);
-
-INSERT INTO `mydb`.`course`
-(`course_name`,
-`address`,
-`phone_number`)
-VALUES
-('Test Course',
-'Test address',
-5555555555);
+('Dustin', 'Bramos', 'bramosd@yahoo.com', '1234', 5555555555, 0),
+('Bob', 'Saget', 'email@email.com', '1234', 5555555556, 0);
 
 INSERT INTO `mydb`.`party`
 (`size`,
 `party_stime`,
 `party_etime`)
 VALUES
-(4,
-'2020-09-5 09:00:00',
-'2020-09-5 10:00:00');
+(1, '2020-10-5 10:00:00', '2020-10-5 11:00:00'),
+(1, '2020-10-9 08:00:00', '2020-10-9 12:00:00'),
+(1, '2020-10-10 10:00:00', '2020-10-10 12:00:00'),
+(1, '2020-10-7 07:00:00', '2020-10-7 10:00:00');
+
+INSERT INTO `mydb`.`player`
+(`Party_party_id`,
+`User_user_id`,
+`handicap`)
+VALUES
+(1, 1, 0),
+(2, 2, 0),
+(3, 2, 0),
+(4, 1, 0);
 
 INSERT INTO `mydb`.`golf_game`
 (`date`,
 `Course_course_id`,
 `Party_party_id`)
 VALUES
-('2020-10-5',
-1,
-1);
+('2020-10-5', 1, 1),
+('2020-10-5', 2, 2),
+('2020-10-5', 1, 3),
+('2020-10-7', 2, 4);
 
-INSERT INTO `mydb`.`player`
-(`player_id`,
-`Party_party_id`,
-`Party_course_id`,
-`User_user_id`,
-`handicap`)
+INSERT INTO `mydb`.`score`
+(`Hole_hole_id`,
+`Hole_course_id`,
+`Golf_Game_game_id`,
+`stroke`)
 VALUES
-(1,
-1,
-1,
-1,
-0);
+/*Scores of game_id=1, which is associated with user_id=1 and takes place on course_id=1*/
+(1, 1, 1, 2),
+(2, 1, 1, 4),
+(3, 1, 1, 6),
+(4, 1, 1, 3),
+(5, 1, 1, 4),
+(6, 1, 1, 7),
+(7, 1, 1, 4),
+(8, 1, 1, 3),
+(9, 1, 1, 4),
+(10, 1, 1, 3),
+(11, 1, 1, 4),
+(12, 1, 1, 5),
+(13, 1, 1, 4),
+(14, 1, 1, 5),
+(15, 1, 1, 5),
+(16, 1, 1, 3),
+(17, 1, 1, 4),
+(18, 1, 1, 4),
+/*Scores of game_id=4, which is associated with user_id=1 and takes place on course_id=2*/
+(19, 2, 4, 3),
+(20, 2, 4, 4),
+(21, 2, 4, 5),
+(22, 2, 4, 3),
+(23, 2, 4, 4),
+(24, 2, 4, 5),
+(25, 2, 4, 5),
+(26, 2, 4, 4),
+(27, 2, 4, 5),
+(28, 2, 4, 3),
+(29, 2, 4, 6),
+(30, 2, 4, 5),
+(31, 2, 4, 3),
+(32, 2, 4, 4),
+(33, 2, 4, 3),
+(34, 2, 4, 3),
+(35, 2, 4, 5),
+(36, 2, 4, 6),
+/*Scores of game_id=2, which is associated with user_id=2 and takes place on course_id=2*/
+(1, 2, 2, 4),
+(2, 2, 2, 5),
+(3, 2, 2, 6),
+(4, 2, 2, 3),
+(5, 2, 2, 5),
+(6, 2, 2, 5),
+(7, 2, 2, 2),
+(8, 2, 2, 3),
+(9, 2, 2, 5),
+(10, 2, 2, 6),
+(11, 2, 2, 3),
+(12, 2, 2, 5),
+(13, 2, 2, 5),
+(14, 2, 2, 4),
+(15, 2, 2, 5),
+(16, 2, 2, 3),
+(17, 2, 2, 4),
+(18, 2, 2, 5),
+/*Scores of game_id=3, which is associated with user_id=2 and takes place on course_id=1*/
+(19, 1, 3, 3),
+(20, 1, 3, 4),
+(21, 1, 3, 5),
+(22, 1, 3, 3),
+(23, 1, 3, 4),
+(24, 1, 3, 5),
+(25, 1, 3, 3),
+(26, 1, 3, 4),
+(27, 1, 3, 5),
+(28, 1, 3, 3),
+(29, 1, 3, 4),
+(30, 1, 3, 5),
+(31, 1, 3, 3),
+(32, 1, 3, 4),
+(33, 1, 3, 5),
+(34, 1, 3, 3),
+(35, 1, 3, 4),
+(36, 1, 3, 5);
+
+
+INSERT INTO `mydb`.`course`
+(`course_name`,
+`address`,
+`phone_number`)
+VALUES
+('Test Course 1', 'Test address 1', 5555555555),
+('Test Course 2', 'Test address 2', 5555555555);
+
+INSERT INTO `mydb`.`hole`
+(`course_id`,
+`hole_number`,
+`hole_par`,
+`hole_distance`)
+VALUES
+/*holes for course_id=1*/
+(1, 1, 3, 150),
+(1, 2, 4, 250),
+(1, 3, 5, 350),
+(1, 4, 3, 150),
+(1, 5, 4, 250),
+(1, 6, 5, 350),
+(1, 7, 3, 150),
+(1, 8, 4, 250),
+(1, 9, 5, 350),
+(1, 10, 3, 150),
+(1, 11, 4, 250),
+(1, 12, 5, 350),
+(1, 13, 3, 150),
+(1, 14, 4, 250),
+(1, 15, 5, 350),
+(1, 16, 3, 150),
+(1, 17, 4, 250),
+(1, 18, 5, 350),
+/*holes for course_id=2*/
+(2, 1, 3, 150),
+(2, 2, 4, 250),
+(2, 3, 5, 350),
+(2, 4, 3, 150),
+(2, 5, 4, 250),
+(2, 6, 5, 350),
+(2, 7, 3, 150),
+(2, 8, 4, 250),
+(2, 9, 5, 350),
+(2, 10, 3, 150),
+(2, 11, 4, 250),
+(2, 12, 5, 350),
+(2, 13, 3, 150),
+(2, 14, 4, 250),
+(2, 15, 5, 350),
+(2, 16, 3, 150),
+(2, 17, 4, 250),
+(2, 18, 5, 350);
+
+INSERT INTO `mydb`.`history`
+(`user_id`,
+`Party_party_id`,
+`Score_score_id`,
+`Score_Hole_hole_id`,
+`Score_Hole_course_id`)
+VALUES
+/*history for user_id= 1, player_id=1, party_id=1, and takes place on course_id=1*/
+(1, 1, 1, 1, 1),
+(1, 1, 2, 2, 1),
+(1, 1, 3, 3, 1),
+(1, 1, 4, 4, 1),
+(1, 1, 5, 5, 1),
+(1, 1, 6, 6, 1),
+(1, 1, 7, 7, 1),
+(1, 1, 8, 8, 1),
+(1, 1, 9, 9, 1),
+(1, 1, 10, 10, 1),
+(1, 1, 11, 11, 1),
+(1, 1, 12, 12, 1),
+(1, 1, 13, 13, 1),
+(1, 1, 14, 14, 1),
+(1, 1, 15, 15, 1),
+(1, 1, 16, 16, 1),
+(1, 1, 17, 17, 1),
+(1, 1, 18, 18, 1),
+/*history for user_id= 1, player_id=4, party_id=4, and takes place on course_id=2*/
+(1, 4, 19, 19, 2),
+(1, 4, 20, 20, 2),
+(1, 4, 21, 21, 2),
+(1, 4, 22, 22, 2),
+(1, 4, 23, 23, 2),
+(1, 4, 24, 24, 2),
+(1, 4, 25, 25, 2),
+(1, 4, 26, 26, 2),
+(1, 4, 27, 27, 2),
+(1, 4, 28, 28, 2),
+(1, 4, 29, 29, 2),
+(1, 4, 30, 30, 2),
+(1, 4, 31, 31, 2),
+(1, 4, 32, 32, 2),
+(1, 4, 33, 33, 2),
+(1, 4, 34, 34, 2),
+(1, 4, 35, 35, 2),
+(1, 4, 36, 36, 2),
+/*history for user_id= 2, party_id=2, and takes place on course_id=2*/
+(2, 2, 37, 19, 2),
+(2, 2, 38, 20, 2),
+(2, 2, 39, 21, 2),
+(2, 2, 40, 22, 2),
+(2, 2, 41, 23, 2),
+(2, 2, 42, 24, 2),
+(2, 2, 43, 25, 2),
+(2, 2, 44, 26, 2),
+(2, 2, 45, 27, 2),
+(2, 2, 46, 28, 2),
+(2, 2, 47, 29, 2),
+(2, 2, 48, 30, 2),
+(2, 2, 49, 31, 2),
+(2, 2, 50, 32, 2),
+(2, 2, 51, 33, 2),
+(2, 2, 52, 34, 2),
+(2, 2, 53, 35, 2),
+(2, 2, 54, 36, 2),
+/*history for user_id= 2, player_id=3, party_id=3, and takes place on course_id=1*/
+(2, 3, 55, 1, 1),
+(2, 3, 56, 2, 1),
+(2, 3, 57, 3, 1),
+(2, 3, 58, 4, 1),
+(2, 3, 59, 5, 1),
+(2, 3, 60, 6, 1),
+(2, 3, 61, 7, 1),
+(2, 3, 62, 8, 1),
+(2, 3, 63, 9, 1),
+(2, 3, 64, 10, 1),
+(2, 3, 65, 11, 1),
+(2, 3, 66, 12, 1),
+(2, 3, 67, 13, 1),
+(2, 3, 68, 14, 1),
+(2, 3, 69, 15, 1),
+(2, 3, 70, 16, 1),
+(2, 3, 71, 17, 1),
+(2, 3, 72, 18, 1);
 
 INSERT INTO `mydb`.`role`
 (`User_user_id`,
 `title`)
 VALUES
-(1,
-'test role');
-
-INSERT INTO `mydb`.`hole`
-(`course_id`,
-`hole_number`,
-`hole_par`,
-`hole_distance`)
-VALUES
-(1,
-1,
-3,
-150);
-
-INSERT INTO `mydb`.`hole`
-(`course_id`,
-`hole_number`,
-`hole_par`,
-`hole_distance`)
-VALUES
-(1,
-2,
-4,
-250);
-
-INSERT INTO `mydb`.`hole`
-(`course_id`,
-`hole_number`,
-`hole_par`,
-`hole_distance`)
-VALUES
-(1,
-3,
-5,
-350);
-
-INSERT INTO `mydb`.`score`
-(`Hole_hole_id`,
-`Hole_course_id`,
-`stroke`)
-VALUES
-(1,
-1,
-2);
-
-INSERT INTO `mydb`.`score`
-(`Hole_hole_id`,
-`Hole_course_id`,
-`stroke`)
-VALUES
-(2,
-1,
-4);
-
-INSERT INTO `mydb`.`score`
-(`Hole_hole_id`,
-`Hole_course_id`,
-`stroke`)
-VALUES
-(3,
-1,
-5);
-
-INSERT INTO `mydb`.`history`
-(`user_id`,
-`Party_party_id`,
-`Score_score_id`,
-`Score_Hole_hole_id`,
-`Score_Hole_course_id`)
-VALUES
-(1,
-1,
-1,
-1,
-1);
-
-INSERT INTO `mydb`.`history`
-(`user_id`,
-`Party_party_id`,
-`Score_score_id`,
-`Score_Hole_hole_id`,
-`Score_Hole_course_id`)
-VALUES
-(1,
-1,
-2,
-2,
-1);
-
-INSERT INTO `mydb`.`history`
-(`user_id`,
-`Party_party_id`,
-`Score_score_id`,
-`Score_Hole_hole_id`,
-`Score_Hole_course_id`)
-VALUES
-(1,
-1,
-3,
-3,
-1);
+(1, 'test role'),
+(1, 'test role');

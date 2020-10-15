@@ -23,7 +23,7 @@ export class AuthService {
     this.user = this.userSubject.asObservable();
   }
 
-  public login(userData: User){
+  public login(userData: User) {
     return this.http.post(this.baseUrl + '/login', {data: userData})
       .pipe(map((user) => {
         // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
@@ -33,15 +33,18 @@ export class AuthService {
       }),
         catchError(this.handleError));
   }
-  public isLoggedIn(){
+  public isLoggedIn() {
     return localStorage.getItem('user') !== null;
   }
-  public logout(){
+
+  public get currentUser(): User {
+    return this.userSubject.value;
+  }
+
+  public logout() {
     localStorage.removeItem('user');
     this.userSubject.next(null);
     this.router.navigate(['/login']);
-  }
-  public signUp(userData: User){
   }
 
   private handleError(error: HttpErrorResponse) {
