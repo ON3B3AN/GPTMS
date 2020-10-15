@@ -1,4 +1,23 @@
 <?php
+// Allow from any origin
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+    exit(0);
+}
+
 require('../db/databaseConnect.php');
 require('./UserQueries.php');
 require ('./Profile.php');
@@ -161,10 +180,11 @@ switch ($service) {
             $result = login($email, $pwd);
             
             if ($result != NULL && empty($result) === FALSE) {
-                header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
-                header('Access-Control-Allow-Origin: *');
-                header('WWW-Authenticate: Basic; realm="Access to the landing page"');
-                header('Content-Type: application/json, charset=utf-8');
+//                header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
+//                header('Access-Control-Allow-Origin: *');
+//                header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT');
+//                header('WWW-Authenticate: Basic; realm="Access to the landing page"');
+//                header('Content-Type: application/json, charset=utf-8');
 
                 // Get user id from SQL query
                 $user_id = $result["user_id"];
