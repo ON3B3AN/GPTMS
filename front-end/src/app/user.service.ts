@@ -18,7 +18,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getUser(id: number): Observable<User> {
-    url = `${this.userUrl}/${id}`;
+    const url = `${this.userUrl}/${id}`;
     return this.http.get<User>(url)
       .pipe(
         tap(_ => console.log(`fetched user id=${id}`)),
@@ -27,7 +27,7 @@ export class UserService {
   }
 
   getUserHistory(id: number): Observable<any> {
-    url = `${this.userUrl}/${id}/history`;
+    const url = `${this.userUrl}/${id}/history`;
     return this.http.get<any>(url)
       .pipe(
         tap(_ => console.log(`fetched history for user id=${id}`)),
