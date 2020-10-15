@@ -1,4 +1,21 @@
 <?php
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        header("Access-Control-Allow-Methods: GET, POST, DELETE, PUT, OPTIONS");         
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+    exit(0);
+}
+
 require('../db/databaseConnect.php');
 require('./CourseQueries.php');
 
@@ -146,8 +163,6 @@ else {
 
 switch ($service) {
     case 'error':
-        header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-        header('Access-Control-Allow-Origin: *');
         header('Accept: application/json, charset=utf-8');
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
@@ -162,8 +177,6 @@ switch ($service) {
         }
         
         if ($result != NULL) {
-            header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
-            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
             
@@ -171,8 +184,6 @@ switch ($service) {
             echo json_encode($result);
         }
         else {
-            header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-            header('Access-Control-Allow-Origin: *');
             http_response_code(404);
             echo http_response_code().": No course with id=$param found";
         }
@@ -190,10 +201,6 @@ switch ($service) {
             // Get the updated row count from the SQL query
             $result = update($course_name, $address, $phone, $course_id);
         }
-        
-        // Set universal header info
-        header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-        header('Access-Control-Allow-Origin: *');
         
         if ($result >= 1) {
             http_response_code(200);
@@ -219,10 +226,6 @@ switch ($service) {
         // Get the last inserted row number from SQL query
         $result = insert($course_name, $address, $phone);
         
-        // Set universal header info
-        header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-        header('Access-Control-Allow-Origin: *');
-        
         if ($result != 0) {
             http_response_code(201);
             echo http_response_code().": Course added successfully";
@@ -242,10 +245,6 @@ switch ($service) {
             $result = delete($course_id);
         }
         
-        // Set universal header info
-        header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-        header('Access-Control-Allow-Origin: *');
-        
         if ($result >= 1) {
             http_response_code(200);
             echo http_response_code().": Course deleted successfully";
@@ -260,8 +259,6 @@ switch ($service) {
         $result = selectall();
 
         if ($result != NULL) {
-            header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
-            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
             
@@ -269,8 +266,6 @@ switch ($service) {
             echo json_encode($result);
         } 
         else {
-            header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-            header('Access-Control-Allow-Origin: *');
             http_response_code(404);
             echo http_response_code().": No courses found";
         }

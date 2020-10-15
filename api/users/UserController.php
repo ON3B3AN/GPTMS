@@ -161,9 +161,7 @@ else {
 
 switch ($service) {
     case "error":
-//         header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-//         header('Access-Control-Allow-Origin: *');
-//         header('Accept: application/json, charset=utf-8');
+        header('Accept: application/json, charset=utf-8');
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
@@ -179,10 +177,8 @@ switch ($service) {
             $result = login($email, $pwd);
             
             if ($result != NULL && empty($result) === FALSE) {
-//                 header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
-//                 header('Access-Control-Allow-Origin: *');
-//                 header('WWW-Authenticate: Basic; realm="Access to the landing page"');
-//                 header('Content-Type: application/json, charset=utf-8');
+                header('WWW-Authenticate: Basic; realm="Access to the landing page"');
+                header('Content-Type: application/json, charset=utf-8');
 
                 // Get user id from SQL query
                 $user_id = $result["user_id"];
@@ -205,10 +201,8 @@ switch ($service) {
             }
         }
         else {
-//             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-//             header('Access-Control-Allow-Origin: *');
-//             header('Accept: application/json, charset=utf-8');
-//             header('WWW-Authenticate: Basic; realm="Access to the landing page"');
+            header('Accept: application/json, charset=utf-8');
+            header('WWW-Authenticate: Basic; realm="Access to the landing page"');
             http_response_code(401);
             echo http_response_code().": Login failed";
         }
@@ -233,17 +227,13 @@ switch ($service) {
         $result = signup($fName, $lName, $email, $pwd, $phone);
         
         if ($result != NULL) {
-//             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-//             header('Access-Control-Allow-Origin: *');
-//             header('WWW-Authenticate: Basic;realm="Access to the landing page"');
+            header('WWW-Authenticate: Basic;realm="Access to the landing page"');
             http_response_code(201);
             echo http_response_code().": Profile created successfully";
         } 
         else {
-//             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-//             header('Access-Control-Allow-Origin: *');
-//             header('WWW-Authenticate: Basic;realm="Access to the landing page"');
-//             header('Accept: application/json');
+            header('WWW-Authenticate: Basic;realm="Access to the landing page"');
+            header('Accept: application/json');
             http_response_code(500);
             echo http_response_code().": Error, profile not created";
         }
@@ -258,18 +248,14 @@ switch ($service) {
         }
         
         if ($result != NULL) {
-//             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
-//             header('Access-Control-Allow-Origin: *');
-//             header('Content-Type: application/json, charset=utf-8');
+            header('Content-Type: application/json, charset=utf-8');
             
             // Return history data as JSON array
             http_response_code(200);
             echo json_encode($result);
         } 
         else {
-//             header('Access-Control-Allow-Headers: Access-Control-Allow-Origin');
-//             header('Access-Control-Allow-Origin: *');
-//             header('Accept: application/json, charset=utf-8');
+            header('Accept: application/json, charset=utf-8');
             http_response_code(500);
             echo http_response_code().": No user history";
         }
