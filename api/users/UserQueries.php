@@ -66,7 +66,10 @@ function historySelectAll($user_id) {
         $statement->bind_param('i', $user_id);
         $statement->execute();
         $result = $statement->get_result();
-        $res = $result->fetch_all();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
         $statement->close();
         return $res;
     } catch (Exception $ex) {
