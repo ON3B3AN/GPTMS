@@ -28,9 +28,9 @@ INSERT INTO `mydb`.`party`
 `party_stime`,
 `party_etime`)
 VALUES
-(1,
-'2020-10-5 10:00:00',
-'2020-10-5 11:00:00');
+(4,
+'2020-09-5 09:00:00',
+'2020-09-5 10:00:00');
 
 INSERT INTO `mydb`.`golf_game`
 (`date`,
@@ -101,7 +101,7 @@ INSERT INTO `mydb`.`score`
 VALUES
 (1,
 1,
-3);
+2);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
