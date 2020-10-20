@@ -1,7 +1,9 @@
 import {Hole} from "./hole";
 
 export interface Course {
-  id: number;
-  name: string;
+  course_id: number;
+  course_name: string;
+  address: string;
+  phone_number: string;
   hole?: Hole[];
 }

@@ -1,4 +1,4 @@
-DirectoryIndex /GPTMS/api/login/LoginController.php 
+DirectoryIndex /GPTMS/api/courses/CourseController.php
 
 Options +FollowSymlinks -MultiViews
 RewriteEngine On
@@ -6,4 +6,4 @@ RewriteBase /
 # Next condition is met when the requested file doesn't exist
 RewriteCond %{REQUEST_FILENAME} !-f
 # If previous condition was met, use the next rule
-RewriteRule ^(.*)$         /GPTMS/api/login/LoginController.php [L,NC]
+RewriteRule ^(.*)$         /GPTMS/api/courses/CourseController.php [L,NC]

@@ -1,4 +1,4 @@
-DirectoryIndex SignupController.php
+DirectoryIndex /GPTMS/api/users/UserController.php 
 
 Options +FollowSymlinks -MultiViews
 RewriteEngine On
@@ -6,4 +6,4 @@ RewriteBase /
 # Next condition is met when the requested file doesn't exist
 RewriteCond %{REQUEST_FILENAME} !-f
 # If previous condition was met, use the next rule
-RewriteRule ^(.*)$         /GPTMS/api/signup/SignupController.php [L,NC]
+RewriteRule ^(.*)$         /GPTMS/api/users/UserController.php [L,NC]

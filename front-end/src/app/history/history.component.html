@@ -1,24 +1,86 @@
-<h1 style="text-align:center">
-    Golf Player Time Management System
-</h1>
-<h2 style="text-align:center">
-    Player History
-</h2>
+  <h1 style="text-align:center">
+      Golf Player Time Management System
+  </h1>
+  <h2 style="text-align:center">
+      Player History
+  </h2>
 
-<div class="card">
-    <div class="container">
-      <div style="text-align:left; float: left;">
-       <ul>
-        <b><li>Course Name: </li></b>
-        <li>Date Played: </li>
-        </ul>
-    </div>
-    <div  style="text-align:left; float: right;">
-        <ul>
-            <b><li>Score: </li></b>
-            <li>Playtime: </li>
-        </ul>
-    </div>
-    <div style="clear: both;"></div>
-    </div>
+  <div *ngFor="let play of playerHistory">
+    {{play.course_name}}
+    {{play.date_played}}
+    {{play.tot_time}}
+
+    <table align="center">
+      <tr>
+        <td>Hole:</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+        <td></td>
+        <td>10</td>
+        <td>11</td>
+        <td>12</td>
+        <td>13</td>
+        <td>14</td>
+        <td>15</td>
+        <td>16</td>
+        <td>17</td>
+        <td>18</td>
+        <td></td>
+        <td></td>
+      </tr><tr>
+        <td></td>
+        <td>{{play.hole_1}}</td>
+        <td>{{play.hole_2}}</td>
+        <td>{{play.hole_3}}</td>
+        <td>{{play.hole_4}}</td>
+        <td>{{play.hole_5}}</td>
+        <td>{{play.hole_6}}</td>
+        <td>{{play.hole_7}}</td>
+        <td>{{play.hole_8}}</td>
+        <td>{{play.hole_9}}</td>
+        <td></td>
+        <td>{{play.hole_10}}</td>
+        <td>{{play.hole_11}}</td>
+        <td>{{play.hole_12}}</td>
+        <td>{{play.hole_13}}</td>
+        <td>{{play.hole_14}}</td>
+        <td>{{play.hole_15}}</td>
+        <td>{{play.hole_16}}</td>
+        <td>{{play.hole_17}}</td>
+        <td>{{play.hole_18}}</td>
+        <td></td>
+        <td></td>
+      </tr><tr>
+        <td>Par</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
   </div>
+

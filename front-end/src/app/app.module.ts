@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {HttpClientModule} from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatCardModule} from '@angular/material/card';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +18,6 @@ import { TrackComponent } from './track/track.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
-import { EditprofileComponent } from './profile/editprofile/editprofile.component';
 
 @NgModule({
   declarations: [
@@ -31,16 +31,17 @@ import { EditprofileComponent } from './profile/editprofile/editprofile.componen
     TrackComponent,
     NavbarComponent,
     PlayComponent,
-    ProfileComponent,
-    EditprofileComponent
+    ProfileComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
+    HttpClientModule,
+    MatCardModule,
     MatToolbarModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

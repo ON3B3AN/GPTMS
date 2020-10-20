@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit {
     if(this.authForm.invalid){
       return;
     }
-    this.authService.signUp(this.authForm.value);
+    //this.authService.signUp(this.authForm.value);
     this.router.navigateByUrl('/login');
   }
 }
