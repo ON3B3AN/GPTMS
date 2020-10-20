@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
 import {Course} from "../course";
 import {CourseService} from "../course.service";
 
 
 @Component({
-  selector: 'app-course',
-  templateUrl: './course.component.html',
-  styleUrls: ['./course.component.sass']
+  selector: 'app-course-list',
+  templateUrl: './course-list.component.html',
+  styleUrls: ['./course-list.component.sass']
 })
-export class CourseComponent implements OnInit {
+export class CourseListComponent implements OnInit {
   courses: Course[];
   constructor(private courseService: CourseService) { }
 

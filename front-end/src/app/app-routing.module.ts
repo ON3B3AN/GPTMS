@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 import { AdminComponent } from './admin/admin.component';
-import { CourseComponent } from './course/course.component';
+import { CourseDetailComponent } from './course-detail/course-detail.component';
+import { CourseListComponent } from './course-list/course-list.component';
 import { HistoryComponent } from './history/history.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
@@ -14,12 +15,13 @@ import { TrackComponent } from './track/track.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login'},
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'landing', component: LandingComponent, canActivate: [AuthGuard] },
-  { path: 'course', component: CourseComponent, canActivate: [AuthGuard] },
-  { path: 'courses', component: CourseComponent, canActivate: [AuthGuard] },
+  { path: 'course', pathMatch: 'full', redirectTo: 'courses' },
+  { path: 'course/:id', component: CourseDetailComponent, canActivate: [AuthGuard] },
+  { path: 'courses', component: CourseListComponent, canActivate: [AuthGuard] },
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
   { path: 'track', component: TrackComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
