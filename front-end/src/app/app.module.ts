@@ -13,11 +13,12 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { LandingComponent } from './landing/landing.component';
 import { HistoryComponent } from './history/history.component';
-import { CourseComponent } from './course/course.component';
+import { CourseListComponent } from './course-list/course-list.component';
 import { TrackComponent } from './track/track.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
+import { CourseDetailComponent } from './course-detail/course-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,11 +28,12 @@ import { ProfileComponent } from './profile/profile.component';
     SignupComponent,
     LandingComponent,
     HistoryComponent,
-    CourseComponent,
+    CourseListComponent,
     TrackComponent,
     NavbarComponent,
     PlayComponent,
-    ProfileComponent
+    ProfileComponent,
+    CourseDetailComponent
   ],
   imports: [
     AppRoutingModule,
