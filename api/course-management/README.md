@@ -1,8 +1,8 @@
 # Courses Route/Endpoint
 
 ## [SELECT ALL]
-### URL [GET] : http://localhost/courses/
-* This URL requests the “courses” collection but does not query a particular service, therefore a default service associated with HTTP method GET is called, which is select all. This request must not include any data.
+### URI [GET] : http://localhost/course-management/courses
+* This URI requests the "course-management" document and “courses” collection. This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
@@ -15,8 +15,8 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [SELECT]
-### URL [GET] : http://localhost/courses/1
-* This URL requests the “courses” collection with a collection value (course_id) of “1”, therefore a course with a course id of 1 is returned. This request must not include any data.
+### URI [GET] : http://localhost/course-management/courses/1
+* This URI requests the "course-management" document, “courses” collection, and "1" collection URI (represents course_id). This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
@@ -29,8 +29,8 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [INSERT]
-### URL [POST] : http://localhost/courses/
-* This URL requests the “courses” collection but does not query a particular service, therefore a default service associated with HTTP method POST is called, which is insert. This request must include relevant data.
+### URI [POST] : http://localhost/course-management/courses
+* This URI requests the "course-management" document and “courses” collection. This request must include relevant data.
 #### Example Input: {"data":{"course_name":"Billy's Home","address":"105 Billy Home Lane","phone_number":"000-123-7030"}}
 #### Output: Successful
     * Header: 201: Created
@@ -43,15 +43,15 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [UPDATE]
-### URL [PUT] : http://localhost/courses/1
-* This URL requests the “course” collection with a collection value (course_id) of “1”.; therefore a course with the id of 1 is updated if successful. This request must include relevant data.
+### URI [PUT] : http://localhost/course-management/courses/1
+* This URI requests the "course-management" document, “course” collection, and "1" collection URI (represents course_id). This request must include relevant data.
 #### Example Input: {"data":{"course_name":"Billy's Other Home","address":"105 Billy Other Home Lane","phone_number":"000-123-5000"}}
 #### Output: Successful
     * Header: 200: Ok
     * Body (text/html): 200: Course updated successfully
 #### Output: Unsuccessful
     * Header: 204: No content
-    * Body (text/html): 204: No changes were made
+    * Body: N/A
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, course not updated
@@ -60,8 +60,8 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [DELETE]
-### URL [DELETE] : http://localhost/courses/1
-* This URL requests the “course” collection with a collection value (course_id) of “1”; therefore a course with the id of 1 is deleted if successful. This request must not include any data.
+### URI [DELETE] : http://localhost/course-management/courses/1
+* This URI requests the "course-management" document, “course” collection, and "1" collection URI (represents course_id). This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok

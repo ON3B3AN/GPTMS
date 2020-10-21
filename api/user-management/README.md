@@ -1,8 +1,8 @@
 # Users Route/Endpoint
 
 ## [LOGIN]
-### URL [POST] : http://localhost/users/login
-* This URL requests the "users" collection and the "login" service. This request must include relevant data.
+### URI [POST] : http://localhost/user-management/users/login
+* This URI requests the "user-management" document, "users" collection, and the "login" controller. This request must include relevant data.
 #### Example Input (app/json): {"data":{"email":"tthayer@oakland.edu","password":"1234"}}
 #### Output: Successful
     * Header: 200: Ok
@@ -15,14 +15,14 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [LOGOUT]
-### URL [DELETE] : http://localhost/users/logout
-* This URL requests the “users” collection and the “logout” service. This request must not include any data.
+### URI [DELETE] : http://localhost/user-management/users/logout
+* This URI requests the "user-management" document, “users” collection, and the “logout” controller. This request must not include any data.
 #### Example Input: N/A
 #### Output: N/A
 
 ## [SIGNUP]
-### URL [POST] : http://localhost/users/signup
-* This URL requests the “users” collection and the “signup” service.  This request must include relevant data.
+### URI [POST] : http://localhost/user-management/users/signup
+* This URI requests the "user-management" document, “users” collection, and the “signup” controller.  This request must include relevant data.
 #### Example Input (app/json): {"data":{"first_name":"Joe","last_name":"Blow","phone":"298-999-4343","email":"email@gmail.com","password":"1234"}}
 #### Output: Successful 
     * Header: 201 Created
@@ -35,8 +35,8 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [HISTORY SELECT ALL]
-### URL [GET] : http://localhost/users/1/history
-* This URL requests the “users” collection and the "history" service including a service parameter of "1" (which represents a user_id). This request must not include any data.
+### URI [GET] : http://localhost/user-management/users/1/history
+* This URI requests the "user-management" document, “users” collection, "1" collection URI (represents user_id), and the "history" store. This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
