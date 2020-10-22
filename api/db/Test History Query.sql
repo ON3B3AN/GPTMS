@@ -34,4 +34,9 @@ JOIN Hole ON Hole_hole_id = Hole.hole_id
 JOIN Party ON Party_party_id = Party.party_id
 JOIN Course ON Course.course_id = Score_Hole_Course_id
 where user_id = 1
-order by party_etime, hole_number
+order by party_etime, hole_number;
+
+
+select *
+from Hole
+where course_id = 1 and hole_number between 1 and 18;
