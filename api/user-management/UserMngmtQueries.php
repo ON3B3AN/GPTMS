@@ -60,7 +60,7 @@ function historySelectAll($user_id) {
         JOIN Course ON Course.course_id = Score_Hole_course_id
         WHERE user_id = ?
         GROUP BY course_name, date_played, tot_time 
-	ORDER BY party_etime;';
+	ORDER BY party_etime';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('i', $user_id);
@@ -75,4 +75,55 @@ function historySelectAll($user_id) {
     } catch (Exception $ex) {
         exit;
     } 
+}
+
+function updateProfile($first_name, $last_name, $email, $password, $phone, $user_id) {
+    global $db;
+    $query = 'UPDATE user SET first_name = ?, last_name = ?, email = ?, password = ?, phone = ? WHERE user_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('ssssss', $first_name, $last_name, $email, $password, $phone, $user_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function deleteProfile($user_id) {
+    global $db;
+    $query = 'DELETE FROM user WHERE user_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('s', $user_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;
+        $statement->close();
+
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function usersSelectAll() {
+    global $db;
+    $query = 'SELECT * FROM user';
+    try {
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $result = $statement->get_result();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
+        $statement->close();
+        
+        return $res;
+    } catch (Exception $ex) {
+        exit;
+    }  
 }

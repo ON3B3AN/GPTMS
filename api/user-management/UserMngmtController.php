@@ -171,6 +171,14 @@ switch (count($url)) {
         $collectionURI = $url[4];
         $store = $url[5];
         
+//        // Check if URL index [4] is a controller name or URI numerical value
+//        if(is_numeric($url[4])) {
+//            $collectionURI = $url[4];
+//        }
+//        else {
+//            $controller = $url[4];
+//        }
+        
         // Check if URL index [6] is a controller name or URI numerical value
         if(is_numeric($url[6])) {
             $storeURI = $url[6];
@@ -245,8 +253,8 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     if ($document == "user-management" && $collection == "users" && $controller == "login" && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "login";
     }
-    // GPTMS/api/user-management/users/signup
-    elseif ($document == "user-management" && $collection == "users" && $controller == "signup" && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+    // GPTMS/api/user-management/users
+    elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "signup";
     }
     else {
@@ -258,17 +266,31 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     if ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "history" && $storeURI == NULL) {
         $function = "history";
     }
+    // GPTMS/api/user-management/users
+    elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "usersSelectAll";
+    }
     else {
         $function = "error";
     }
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    $function = "error";
+    // GPTMS/api/user-management/users/1
+    if ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "updateProfile";
+    }
+    else {
+        $function = "error";
+    }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
     // GPTMS/api/user-management/users/logout
     if ($document == "user-management" && $collection == "users" && $controller == "logout" && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "logout";
+    }
+    // GPTMS/api/user-management/users/1
+    if ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "deleteProfile";
     }
     else {
         $function = "error";
@@ -391,6 +413,77 @@ switch ($function) {
             echo http_response_code().": No user history";
         }
         break;
+    case "updateProfile":
+        // Get JSON data
+        $first_name = $input->data->first_name;
+        $last_name = $input->data->last_name;
+        $email = $input->data->email;
+        $password = $input->data->password;
+        $checkPassword = $input->data->check_password;
+        $phone = $input->data->phone;
+        
+        // Validate passwords match
+        if($password != $checkPassword) {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, passwords didn't match";
+        }
+        else {
+            // Assign collection URI to user_id
+            $user_id = $collectionURI;
+
+            // Get the updated row count from the SQL query
+            $result = updateProfile($first_name, $last_name, $email, $password, $phone, $user_id);
+            
+            if ($result >= 1) {
+                http_response_code(200);
+                echo http_response_code().": Profile updated successfully";
+            }
+            // No changes were made (Acts as a "Save" function)
+            elseif ($result === 0) {
+                header('Accept: application/json');
+                http_response_code(204);
+                echo http_response_code();
+            }
+            else {
+                header('Accept: application/json');
+                http_response_code(404);
+                echo http_response_code().": Error, profile not updated";
+            }
+        }
+        break;
+    case "deleteProfile":
+        // Assign collection URI to user_id
+        $user_id = $collectionURI;
+
+        // Get number of rows affected from SQL query
+        $result = deleteProfile($user_id);
+        
+        if ($result >= 1) {
+            http_response_code(200);
+            echo http_response_code().": Profile deleted successfully";
+        }
+        else {
+            http_response_code(404);
+            echo http_response_code().": Error, profile not deleted";
+        }
+        break;
+    case "usersSelectAll":
+        // Get result from SQL query
+        $result = usersSelectAll();
+
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+
+            // Return user data as JSON array
+            echo json_encode($result);
+        } 
+        else {
+            http_response_code(404);
+            echo http_response_code().": No users found";
+        }
+        break;
 }
 
 
@@ -398,18 +491,18 @@ switch ($function) {
  * Troubleshooting
 *********************/
 
-echo "\n\n"."URL ";
-print_r($url);
-echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
-echo "\n"."URL count: ".count($url)."\n";
-echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
-if ($exists == "TRUE") {
-    echo "Data: "."\n";
-    print_r($input->data);
-}
-echo "Document: ".$document."\n";
-echo "Collection: ".$collection."\n";
-echo "Collection URI: ".$collectionURI."\n";
-echo "Store: ".$store."\n";
-echo "Store URI: ".$storeURI."\n";
-echo "Controller: ".$controller."\n";
+//echo "\n\n"."URL ";
+//print_r($url);
+//echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
+//echo "\n"."URL count: ".count($url)."\n";
+//echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
+//if ($exists == "TRUE") {
+//    echo "Data: "."\n";
+//    print_r($input->data);
+//}
+//echo "Document: ".$document."\n";
+//echo "Collection: ".$collection."\n";
+//echo "Collection URI: ".$collectionURI."\n";
+//echo "Store: ".$store."\n";
+//echo "Store URI: ".$storeURI."\n";
+//echo "Controller: ".$controller."\n";
