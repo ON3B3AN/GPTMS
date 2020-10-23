@@ -12,6 +12,7 @@ import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignupComponent } from './signup/signup.component';
 import { TrackComponent } from './track/track.component';
+import { EditprofileComponent } from './profile/editprofile/editprofile.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
@@ -24,7 +25,9 @@ const routes: Routes = [
   { path: 'courses', component: CourseListComponent, canActivate: [AuthGuard] },
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
   { path: 'track', component: TrackComponent, canActivate: [AuthGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], children: [
+    { path: 'editprofile', component: EditprofileComponent } ] },
+  { path: 'editprofile', component: EditprofileComponent, canActivate: [AuthGuard] },
   { path: 'play', component: PlayComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
 ];

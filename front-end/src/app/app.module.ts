@@ -19,6 +19,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CourseDetailComponent } from './course-detail/course-detail.component';
+import { EditprofileComponent } from './profile/editprofile/editprofile.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CourseDetailComponent } from './course-detail/course-detail.component';
     NavbarComponent,
     PlayComponent,
     ProfileComponent,
+    EditprofileComponent,
     CourseDetailComponent
   ],
   imports: [
