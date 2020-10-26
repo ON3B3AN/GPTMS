@@ -269,7 +269,21 @@ switch ($service) {
             http_response_code(404);
             echo http_response_code().": No courses found";
         }
-        break;      
+        break;
+    case "gameSelect":
+        $result = gameSelect($course_id, $start_hole, $end_hole);
+        
+        if($result != NULL){
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+            
+            echo json_encode($result);
+        } 
+        else {
+            http_response_code(404);
+            echo http_response_code().": No hole data found";
+        }
+        break;
 }
 
 /*********************************************
