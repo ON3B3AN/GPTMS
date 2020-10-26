@@ -34,4 +34,12 @@ JOIN Hole ON Hole_hole_id = Hole.hole_id
 JOIN Party ON Party_party_id = Party.party_id
 JOIN Course ON Course.course_id = Score_Hole_Course_id
 where user_id = 1
-order by party_etime, hole_number
+order by party_etime, hole_number;
+
+
+SELECT hole_number, hole_par, tee1_dist, tee2_dist, tee3_dist, tee4_dist, tee5_dist, tee6_dist
+FROM Hole
+WHERE course_id = 2 AND tee1_dist <> 0 OR tee6_dist <> 0;
+
+select * from hole where tee1_dist <> 0 or tee2_dist <> 0;
+
