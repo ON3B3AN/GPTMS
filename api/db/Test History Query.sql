@@ -37,6 +37,9 @@ where user_id = 1
 order by party_etime, hole_number;
 
 
-select *
-from Hole
-where course_id = 1 and hole_number between 1 and 18;
+SELECT hole_number, hole_par, tee1_dist, tee2_dist, tee3_dist, tee4_dist, tee5_dist, tee6_dist
+FROM Hole
+WHERE course_id = 2 AND hole_number BETWEEN 1 AND 18;
+
+
+

@@ -82,3 +82,21 @@ function update($course_name, $address, $phone, $course_id) {
         exit;
     }
 }
+
+function gameSelect($course_id, $start_hole, $end_hole) {
+    global $db;
+    $query = 'SELECT hole_number, hole_par, tee1_dist, tee2_dist, tee3_dist, tee4_dist, tee5_dist, tee6_dist
+        FROM Hole
+        WHERE course_id = ? AND hole_number BETWEEN ? AND ?;';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('iii', $course_id, $start_hole, $end_hole);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
