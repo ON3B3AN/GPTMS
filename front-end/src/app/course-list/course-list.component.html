@@ -1,5 +1,5 @@
 
-<mat-card *ngFor="let course of courses">
+<mat-card *ngFor="let course of courses" routerLink="/course/{{course.course_id}}">
   <mat-card-title>{{course.course_name}}</mat-card-title>
   <mat-card-subtitle>{{course.address}}</mat-card-subtitle>
 </mat-card>
