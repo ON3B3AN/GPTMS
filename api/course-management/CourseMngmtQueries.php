@@ -83,7 +83,7 @@ function update($course_name, $address, $phone, $course_id) {
     }
 }
 
-function gameSelect($course_id, $start_hole, $end_hole) {
+function holeSelect($course_id, $start_hole, $end_hole) {
     global $db;
     $query = 'SELECT hole_number, hole_par, tee1_dist, tee2_dist, tee3_dist, tee4_dist, tee5_dist, tee6_dist
         FROM Hole
@@ -92,10 +92,13 @@ function gameSelect($course_id, $start_hole, $end_hole) {
         $statement = $db->prepare($query);
         $statement->bind_param('iii', $course_id, $start_hole, $end_hole);
         $statement->execute();
-        $num_rows = $statement->affected_rows;
+        $result = $statement->get_result();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
         $statement->close();
-     
-        return $num_rows;
+        return $res;
     } catch (Exception $ex) {
         exit;
     }

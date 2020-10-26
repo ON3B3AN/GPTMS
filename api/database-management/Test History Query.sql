@@ -39,7 +39,7 @@ order by party_etime, hole_number;
 
 SELECT hole_number, hole_par, tee1_dist, tee2_dist, tee3_dist, tee4_dist, tee5_dist, tee6_dist
 FROM Hole
-WHERE course_id = 2 AND tee1_dist <> 0 OR tee6_dist <> 0;
+WHERE course_id = 2 AND hole_number BETWEEN 1 AND 18;
 
 select * from hole where tee1_dist <> 0 or tee2_dist <> 0;
 
