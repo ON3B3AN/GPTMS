@@ -5,5 +5,6 @@ export interface Course {
   course_name: string;
   address: string;
   phone_number: string;
+  course_tee: string;
   hole?: Hole[];
 }
