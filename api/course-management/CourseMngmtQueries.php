@@ -1,7 +1,7 @@
 <?php
 function selectall() {
     global $db;
-    $query = 'SELECT * FROM course;';
+    $query = 'SELECT * FROM course';
     try {
         $statement = $db->prepare($query);
         $statement->execute();
@@ -20,7 +20,7 @@ function selectall() {
 
 function select($course_id) {
     global $db;
-    $query = 'SELECT * FROM course WHERE course_id = ?;';
+    $query = 'SELECT * FROM course WHERE course_id = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('s', $course_id);
