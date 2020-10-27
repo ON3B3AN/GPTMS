@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Hole` (
   `tee4_dist` INT NULL,
   `tee5_dist` INT NULL,
   `tee6_dist` INT NULL,
-  `avg_pop` TIME NOT NULL,
+  `avg_pop` TIME NULL,
   PRIMARY KEY (`hole_id`, `course_id`),
   INDEX `fk_Hole_GolfCourse1_idx` (`course_id` ASC) ,
   CONSTRAINT `fk_Hole_GolfCourse1`
