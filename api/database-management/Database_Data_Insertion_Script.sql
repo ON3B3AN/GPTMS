@@ -364,381 +364,489 @@ VALUES
 -- 3 Total Tees -----------------------
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (1,
-320);
+320,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (1,
-330);
+330,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (1,
-340);
+340,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (2,
-300);
+300,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (2,
-310);
+310,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (2,
-320);
+320,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (3,
-400);
+400,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (3,
-410);
+410,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (3,
-420);
+420,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (4,
-250);
+250,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (4,
-260);
+260,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (4,
-270);
+270,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (5,
-230);
+230,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (5,
-240);
+240,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (5,
-250);
+250,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (6,
-220);
+220,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (6,
-230);
+230,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (6,
-240);
+240,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (7,
-210);
+210,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (7,
-220);
+220,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (7,
-230);
+230,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (8,
-210);
+210,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (8,
-220);
+220,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (8,
-230);
+230,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (9,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (9,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (9,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (10,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (10,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (10,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (11,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (11,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (11,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (12,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (12,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (12,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (13,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (13,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (13,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (14,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (14,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (14,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (15,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (15,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (15,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (16,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (16,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (16,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (17,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (17,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (17,
-220);
+220,
+"tee3");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (18,
-200);
+200,
+"tee1");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (18,
-210);
+210,
+"tee2");
 
 INSERT INTO `mydb`.`tee`
 (`Hole_hole_id`,
-`distance_to_pin`)
+`distance_to_pin`,
+`tee_name`)
 VALUES
 (18,
-220);
+220,
+"tee3");
 
 -- Party Insert -------------------------
 INSERT INTO `mydb`.`party`

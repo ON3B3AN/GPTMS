@@ -1,4 +1,4 @@
-import {Hole} from "./hole";
+import {Hole} from './hole';
 
 export interface Course {
   course_id: number;
