@@ -53,7 +53,7 @@ function delete($course_id) {
 
 function insert($course_name, $address, $phone) {
     global $db;
-    $query = 'INSERT INTO course (course_name, address, phone_number) VALUES (?, ?, ?)';
+    $query = 'INSERT INTO course (course_name, address, phone) VALUES (?, ?, ?)';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('sss', $course_name, $address, $phone);
@@ -69,7 +69,7 @@ function insert($course_name, $address, $phone) {
 
 function update($course_name, $address, $phone, $course_id) {
     global $db;
-    $query = 'UPDATE course SET course_name = ?, address = ?, phone_number = ? WHERE course_id = ?';
+    $query = 'UPDATE course SET course_name = ?, address = ?, phone = ? WHERE course_id = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('ssss', $course_name, $address, $phone, $course_id);
