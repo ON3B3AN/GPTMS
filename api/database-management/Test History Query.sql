@@ -43,3 +43,20 @@ WHERE course_id = 2 AND tee1_dist <> 0 OR tee6_dist <> 0;
 
 select * from hole where tee1_dist <> 0 or tee2_dist <> 0;
 
+SELECT * FROM hole where Course_course_id = 1 AND hole_number between 1 AND 9;
+
+SELECT hole_number, hole_par, avg_pop,
+SUM(CASE WHEN tee_name = "tee1" THEN distance_to_pin else 0 END) as tee_1,
+SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
+SUM(CASE WHEN tee_name = "tee3" THEN distance_to_pin else 0 END) as tee_3
+FROM hole join tee on hole_id = Hole_hole_id
+where Course_course_id = 1 AND hole_number BETWEEN 1 AND 9
+group by hole_id
+
+select *from hole join tee on hole_id = Hole_hole_id
+
+update mydb.tee 
+set
+tee_name = "tee1"
+where Hole_hole_id = 5
+and tee_id = 13
