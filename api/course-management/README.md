@@ -74,7 +74,7 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [HOLESELECT]
-### URI [GET] : http://localhost/course-management/courses/1/holeSelect
+### URI [POST] : http://localhost/course-management/courses/1/holeSelect
 * This URI requests the "course-management" document, “courses” collection, "1" collection URI (represents course_id), and "holeSelect" store. This request must not include any data.
 #### Example Input: {"data":{"start_hole":"1","end_hole":"9"}}
 #### Output: Successful

@@ -20,8 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 require('../database-management/databaseConnect.php');
-require('./CourseMngmtQueries.php');
-
+require('./GameMngmtQueries.php');
 
 /*********************************
  * Initialize Local Variables
@@ -59,21 +58,21 @@ $url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
  * URL length [7] -> Controller
  * -------- REST Resource Naming Examples --------
  * Document
-    * http://localhost/course-management
+    * http://localhost/game-management
  * Collection
-    * http://localhost/course-management/courses
+    * http://localhost/game-management/games
         * -------- Query Component to Filter URI Collection --------
-        * http://localhost/course-management/courses?course-name=Goodrich-Country-Club
+        * http://localhost/game-management/games?first-name=John
  * Store
-    * http://localhost/course-management/courses/{course_id}/employees
+    * http://localhost/game-management/games/{user_id}/employees
  * Controller
-    * http://localhost/course-management/courses/{course_id}/employees/check-in
+    * http://localhost/game-management/games/{user_id}/employees/check-in
  * -------- Resource Options --------
- * Document => course-management
- * Collection => courses
- * URI => course_id
- * Store => 
- * Controller =>
+ * Document => game-management
+ * Collection => games
+ * URI => user_id
+ * Store => history
+ * Controller => login, logout, signup
 ***************************************************************************************/
 
 switch (count($url)) {
@@ -171,6 +170,14 @@ switch (count($url)) {
         $collectionURI = $url[4];
         $store = $url[5];
         
+//        // Check if URL index [4] is a controller name or URI numerical value
+//        if(is_numeric($url[4])) {
+//            $collectionURI = $url[4];
+//        }
+//        else {
+//            $controller = $url[4];
+//        }
+        
         // Check if URL index [6] is a controller name or URI numerical value
         if(is_numeric($url[6])) {
             $storeURI = $url[6];
@@ -240,45 +247,37 @@ else {
     $exists = TRUE;
 }
 
-if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
-    // GPTMS/api/course-management/courses
-    if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "insert";
-    }
-    // GPTMS/api/course-management/courses/1/holes/game-select
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == "game-select" && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
-        $function = "holeSelect";
+if ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "POST") {
+    // GPTMS/api/game-management/games
+    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "partyInsert";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
-    // GPTMS/api/course-management/courses
-    if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "selectall";
-    }
-    // GPTMS/api/course-management/courses/1
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "select";
+    // GPTMS/api/game-management/games
+    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "partyInsert";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    // GPTMS/api/course-management/courses/1
-    if ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "update";
+    // GPTMS/api/game-management/games
+    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "partyInsert";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
-    // GPTMS/api/course-management/courses/1
-    if ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "delete";
+    // GPTMS/api/game-management/games
+    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "";
     }
     else {
         $function = "error";
@@ -287,7 +286,6 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
 else {
     $function = "error";
 }
-
 
 /**************************************************************
  * Build and execute requested controller function &  SQL query
@@ -299,127 +297,25 @@ switch ($function) {
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
-    case 'select':
+    case 'partyInsert':
         // Assign collection URI to course_id
-        $course_id = $collectionURI;
+//        $size = $input->data->size;
 
         // Get results from SQL query
-        $result = select($course_id);
+//        $result = partyInsert($size);
         
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
             
             // Return course data as JSON array
-            echo json_encode($result);
+            echo "it worked";
         }
         else {
             http_response_code(404);
-            echo http_response_code().": No course with id=$param found";
+            echo http_response_code().": Could not create party.";
         }
         
-        break;
-    case 'update':
-        // Get JSON data
-        $course_name = $input->data->course_name;
-        $address = $input->data->address;
-        $phone = $input->data->phone_number;
-        
-        // Assign collection URI to course_id
-        $course_id = $collectionURI;
-
-        // Get the updated row count from the SQL query
-        $result = update($course_name, $address, $phone, $course_id);
-        
-        if ($result >= 1) {
-            http_response_code(200);
-            echo http_response_code().": Course updated successfully";
-        }
-        // No changes were made (Acts as a "Save" function)
-        elseif ($result === 0) {
-            header('Accept: application/json');
-            http_response_code(204);
-            echo http_response_code();
-        }
-        else {
-            header('Accept: application/json');
-            http_response_code(404);
-            echo http_response_code().": Error, course not updated";
-        }
-        break;
-    case 'insert':
-        // Get JSON data
-        $course_name = $input->data->course_name;
-        $address = $input->data->address;
-        $phone = $input->data->phone_number;
-        
-        // Get the last inserted row number from SQL query
-        $result = insert($course_name, $address, $phone);
-        
-        if ($result != 0) {
-            http_response_code(201);
-            echo http_response_code().": Course added successfully";
-        }
-        else {
-            header('Accept: application/json');
-            http_response_code(404);
-            echo http_response_code().": Error, course not added";
-        }
-        break;
-    case 'delete':
-        // Assign collection URI to course_id
-        $course_id = $collectionURI;
-
-        // Get number of rows affected from SQL query
-        $result = delete($course_id);
-        
-        if ($result >= 1) {
-            http_response_code(200);
-            echo http_response_code().": Course deleted successfully";
-        }
-        else {
-            http_response_code(404);
-            echo http_response_code().": Error, course not deleted";
-        }
-        break;
-    case "selectall":       
-        // Get result from SQL query
-        $result = selectall();
-
-        if ($result != NULL) {
-            header('Content-Type: application/json, charset=utf-8');
-            http_response_code(200);
-            
-            // Return course data as JSON array
-            echo json_encode($result);
-        } 
-        else {
-            http_response_code(404);
-            echo http_response_code().": No courses found";
-        }
-        break;
-    case "holeSelect":
-        // Get JSON data
-        $start_hole = $input->data->start_hole;
-        $end_hole = $input->data->end_hole;
-        
-        // Assign collection URI to course_id
-        $course_id = $collectionURI;
-            
-        // Get result from SQL query
-        $result = holeSelect($course_id, $start_hole, $end_hole);
-
-        if ($result != NULL) {
-            header('Content-Type: application/json, charset=utf-8');
-            http_response_code(200);
-            
-            // Return course data as JSON array
-            echo json_encode($result);
-        } 
-        else {
-            http_response_code(404);
-            echo http_response_code().": No courses found";
-        }
         break;
 }
 
@@ -428,18 +324,18 @@ switch ($function) {
  * Troubleshooting
  **********************************************/
 
-//echo "\n\n"."URL ";
-//print_r($url);
-//echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
-//echo "\n"."URL count: ".count($url)."\n";
-//echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
-//if ($exists == "TRUE") {
-//    echo "Data: "."\n";
-//    print_r($input->data);
-//}
-//echo "Document: ".$document."\n";
-//echo "Collection: ".$collection."\n";
-//echo "Collection URI: ".$collectionURI."\n";
-//echo "Store: ".$store."\n";
-//echo "Store URI: ".$storeURI."\n";
-//echo "Controller: ".$controller."\n";
+echo "\n\n"."URL ";
+print_r($url);
+echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
+echo "\n"."URL count: ".count($url)."\n";
+echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
+if ($exists == "TRUE") {
+    echo "Data: "."\n";
+    print_r($input->data);
+}
+echo "Document: ".$document."\n";
+echo "Collection: ".$collection."\n";
+echo "Collection URI: ".$collectionURI."\n";
+echo "Store: ".$store."\n";
+echo "Store URI: ".$storeURI."\n";
+echo "Controller: ".$controller."\n";
