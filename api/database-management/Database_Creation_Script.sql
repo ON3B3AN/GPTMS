@@ -170,6 +170,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Tee` (
   `tee_id` INT NOT NULL AUTO_INCREMENT,
   `Hole_hole_id` INT NOT NULL,
   `distance_to_pin` DOUBLE NOT NULL,
+  `tee_name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`tee_id`),
   INDEX `fk_Tee_Hole1_idx` (`Hole_hole_id` ASC) ,
   CONSTRAINT `fk_Tee_Hole1`

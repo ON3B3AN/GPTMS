@@ -400,6 +400,9 @@ switch ($function) {
         break;
         case "hole-select":
         // Get JSON data
+        $tee1 = $input->data->tee1;
+        $tee2 = $input->data->tee2;
+        $tee3 = $input->data->tee3;
         $start_hole = $input->data->start_hole;
         $end_hole = $input->data->end_hole;
         
@@ -407,7 +410,7 @@ switch ($function) {
         $course_id = $collectionURI;
             
         // Get result from SQL query
-        $result = holeSelect($course_id, $start_hole, $end_hole);
+        $result = holeSelect($tee1, $tee2, $tee3, $course_id, $start_hole, $end_hole);
 
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
