@@ -3,12 +3,13 @@ import {HttpClientModule} from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatTableModule } from '@angular/material/table';
 import {MatCardModule} from '@angular/material/card';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdminComponent } from './admin/admin.component';
+import { AdminModule } from './admin/admin.module';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { LandingComponent } from './landing/landing.component';
@@ -25,7 +26,6 @@ import { EditprofileComponent } from './profile/editprofile/editprofile.componen
   declarations: [
     AppComponent,
     LoginComponent,
-    AdminComponent,
     SignupComponent,
     LandingComponent,
     HistoryComponent,
@@ -39,10 +39,12 @@ import { EditprofileComponent } from './profile/editprofile/editprofile.componen
   ],
   imports: [
     AppRoutingModule,
+    AdminModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
     MatCardModule,
+    MatTableModule,
     MatToolbarModule,
     NgbModule,
     ReactiveFormsModule
