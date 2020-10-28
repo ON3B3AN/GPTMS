@@ -83,7 +83,7 @@ function update($course_name, $address, $phone, $course_id) {
     }
 }
 
-function gameSelect($course_id, $start_hole, $end_hole) {
+function holeSelect($course_id, $start_hole, $end_hole) {
     global $db;
     $query = 'SELECT hole_number, hole_par, tee1_dist, tee2_dist, tee3_dist, tee4_dist, tee5_dist, tee6_dist
         FROM Hole

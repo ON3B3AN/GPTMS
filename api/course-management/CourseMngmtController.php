@@ -245,6 +245,10 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "insert";
     }
+    // GPTMS/api/course-management/courses/1/holes/hole-select
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == "hole-select" && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
+        $function = "hole-select";
+    }
     else {
         $function = "error";
     }
@@ -393,7 +397,31 @@ switch ($function) {
             http_response_code(404);
             echo http_response_code().": No courses found";
         }
-        break;      
+        break;
+        case "hole-select":
+        // Get JSON data
+        $start_hole = $input->data->start_hole;
+        $end_hole = $input->data->end_hole;
+        
+        // Assign collection URI to course_id
+        $course_id = $collectionURI;
+            
+        // Get result from SQL query
+        $result = holeSelect($course_id, $start_hole, $end_hole);
+
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+            
+            // Return course data as JSON array
+            echo json_encode($result);
+        } 
+        else {
+            http_response_code(404);
+            echo http_response_code().": No courses found";
+        }
+        break;
+
 }
 
 
