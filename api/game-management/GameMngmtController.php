@@ -299,10 +299,10 @@ switch ($function) {
         break;
     case 'partyInsert':
         // Assign collection URI to course_id
-//        $size = $input->data->size;
+        $size = $input->data->size;
 
         // Get results from SQL query
-//        $result = partyInsert($size);
+        $result = partyInsert($size);
         
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
