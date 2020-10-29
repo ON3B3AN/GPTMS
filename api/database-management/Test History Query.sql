@@ -67,3 +67,33 @@ JOIN course ON party.Course_course_id = course_id
 WHERE player.User_user_id = 2
 group by hole_id, date_played, start_time
 ORDER BY hole_number, date_played, end_time;
+
+SELECT party_id, course_name, DATE_FORMAT(party.date, "%M %d %Y") as date_played, TIMEDIFF(end_time, start_time) as tot_time,
+SUM(CASE WHEN hole_number < "10" THEN stroke ELSE 0 END) as front_nine,
+SUM(CASE WHEN hole_number >= "10" THEN stroke ELSE 0 END) as back_nine,
+SUM(stroke) as total_score
+FROM party
+JOIN player ON party_id = Party_party_id
+JOIN course ON Course_course_id = course_id
+JOIN score ON player_id = score.Player_player_id
+JOIN hole ON hole.hole_id = score.Hole_hole_id
+WHERE player.User_user_id = 2
+GROUP BY player.User_user_id
+ORDER BY date_played, end_time;
+
+SELECT SUM(CASE WHEN tee_name = "tee1" THEN distance_to_pin else 0 END) as tee_1,
+SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
+SUM(CASE WHEN tee_name = "tee3" THEN distance_to_pin else 0 END) as tee_3,
+hole_number, hole_par, stroke, avg_pop
+FROM hole
+JOIN tee ON hole_id = tee.Hole_hole_id
+JOIN score ON hole_id = score.Hole_hole_id
+JOIN player ON player_id = score.Player_player_id
+JOIN party ON party_id = player.Party_party_id
+WHERE player.User_user_id = 2
+group by hole_id, party.date, start_time
+ORDER BY hole_number, party.date, end_time;
+
+select distinct(tee_name) from tee
+join hole on hole_id = Hole_hole_id
+where Course_course_id = 1;
