@@ -34,33 +34,32 @@ function signup($fName, $lName, $email, $pwd, $phone){
 
 function historySelectAll($user_id) {
     global $db;
-    $query = 'SELECT course_name, DATE_FORMAT(DATE(party_etime), "%M %d %Y") AS date_played, TIMEDIFF(party_etime, party_stime) AS tot_time,
-        SUM(CASE WHEN hole_number = 1 THEN stroke else 0 END) AS hole_1,
-        SUM(CASE WHEN hole_number = 2 THEN stroke else 0 END) AS hole_2,
-        SUM(CASE WHEN hole_number = 3 THEN stroke else 0 END) AS hole_3,
-        SUM(CASE WHEN hole_number = 4 THEN stroke else 0 END) AS hole_4,
-        SUM(CASE WHEN hole_number = 5 THEN stroke else 0 END) AS hole_5,
-        SUM(CASE WHEN hole_number = 6 THEN stroke else 0 END) AS hole_6,
-        SUM(CASE WHEN hole_number = 7 THEN stroke else 0 END) AS hole_7,
-        SUM(CASE WHEN hole_number = 8 THEN stroke else 0 END) AS hole_8,
-        SUM(CASE WHEN hole_number = 9 THEN stroke else 0 END) AS hole_9,
-        SUM(CASE WHEN hole_number = 10 THEN stroke else 0 END) AS hole_10,
-        SUM(CASE WHEN hole_number = 11 THEN stroke else 0 END) AS hole_11,
-        SUM(CASE WHEN hole_number = 12 THEN stroke else 0 END) AS hole_12,
-        SUM(CASE WHEN hole_number = 13 THEN stroke else 0 END) AS hole_13,
-        SUM(CASE WHEN hole_number = 14 THEN stroke else 0 END) AS hole_14,
-        SUM(CASE WHEN hole_number = 15 THEN stroke else 0 END) AS hole_15,
-        SUM(CASE WHEN hole_number = 16 THEN stroke else 0 END) AS hole_16,
-        SUM(CASE WHEN hole_number = 17 THEN stroke else 0 END) AS hole_17,
-        SUM(CASE WHEN hole_number = 18 THEN stroke else 0 END) AS hole_18
-        from history
-        JOIN Score ON Score_score_id = Score.score_id
-	JOIN Hole ON Hole_hole_id = Hole.hole_id
-	JOIN Party ON Party_party_id = Party.party_id
-        JOIN Course ON Course.course_id = Score_Hole_course_id
-        WHERE user_id = ?
-        GROUP BY course_name, date_played, tot_time 
-	ORDER BY party_etime';
+    $query = 'SELECT party_id, course_name, DATE_FORMAT(party.date, "%M %d %Y") as date_played, TIMEDIFF(end_time, start_time) as tot_time,
+                SUM(CASE WHEN hole_number < "10" THEN stroke ELSE 0 END) as front_nine,
+                SUM(CASE WHEN hole_number >= "10" THEN stroke ELSE 0 END) as back_nine,
+                SUM(stroke) as total_score
+                FROM party
+                JOIN player ON party_id = Party_party_id
+                JOIN course ON Course_course_id = course_id
+                JOIN score ON player_id = score.Player_player_id
+                JOIN hole ON hole.hole_id = score.Hole_hole_id
+                WHERE player.User_user_id = 2
+                GROUP BY player.User_user_id
+                ORDER BY date_played, end_time;';
+    
+    $query2 = 'SELECT SUM(CASE WHEN tee_name = "tee1" THEN distance_to_pin else 0 END) as tee_1,
+                SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
+                SUM(CASE WHEN tee_name = "tee3" THEN distance_to_pin else 0 END) as tee_3,
+                hole_number, hole_par, stroke, avg_pop
+                FROM hole
+                JOIN tee ON hole_id = tee.Hole_hole_id
+                JOIN score ON hole_id = score.Hole_hole_id
+                JOIN player ON player_id = score.Player_player_id
+                JOIN party ON party_id = player.Party_party_id
+                WHERE player.User_user_id = ? AND party.party_id = ?
+                group by hole_id, party.date, start_time
+                ORDER BY hole_number, party.date, end_time;';
+    
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('i', $user_id);
@@ -68,6 +67,17 @@ function historySelectAll($user_id) {
         $result = $statement->get_result();
         $res = array();
         while($row = $result->fetch_assoc()){
+//            array_push($res, $row);
+            $stmt = $db->prepare($query2);
+            $stmt->bind_param('ii', $user_id, $row["party_id"]);
+            $stmt->execute();
+            $result2 = $stmt->get_result();
+            $res2 = array();
+            while($r = $result2->fetch_assoc()){
+                array_push($res2, $r);
+            }
+            unset($row["party_id"]);
+            $row["score"] = $res2;
             array_push($res, $row);
         }
         $statement->close();

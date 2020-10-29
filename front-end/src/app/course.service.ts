@@ -8,7 +8,7 @@ import { Course } from './course';
   providedIn: 'root'
 })
 export class CourseService {
-  private courseUrl = 'http://localhost/GPTMS/api/courses';  // URL to web api
+  private courseUrl = 'http://localhost/GPTMS/api/course-management/courses';  // URL to web api
 
 
   httpOptions = {
