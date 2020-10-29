@@ -53,7 +53,7 @@ function delete($course_id) {
 
 function insert($course_name, $address, $phone) {
     global $db;
-    $query = 'INSERT INTO course (course_name, address, phone_number) VALUES (?, ?, ?)';
+    $query = 'INSERT INTO course (course_name, address, phone) VALUES (?, ?, ?)';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('sss', $course_name, $address, $phone);
@@ -69,7 +69,7 @@ function insert($course_name, $address, $phone) {
 
 function update($course_name, $address, $phone, $course_id) {
     global $db;
-    $query = 'UPDATE course SET course_name = ?, address = ?, phone_number = ? WHERE course_id = ?';
+    $query = 'UPDATE course SET course_name = ?, address = ?, phone = ? WHERE course_id = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('ssss', $course_name, $address, $phone, $course_id);
@@ -83,14 +83,18 @@ function update($course_name, $address, $phone, $course_id) {
     }
 }
 
-function holeSelect($course_id, $start_hole, $end_hole) {
+function holeSelect($tee1, $tee2, $tee3, $course_id, $start_hole, $end_hole) {
     global $db;
-    $query = 'SELECT hole_number, hole_par, tee1_dist, tee2_dist, tee3_dist, tee4_dist, tee5_dist, tee6_dist
-        FROM Hole
-        WHERE course_id = ? AND hole_number BETWEEN ? AND ?;';
+    $query = 'SELECT hole_number, hole_par, avg_pop,
+              SUM(CASE WHEN tee_name = ? THEN distance_to_pin else 0 END) as tee_1,
+              SUM(CASE WHEN tee_name = ? THEN distance_to_pin else 0 END) as tee_2,
+              SUM(CASE WHEN tee_name = ? THEN distance_to_pin else 0 END) as tee_3
+              FROM hole join tee on hole_id = Hole_hole_id
+              where Course_course_id = ? AND hole_number BETWEEN ? AND ?
+              group by hole_id';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('iii', $course_id, $start_hole, $end_hole);
+        $statement->bind_param('sssiii', $tee1, $tee2, $tee3, $course_id, $start_hole, $end_hole);
         $statement->execute();
         $result = $statement->get_result();
         $res = array();
