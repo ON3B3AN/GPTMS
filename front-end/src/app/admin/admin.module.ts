@@ -5,11 +5,13 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { ManageCoursesComponent } from './manage-courses/manage-courses.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    MatIconModule
   ],
   declarations: [
     AdminComponent,

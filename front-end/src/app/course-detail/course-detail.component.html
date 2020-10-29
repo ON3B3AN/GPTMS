@@ -1,6 +1,6 @@
 <h2>{{course.course_name}}</h2>
 <address>{{course.address}}<br />{{course.phone_number}}</address>
-
+<div *ngIf="course.course_id == 1"><a class="nav-link" routerLink="track" routerLinkActive="active">Track Course</a></div>
 <div class="map-container">
   <div id="map"></div>
 </div>
