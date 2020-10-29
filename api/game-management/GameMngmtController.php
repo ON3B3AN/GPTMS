@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 require('../database-management/databaseConnect.php');
 require('./GameMngmtQueries.php');
 
+
 /*********************************
  * Initialize Local Variables
 *********************************/
@@ -312,18 +313,18 @@ switch ($function) {
  * Troubleshooting
  **********************************************/
 
-echo "\n\n"."URL ";
-print_r($url);
-echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
-echo "\n"."URL count: ".count($url)."\n";
-echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
-if ($exists == "TRUE") {
-    echo "Data: "."\n";
-    print_r($input->data);
-}
-echo "Document: ".$document."\n";
-echo "Collection: ".$collection."\n";
-echo "Collection URI: ".$collectionURI."\n";
-echo "Store: ".$store."\n";
-echo "Store URI: ".$storeURI."\n";
-echo "Controller: ".$controller."\n";
+//echo "\n\n"."URL ";
+//print_r($url);
+//echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
+//echo "\n"."URL count: ".count($url)."\n";
+//echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
+//if ($exists == "TRUE") {
+//    echo "Data: "."\n";
+//    print_r($input->data);
+//}
+//echo "Document: ".$document."\n";
+//echo "Collection: ".$collection."\n";
+//echo "Collection URI: ".$collectionURI."\n";
+//echo "Store: ".$store."\n";
+//echo "Store URI: ".$storeURI."\n";
+//echo "Controller: ".$controller."\n";
