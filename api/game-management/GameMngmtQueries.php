@@ -1,24 +1,4 @@
 <?php
-/*function select($game_id) {
-    global $db;
-    $query = 'SELECT * FROM golf_game WHERE game_id = ?';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bind_param('i', $game_id);
-        $statement->execute();
-        $result = $statement->get_result();
-        $res = array();
-        while($row = $result->fetch_assoc()){
-            array_push($res, $row);
-        }
-        $statement->close();
-        return $res;
-    } catch (Exception $ex) {
-        exit;
-    }
-}
-*/
-
 function partyInsert($course_id, $size, $longitude,$latitude, $golf_cart) {
     global $db;
     $query = 'INSERT INTO party (Course_course_id, date, start_time, size, longitude, latitude, golf_cart) VALUES (?, CURRENT_DATE(), CURRENT_TIME(), ?, ?, ?, ?)';
@@ -51,4 +31,3 @@ function insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $
         exit;
     }
 }
-

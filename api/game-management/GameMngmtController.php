@@ -257,35 +257,18 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
- //       $function = "partyInsert";
-    }
-    else {
-        $function = "error";
-    }
+    $function = "error";
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-  //      $function = "partyInsert";
-    }
-    else {
-        $function = "error";
-    }
+    $function = "error";
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
- //       $function = "";
-    }
-    else {
-        $function = "error";
-    }
+    $function = "error";
 }
 else {
     $function = "error";
 }
+
 
 /**************************************************************
  * Build and execute requested controller function &  SQL query
@@ -303,16 +286,14 @@ switch ($function) {
         $user_id = $input->data->user_id;
         $handicap = $input->data->handicap;
         $course_id = $input->data->course_id;
-        $date = $input->data->date;
-        $start_time = $input->data->start_time;
         $size = $input->data->size;
         $longitude = $input->data->longitude;
         $latitude = $input->data->latitude;
-        $golf_cart = $input->data->golf_cart;
-        
+        $golf_cart = $input->data->golf_cart; 
 
         // Get results from SQL query
         $result = insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart);
+        
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
