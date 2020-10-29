@@ -17,7 +17,7 @@
     SUM(CASE WHEN hole_number = 16 THEN stroke else 0 END) AS hole_16,
     SUM(CASE WHEN hole_number = 17 THEN stroke else 0 END) AS hole_17,
     SUM(CASE WHEN hole_number = 18 THEN stroke else 0 END) AS hole_18
-    from history
+    from score
 	JOIN Score ON Score_score_id = Score.score_id
 	JOIN Hole ON Hole_hole_id = Hole.hole_id
 	JOIN Party ON Party_party_id = Party.party_id
@@ -51,12 +51,19 @@ SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
 SUM(CASE WHEN tee_name = "tee3" THEN distance_to_pin else 0 END) as tee_3
 FROM hole join tee on hole_id = Hole_hole_id
 where Course_course_id = 1 AND hole_number BETWEEN 1 AND 9
-group by hole_id
+group by hole_id;
 
-select *from hole join tee on hole_id = Hole_hole_id
-
-update mydb.tee 
-set
-tee_name = "tee1"
-where Hole_hole_id = 5
-and tee_id = 13
+SELECT course_name, DATE_FORMAT(party.date, "%M %d %Y") as date_played, TIMEDIFF(end_time, start_time) as tot_time,
+SUM(CASE WHEN tee_name = "tee1" THEN distance_to_pin else 0 END) as tee_1,
+SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
+SUM(CASE WHEN tee_name = "tee3" THEN distance_to_pin else 0 END) as tee_3,
+hole_number, hole_par, stroke, avg_pop
+FROM hole
+JOIN tee ON hole_id = tee.Hole_hole_id
+JOIN score ON hole_id = score.Hole_hole_id
+JOIN player ON player_id = score.Player_player_id
+JOIN party ON party_id = player.Party_party_id
+JOIN course ON party.Course_course_id = course_id
+WHERE player.User_user_id = 2
+group by hole_id, date_played, start_time
+ORDER BY hole_number, date_played, end_time;
