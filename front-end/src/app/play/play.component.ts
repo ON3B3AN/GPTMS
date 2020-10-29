@@ -1,6 +1,8 @@
+import { Hole } from './../hole';
 import { Component, OnInit } from '@angular/core';
-import {Course} from "../course";
-import {CourseService} from "../course.service";
+import {Course} from '../course';
+import {CourseService} from '../course.service';
+
 
 @Component({
   selector: 'app-play',
@@ -8,13 +10,25 @@ import {CourseService} from "../course.service";
   styleUrls: ['./play.component.sass']
 })
 export class PlayComponent implements OnInit {
-
+  holes: Hole[];
   courses: Course[];
-  play_tee: string
+
+
+  courseChange(evt){
+    console.log(evt.target.value,this.courses)
+    this.courses.filter( element =>{
+      if(element.hole == evt.target.value){
+        this.holes = element.hole;
+      }
+    })
+  }
   constructor(private courseService: CourseService) { }
 
   ngOnInit(): void {
     this.courseService.getCourses()
       .subscribe(data => this.courses = data);
+
   }
+
+
 }
