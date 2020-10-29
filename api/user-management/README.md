@@ -63,7 +63,7 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [PROFILE UPDATE]
-### URI [GET] : http://localhost/user-management/users/1
+### URI [PUT] : http://localhost/user-management/users/1
 * This URI requests the "user-management" document, “users” collection, "1" collection URI (represents user_id). This request must include relevant data.
 #### Example Input: {"data":{"first_name":"Joe","last_name":"Blow","email":"jkk@gmail.com","password":"1234","check_password":"1234","phone":"000-000-0000"}}
 #### Output: Successful
