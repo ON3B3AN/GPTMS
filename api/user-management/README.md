@@ -83,7 +83,7 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [PROFILE DELETE]
-### URI [GET] : http://localhost/user-management/users/1
+### URI [DELETE] : http://localhost/user-management/users/1
 * This URI requests the "user-management" document, “users” collection, "1" collection URI (represents user_id). This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
