@@ -17,4 +17,8 @@ export class PlayComponent implements OnInit {
     this.courseService.getCourses()
       .subscribe(data => this.courses = data);
   }
+  courseChange(e){
+    this.courses = e.target.data
 }
+}
+
