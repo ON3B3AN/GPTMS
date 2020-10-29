@@ -73,16 +73,16 @@
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
 
-## [DELETE]
-### URI [DELETE] : http://localhost/course-management/courses/1
-* This URI requests the "course-management" document, “course” collection, and "1" collection URI (represents course_id). This request must not include any data.
+## [SELECT HOLES]
+### URI [POST] : http://localhost/course-management/courses/1/holes/hole-select
+* This URI requests the "course-management" document, “course” collection, "1" collection URI (represents course_id), "holes" store, and "hole-select" controller. This request must include relevant data.
 #### Example Input: {"data":{"tee1":"tee1","tee2":"tee2","tee3":"tee3","start_hole":"1","end_hole":"9"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): 200: Course deleted successfully
+    * Body (app/json): Returns all holes
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, course not deleted
+    * Body (text/html): 404: Error, no holes found
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
