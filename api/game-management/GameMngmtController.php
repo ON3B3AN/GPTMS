@@ -22,6 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 require('../database-management/databaseConnect.php');
 require('./GameMngmtQueries.php');
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 /*********************************
  * Initialize Local Variables
 *********************************/
@@ -247,16 +251,24 @@ else {
     $exists = TRUE;
 }
 
+<<<<<<< HEAD
 if ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "POST") {
     // GPTMS/api/game-management/games
     if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "partyInsert";
+=======
+if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
+    // GPTMS/api/game-management/games
+    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "insert";
+>>>>>>> master
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
+<<<<<<< HEAD
     // GPTMS/api/game-management/games
     if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "partyInsert";
@@ -282,11 +294,24 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
     else {
         $function = "error";
     }
+=======
+    $function = "error";
+}
+elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
+    $function = "error";
+}
+elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
+    $function = "error";
+>>>>>>> master
 }
 else {
     $function = "error";
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 /**************************************************************
  * Build and execute requested controller function &  SQL query
 **************************************************************/
@@ -297,19 +322,39 @@ switch ($function) {
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
+<<<<<<< HEAD
     case 'partyInsert':
         // Assign collection URI to course_id
         $size = $input->data->size;
 
         // Get results from SQL query
         $result = partyInsert($size);
+=======
+    
+    case 'insert':
+        // Assign collection URI to course_id
+        $user_id = $input->data->user_id;
+        $handicap = $input->data->handicap;
+        $course_id = $input->data->course_id;
+        $size = $input->data->size;
+        $longitude = $input->data->longitude;
+        $latitude = $input->data->latitude;
+        $golf_cart = $input->data->golf_cart; 
+
+        // Get results from SQL query
+        $result = insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart);
+>>>>>>> master
         
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
+<<<<<<< HEAD
             
             // Return course data as JSON array
             echo "it worked";
+=======
+            echo http_response_code()." Party inserted sucessfully!";
+>>>>>>> master
         }
         else {
             http_response_code(404);
@@ -324,6 +369,7 @@ switch ($function) {
  * Troubleshooting
  **********************************************/
 
+<<<<<<< HEAD
 echo "\n\n"."URL ";
 print_r($url);
 echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
@@ -339,3 +385,20 @@ echo "Collection URI: ".$collectionURI."\n";
 echo "Store: ".$store."\n";
 echo "Store URI: ".$storeURI."\n";
 echo "Controller: ".$controller."\n";
+=======
+//echo "\n\n"."URL ";
+//print_r($url);
+//echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
+//echo "\n"."URL count: ".count($url)."\n";
+//echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
+//if ($exists == "TRUE") {
+//    echo "Data: "."\n";
+//    print_r($input->data);
+//}
+//echo "Document: ".$document."\n";
+//echo "Collection: ".$collection."\n";
+//echo "Collection URI: ".$collectionURI."\n";
+//echo "Store: ".$store."\n";
+//echo "Store URI: ".$storeURI."\n";
+//echo "Controller: ".$controller."\n";
+>>>>>>> master

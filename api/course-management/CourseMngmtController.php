@@ -398,7 +398,7 @@ switch ($function) {
             echo http_response_code().": No courses found";
         }
         break;
-        case "hole-select":
+    case "hole-select":
         // Get JSON data
         $tee1 = $input->data->tee1;
         $tee2 = $input->data->tee2;
@@ -421,7 +421,7 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": No courses found";
+            echo http_response_code().":Error, no holes found";
         }
         break;
 
