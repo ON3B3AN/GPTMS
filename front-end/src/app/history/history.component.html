@@ -1,86 +1,186 @@
-  <h1 style="text-align:center">
-      Golf Player Time Management System
-  </h1>
-  <h2 style="text-align:center">
-      Player History
-  </h2>
+<h1 style="text-align:center">
+    Golf Player Time Management System
+</h1>
+<h2 style="text-align:center">
+    Player History
+</h2>
 
-  <div *ngFor="let play of playerHistory">
-    {{play.course_name}}
-    {{play.date_played}}
-    {{play.tot_time}}
-
-    <table align="center">
-      <tr>
-        <td>Hole:</td>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
-        <td>8</td>
-        <td>9</td>
-        <td></td>
-        <td>10</td>
-        <td>11</td>
-        <td>12</td>
-        <td>13</td>
-        <td>14</td>
-        <td>15</td>
-        <td>16</td>
-        <td>17</td>
-        <td>18</td>
-        <td></td>
-        <td></td>
-      </tr><tr>
-        <td></td>
-        <td>{{play.hole_1}}</td>
-        <td>{{play.hole_2}}</td>
-        <td>{{play.hole_3}}</td>
-        <td>{{play.hole_4}}</td>
-        <td>{{play.hole_5}}</td>
-        <td>{{play.hole_6}}</td>
-        <td>{{play.hole_7}}</td>
-        <td>{{play.hole_8}}</td>
-        <td>{{play.hole_9}}</td>
-        <td></td>
-        <td>{{play.hole_10}}</td>
-        <td>{{play.hole_11}}</td>
-        <td>{{play.hole_12}}</td>
-        <td>{{play.hole_13}}</td>
-        <td>{{play.hole_14}}</td>
-        <td>{{play.hole_15}}</td>
-        <td>{{play.hole_16}}</td>
-        <td>{{play.hole_17}}</td>
-        <td>{{play.hole_18}}</td>
-        <td></td>
-        <td></td>
-      </tr><tr>
-        <td>Par</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
-  </div>
-
+<div *ngFor="let play of playerHistory">
+    {{play.course_name}} {{play.date_played}} {{play.tot_time}}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Hole:</th>
+                    <th scope="col">1</th>
+                    <th scope="col">2</th>
+                    <th scope="col">3</th>
+                    <th scope="col">4</th>
+                    <th scope="col">5</th>
+                    <th scope="col">6</th>
+                    <th scope="col">7</th>
+                    <th scope="col">8</th>
+                    <th scope="col">9</th>
+                    <th scope="col">Front</th>
+                    <th scope="col">11</th>
+                    <th scope="col">12</th>
+                    <th scope="col">12</th>
+                    <th scope="col">13</th>
+                    <th scope="col">14</th>
+                    <th scope="col">15</th>
+                    <th scope="col">16</th>
+                    <th scope="col">17</th>
+                    <th scope="col">18</th>
+                    <th scope="col">Back</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Stroke:</th>
+                    <th>{{play.hole_1}}</th>
+                    <th>{{play.hole_2}}</th>
+                    <th>{{play.hole_3}}</th>
+                    <th>{{play.hole_4}}</th>
+                    <th>{{play.hole_5}}</th>
+                    <th>{{play.hole_6}}</th>
+                    <th>{{play.hole_7}}</th>
+                    <th>{{play.hole_8}}</th>
+                    <th>{{play.hole_9}}</th>
+                    <th>{{play.front_nine}}</th>
+                    <th>{{play.hole_10}}</th>
+                    <th>{{play.hole_11}}</th>
+                    <th>{{play.hole_12}}</th>
+                    <th>{{play.hole_13}}</th>
+                    <th>{{play.hole_14}}</th>
+                    <th>{{play.hole_15}}</th>
+                    <th>{{play.hole_16}}</th>
+                    <th>{{play.hole_17}}</th>
+                    <th>{{play.hole_18}}</th>
+                    <th>{{play.back_nine}}</th>
+                    <th>{{play.total_score}}</th>
+                </tr>
+                <tr>
+                    <th scope="row">Par:</th>
+                    <th>{{play.hole_1_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                    <th>{{play.hole_par}}</th>
+                </tr>
+                <tr>
+                    <th scope="row">Pace of Play:</th>
+                    <th>{{play.hole_1_avg_pop1}}</th>
+                    <th>{{play.avg_pop2}}</th>
+                    <th>{{play.avg_pop3}}</th>
+                    <th>{{play.avg_pop4}}</th>
+                    <th>{{play.avg_pop5}}</th>
+                    <th>{{play.avg_pop6}}</th>
+                    <th>{{play.avg_pop7}}</th>
+                    <th>{{play.avg_pop8}}</th>
+                    <th>{{play.avg_pop9}}</th>
+                    <th></th>
+                    <th>{{play.avg_pop11}}</th>
+                    <th>{{play.avg_pop12}}</th>
+                    <th>{{play.avg_pop12}}</th>
+                    <th>{{play.avg_pop13}}</th>
+                    <th>{{play.avg_pop14}}</th>
+                    <th>{{play.avg_pop15}}</th>
+                    <th>{{play.avg_pop16}}</th>
+                    <th>{{play.avg_pop17}}</th>
+                    <th>{{play.avg_pop18}}</th>
+                    <th></th>
+                    <th>{{play.tot_time}}</th>
+                </tr>
+                <tr>
+                    <th scope="row">Tee 1:</th>
+                    <th>{{play.hole_1_tee_1}}</th>
+                    <th>{{play.hole_2_tee_1}}</th>
+                    <th>{{play.hole_3_tee_1}}</th>
+                    <th>{{play.hole_4_tee_1}}</th>
+                    <th>{{play.hole_5_tee_1}}</th>
+                    <th>{{play.hole_6_tee_1}}</th>
+                    <th>{{play.hole_7_tee_1}}</th>
+                    <th>{{play.hole_8_tee_1}}</th>
+                    <th>{{play.hole_9_tee_1}}</th>
+                    <th></th>
+                    <th>{{play.hole_10_tee_1}}</th>
+                    <th>{{play.hole_11_tee_1}}</th>
+                    <th>{{play.hole_12_tee_1}}</th>
+                    <th>{{play.hole_13_tee_1}}</th>
+                    <th>{{play.hole_14_tee_1}}</th>
+                    <th>{{play.hole_15_tee_1}}</th>
+                    <th>{{play.hole_16_tee_1}}</th>
+                    <th>{{play.hole_17_tee_1}}</th>
+                    <th>{{play.hole_18_tee_1}}</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th scope="row">Tee 2:</th>
+                    <th>{{play.hole_1_tee_2}}</th>
+                    <th>{{play.hole_2_tee_2}}</th>
+                    <th>{{play.hole_3_tee_2}}</th>
+                    <th>{{play.hole_4_tee_2}}</th>
+                    <th>{{play.hole_5_tee_2}}</th>
+                    <th>{{play.hole_6_tee_2}}</th>
+                    <th>{{play.hole_7_tee_2}}</th>
+                    <th>{{play.hole_8_tee_2}}</th>
+                    <th>{{play.hole_9_tee_2}}</th>
+                    <th></th>
+                    <th>{{play.hole_10_tee_2}}</th>
+                    <th>{{play.hole_11_tee_2}}</th>
+                    <th>{{play.hole_12_tee_2}}</th>
+                    <th>{{play.hole_13_tee_2}}</th>
+                    <th>{{play.hole_14_tee_2}}</th>
+                    <th>{{play.hole_15_tee_2}}</th>
+                    <th>{{play.hole_16_tee_2}}</th>
+                    <th>{{play.hole_17_tee_2}}</th>
+                    <th>{{play.hole_18_tee_2}}</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th scope="row">Tee 3:</th>
+                    <th>{{play.hole_1_tee_3}}</th>
+                    <th>{{play.hole_2_tee_3}}</th>
+                    <th>{{play.hole_3_tee_3}}</th>
+                    <th>{{play.hole_4_tee_3}}</th>
+                    <th>{{play.hole_5_tee_3}}</th>
+                    <th>{{play.hole_6_tee_3}}</th>
+                    <th>{{play.hole_7_tee_3}}</th>
+                    <th>{{play.hole_8_tee_3}}</th>
+                    <th>{{play.hole_9_tee_3}}</th>
+                    <th></th>
+                    <th>{{play.hole_10_tee_3}}</th>
+                    <th>{{play.hole_11_tee_3}}</th>
+                    <th>{{play.hole_12_tee_3}}</th>
+                    <th>{{play.hole_13_tee_3}}</th>
+                    <th>{{play.hole_14_tee_3}}</th>
+                    <th>{{play.hole_15_tee_3}}</th>
+                    <th>{{play.hole_16_tee_3}}</th>
+                    <th>{{play.hole_17_tee_3}}</th>
+                    <th>{{play.hole_18_tee_3}}</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
