@@ -5,14 +5,16 @@
 
 <table align="center" class="courseInfo">
     <tr>
-        <th>Course Name</th>
-        <th>Course Address</th>
-        <th>Phone Number</th>
+      <th>Course Name</th>
+      <th>Course Address</th>
+      <th>Phone Number</th>
+      <th>Actions</th>
     </tr>
-    <tr>
-      <td id="courseName"></td>
-      <td id="address"></td>
-      <td id="phone"></td>
+    <tr *ngFor="let course of courses">
+      <td id="courseName">{{course.course_name}}</td>
+      <td id="address">{{course.address}}</td>
+      <td id="phone">{{course.phone_number}}</td>
+      <td><mat-icon aria-hidden="false" aria-label="Edit" (click)="editCourse(course.course_id)">create</mat-icon> <mat-icon aria-hidden="false" aria-label="Delete" (click)="deleteCourse(course.course_id)">delete</mat-icon></td>
     </tr>
 </table>
 
