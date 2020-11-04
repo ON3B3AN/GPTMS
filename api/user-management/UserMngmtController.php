@@ -328,34 +328,19 @@ switch ($function) {
                 
                 // Get user id from SQL query
                 $user_id[] = $result["user_id"];
+                $emp_id = $result["emp_id"];
                 
-                // Get employee id and employee level from SQL query
-                $empResult = employeeCheck($user_id);
-                $emp_id = $empResult[0];
-                $emp_lvl = $empResult[1];
-
                 // Start session
                 session_start();
                 
                 // Set session variable for user id, emplpoyee id, and employee level
                 $_SESSION["user_id"] = $user_id;
-                $_SESSION["emp_id"] = $emp_id;
-                $_SESSION["emp_lvl"] = $emp_lvl;
 
                 // Check if session was set
                 if (!isset($user_id)) {
                     break;
                 }
-                else {
-                    if(!isset($emp_id) && !isset($emp_lvl)) {
-                        // Return user data as JSON array
-                        
-                        http_response_code(200);
-                        echo json_encode($result);
-                    }
-                    // Return employee id and employee level
-                    
-                    
+                else {                  
                     // Return user data as JSON array
                     http_response_code(200);
                     echo json_encode($result);

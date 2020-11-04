@@ -9,9 +9,9 @@ function login($email, $pwd) {
         $result = $statement->get_result();
         $res = $result->fetch_assoc();
         $statement->close();
-        $user_id = $res[0];
+        $user_id = $res["user_id"];
         
-        if(employeeCheck($user_id) != 0){
+        if(employeeCheck($user_id)){
             $query2 = 'SELECT user_id, first_name, last_name, email, phone, emp_id, Course_course_id, security_lvl
                         FROM user
                         JOIN employee
@@ -172,10 +172,15 @@ function employeeCheck ($user_id) {
         $statement = $db->prepare($query);
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $num_rows = $statement->affected_rows;
+        $result = $statement->get_result();
+        $res = $result->fetch_assoc();
+        $isemployee = TRUE;
+        if(empty($res)){
+            $isemployee = FALSE;
+        }
         $statement->close();
 
-        return $num_rows;
+        return $isemployee;
     } catch (Exception $ex) {
         exit;
     } 
