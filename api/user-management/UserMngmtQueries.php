@@ -137,3 +137,28 @@ function usersSelectAll() {
         exit;
     }  
 }
+
+function employeeCheck ($user_id) {
+    global $db;
+    $query = 'select emp_id, security_lvl
+                from user
+                join employee
+                on user_id = User_user_id
+                where user_id = ?';
+    
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('s', $user_id);
+        $statement->execute();
+        $result = $statement->get_result();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
+        $statement->close();
+        
+        return $res;
+    } catch (Exception $ex) {
+        exit;
+    } 
+}
