@@ -330,8 +330,9 @@ switch ($function) {
                 $user_id[] = $result["user_id"];
                 
                 // Get employee id and employee level from SQL query
-                $emp_id = [];
-                $emp_lvl = [];
+                $empResult = employeeCheck($user_id);
+                $emp_id = $empResult[0];
+                $emp_lvl = $empResult[1];
 
                 // Start session
                 session_start();
@@ -348,6 +349,7 @@ switch ($function) {
                 else {
                     if(!isset($emp_id) && !isset($emp_lvl)) {
                         // Return user data as JSON array
+                        
                         http_response_code(200);
                         echo json_encode($result);
                     }
