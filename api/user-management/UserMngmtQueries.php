@@ -9,7 +9,30 @@ function login($email, $pwd) {
         $result = $statement->get_result();
         $res = $result->fetch_assoc();
         $statement->close();
-        return $res;
+        $user_id = $res[0];
+        
+        if(employeeCheck($user_id) != 0){
+            $query2 = 'SELECT user_id, first_name, last_name, email, phone, emp_id, Course_course_id, security_lvl
+                        FROM user
+                        JOIN employee
+                        ON user_id = User_user_id
+                        WHERE user_id = ?';
+            try {
+                $statement2 = $db->prepare($query2);
+                $statement2->bind_param('s', $user_id);
+                $statement2->execute();
+                $result2 = $statement2->get_result();
+                $res2 = $result2->fetch_assoc();
+                $statement2->close();
+                return $res2;
+            } catch (Exception $e) {
+                exit;
+            } 
+            
+        } else {
+            return $res;
+        }
+        
     } catch (Exception $ex) {
         exit;
     }  
@@ -145,19 +168,14 @@ function employeeCheck ($user_id) {
                 join employee
                 on user_id = User_user_id
                 where user_id = ?';
-    
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $result = $statement->get_result();
-        $res = array();
-        while($row = $result->fetch_assoc()){
-            array_push($res, $row);
-        }
+        $num_rows = $statement->affected_rows;
         $statement->close();
-        
-        return $res;
+
+        return $num_rows;
     } catch (Exception $ex) {
         exit;
     } 
