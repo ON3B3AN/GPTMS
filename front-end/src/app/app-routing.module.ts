@@ -6,6 +6,7 @@ import { CourseListComponent } from './course-list/course-list.component';
 import { HistoryComponent } from './history/history.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
+import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignupComponent } from './signup/signup.component';
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'landing', component: LandingComponent, canActivate: [AuthGuard] },
   { path: 'course', pathMatch: 'full', redirectTo: 'courses' },
   { path: 'course/:id', component: CourseDetailComponent, canActivate: [AuthGuard] },
+  { path: 'course/:id/manage', component: ManageCourseComponent, canActivate: [AuthGuard] },
   { path: 'course/:id/track', component: TrackComponent, canActivate: [AuthGuard] },
   { path: 'courses', component: CourseListComponent, canActivate: [AuthGuard] },
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
