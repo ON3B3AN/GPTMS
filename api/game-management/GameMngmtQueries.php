@@ -1,10 +1,10 @@
 <?php
-function partyInsert($course_id, $size, $longitude,$latitude, $golf_cart) {
+function insertParty($course_id, $size, $longitude,$latitude, $golf_cart) {
     global $db;
     $query = 'INSERT INTO party (Course_course_id, date, start_time, size, longitude, latitude, golf_cart) VALUES (?, CURRENT_DATE(), CURRENT_TIME(), ?, ?, ?, ?)';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sssss', $course_id, $size, $longitude,$latitude, $golf_cart);
+        $statement->bind_param('sssss', $course_id, $size, $longitude, $latitude, $golf_cart);
         $statement->execute();
         $last_id = $statement->insert_id;
         $statement->close();
@@ -15,7 +15,7 @@ function partyInsert($course_id, $size, $longitude,$latitude, $golf_cart) {
     }
 }
 
-function insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart){
+function insertPlayer($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart){
     global $db;
     $party_id = partyInsert($course_id, $size, $longitude, $latitude, $golf_cart);
     $query = 'INSERT INTO player (Party_party_id, User_user_id, handicap) VALUES (?, ?, ?)';
@@ -32,12 +32,12 @@ function insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $
     }
 }
 
-function updateScore($stroke, $total_score, $score_id, $hole_id, $player_id, $user_id, $party_id) {
+function updateScore($stroke, $total_score, $hole_id, $user_id, $party_id) {
     global $db;
-    $query = 'UPDATE score SET stroke = ?, total_score = ? WHERE score_id = ? AND Hole_hole_id = ? AND Player_player_id = ? AND Player_User_user_id = ? AND Player_Party_party_id = ?';
+    $query = 'UPDATE score SET stroke = ?, total_score = ? WHERE Hole_hole_id = ? AND Player_User_user_id = ? AND Player_Party_party_id = ?';
 	try {
         $statement = $db->prepare($query);
-        $statement->bind_param('ssssss', $stroke, $total_score, $score_id, $hole_id, $player_id, $user_id, $party_id);
+        $statement->bind_param('sssss', $stroke, $total_score, $hole_id, $user_id, $party_id);
         $statement->execute();
         $num_rows = $statement->affected_rows;  
         $statement->close();
@@ -48,18 +48,18 @@ function updateScore($stroke, $total_score, $score_id, $hole_id, $player_id, $us
     }
 }
 	
-function scoreInsert($hole_id, $player_id, $user_id, $party_id, $stroke, $total_score) {
+function insertScore($hole_id, $user_id, $party_id, $stroke, $total_score) {
     global $db;
-    $query = 'INSERT INTO score (Hole_hole_id, Player_player_id, Player_User_user_id, Player_Party_party_id, stroke, total_score)'
-            . 'VALUES (?, ?, ?, ?, ?, ?)';
+    $query = 'INSERT INTO score (Hole_hole_id, Player_User_user_id, Player_Party_party_id, stroke, total_score)'
+            . 'VALUES (?, ?, ?, ?, ?)';
 	try {
         $statement = $db->prepare($query);
-        $statement->bind_param('ssssss', $hole_id, $player_id, $user_id, $party_id, $stroke, $total_score);
+        $statement->bind_param('sssss', $hole_id, $user_id, $party_id, $stroke, $total_score);
         $statement->execute();
-        $num_rows = $statement->affected_rows;  
+        $row_num = $statement->insert_id;  
         $statement->close();
      
-        return $num_rows;
+        return $row_num;
     } catch (Exception $ex) {
         exit;
     }	

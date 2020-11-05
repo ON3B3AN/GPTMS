@@ -264,11 +264,11 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     // GPTMS/api/user-management/users/1/history
     if ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "history" && $storeURI == NULL) {
-        $function = "history";
+        $function = "selectAllHistory";
     }
     // GPTMS/api/user-management/users
     elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "usersSelectAll";
+        $function = "selectAllUsers";
     }
     else {
         $function = "error";
@@ -327,8 +327,7 @@ switch ($function) {
                 header('Content-Type: application/json, charset=utf-8');
                 
                 // Get user id from SQL query
-                $user_id[] = $result["user_id"];
-                $emp_id = $result["emp_id"];
+                $user_id = $result["user_id"];
                 
                 // Start session
                 session_start();
@@ -393,12 +392,12 @@ switch ($function) {
             echo http_response_code().": Error, profile not created";
         }
         break;
-    case "history":
+    case "selectAllHistory":
         // Assign collection URI to user_id
         $user_id = $collectionURI;
 
         // Get history from SQL query
-        $result = historySelectAll($user_id);
+        $result = selectAllHistory($user_id);
 
         // Return history data
         if ($result != NULL) {
@@ -414,7 +413,7 @@ switch ($function) {
             echo http_response_code().": No user history";
         }
         break;
-    case "updateProfile":
+    case "updateUser":
         // Get JSON data
         $first_name = $input->data->first_name;
         $last_name = $input->data->last_name;
@@ -434,7 +433,7 @@ switch ($function) {
             $user_id = $collectionURI;
 
             // Get the updated row count from the SQL query
-            $result = updateProfile($first_name, $last_name, $email, $password, $phone, $user_id);
+            $result = updateUser($first_name, $last_name, $email, $password, $phone, $user_id);
             
             if ($result >= 1) {
                 http_response_code(200);
@@ -442,7 +441,6 @@ switch ($function) {
             }
             // No changes were made (Acts as a "Save" function)
             elseif ($result === 0) {
-                header('Accept: application/json');
                 http_response_code(204);
                 echo http_response_code();
             }
@@ -453,12 +451,12 @@ switch ($function) {
             }
         }
         break;
-    case "deleteProfile":
+    case "deleteUser":
         // Assign collection URI to user_id
         $user_id = $collectionURI;
 
         // Get number of rows affected from SQL query
-        $result = deleteProfile($user_id);
+        $result = deleteUser($user_id);
         
         if ($result >= 1) {
             http_response_code(200);
@@ -469,9 +467,9 @@ switch ($function) {
             echo http_response_code().": Error, profile not deleted";
         }
         break;
-    case "usersSelectAll":
+    case "selectAllUsers":
         // Get result from SQL query
-        $result = usersSelectAll();
+        $result = selectAllUsers();
 
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');

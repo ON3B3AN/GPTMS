@@ -251,7 +251,11 @@ else {
 if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     // GPTMS/api/game-management/games
     if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "insert";
+        $function = "insertPlayer";
+    }
+    // GPTMS/api/game-management/games/1/scores
+    elseif ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
+        $function = "insertScore";
     }
     else {
         $function = "error";
@@ -261,7 +265,13 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     $function = "error";
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    $function = "error";
+    // GPTMS/api/game-management/games/1/scores
+    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
+        $function = "updateScore";
+    }
+    else {
+        $function = "error";
+    }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
     $function = "error";
@@ -280,8 +290,7 @@ switch ($function) {
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
-    
-    case 'insert':
+    case 'insertPlayer':
         // Assign collection URI to course_id
         $user_id = $input->data->user_id;
         $handicap = $input->data->handicap;
@@ -292,19 +301,64 @@ switch ($function) {
         $golf_cart = $input->data->golf_cart; 
 
         // Get results from SQL query
-        $result = insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart);
+        $result = insertPlayer($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart);
         
-        if ($result != NULL) {
-            header('Content-Type: application/json, charset=utf-8');
+        if ($result != 0) {
             http_response_code(200);
-            echo http_response_code()." Party inserted sucessfully!";
+            echo http_response_code()." Player and Party added sucessfully!";
         }
         else {
+            header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Could not create party.";
+            echo http_response_code().": Error, player and party not added";
         }
-        
         break;
+    case "insertScore":
+        $hole_id = $input->data->Hole_hole_id;
+        $user_id = $input->data->Player_User_user_id;
+        $party_id = $collectionURI;
+        $stroke = $input->data->stroke;
+        $total_score = $input->data->total_score;
+        
+        // Get results from SQL query
+        $result = insertScore($hole_id, $user_id, $party_id, $stroke, $total_score);
+        
+        if ($result != 0) {
+            http_response_code(201);
+            echo http_response_code().": Score added successfully";
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, score not added";
+        }
+        break;
+    case "updateScore":
+        $stroke = $input->data->stroke;
+        $total_score = $input->data->total_score;
+        $hole_id = $input->data->Hole_hole_id;
+        $user_id = $input->data->Player_User_user_id;
+        $party_id = $input->data->Player_Party_party_id;
+        
+        // Get results from SQL query
+        $result = updateScore($stroke, $total_score, $hole_id, $user_id, $party_id);
+        
+        if ($result >= 1) {
+            http_response_code(200);
+            echo http_response_code().": Score updated successfully";
+        }
+        // No changes were made (Acts as a "Save" function)
+        elseif ($result === 0) {
+            http_response_code(204);
+            echo http_response_code();
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, score not updated";
+        }
+        break;
+    
 }
 
 

@@ -11,7 +11,7 @@ function login($email, $pwd) {
         $statement->close();
         $user_id = $res["user_id"];
         
-        if(employeeCheck($user_id)){
+        if(checkEmployee($user_id)){
             $query2 = 'SELECT user_id, first_name, last_name, email, phone, emp_id, Course_course_id, security_lvl
                         FROM user
                         JOIN employee
@@ -55,7 +55,7 @@ function signup($fName, $lName, $email, $pwd, $phone){
     }
 }
 
-function historySelectAll($user_id) {
+function selectAllHistory($user_id) {
     global $db;
     $query = 'SELECT party_id, course_name, DATE_FORMAT(party.date, "%M %d %Y") as date_played, TIMEDIFF(end_time, start_time) as tot_time,
                 SUM(CASE WHEN hole_number < "10" THEN stroke ELSE 0 END) as front_nine,
@@ -66,7 +66,7 @@ function historySelectAll($user_id) {
                 JOIN course ON Course_course_id = course_id
                 JOIN score ON player_id = score.Player_player_id
                 JOIN hole ON hole.hole_id = score.Hole_hole_id
-                WHERE player.User_user_id = 2
+                WHERE player.User_user_id = ?
                 GROUP BY player.User_user_id
                 ORDER BY date_played, end_time;';
     
@@ -90,7 +90,6 @@ function historySelectAll($user_id) {
         $result = $statement->get_result();
         $res = array();
         while($row = $result->fetch_assoc()){
-//            array_push($res, $row);
             $stmt = $db->prepare($query2);
             $stmt->bind_param('ii', $user_id, $row["party_id"]);
             $stmt->execute();
@@ -104,13 +103,14 @@ function historySelectAll($user_id) {
             array_push($res, $row);
         }
         $statement->close();
+        
         return $res;
     } catch (Exception $ex) {
         exit;
     } 
 }
 
-function updateProfile($first_name, $last_name, $email, $password, $phone, $user_id) {
+function updateUser($first_name, $last_name, $email, $password, $phone, $user_id) {
     global $db;
     $query = 'UPDATE user SET first_name = ?, last_name = ?, email = ?, password = ?, phone = ? WHERE user_id = ?';
     try {
@@ -126,7 +126,7 @@ function updateProfile($first_name, $last_name, $email, $password, $phone, $user
     }
 }
 
-function deleteProfile($user_id) {
+function deleteUser($user_id) {
     global $db;
     $query = 'DELETE FROM user WHERE user_id = ?';
     try {
@@ -142,7 +142,7 @@ function deleteProfile($user_id) {
     }
 }
 
-function usersSelectAll() {
+function selectAllUsers() {
     global $db;
     $query = 'SELECT * FROM user';
     try {
@@ -161,7 +161,7 @@ function usersSelectAll() {
     }  
 }
 
-function employeeCheck ($user_id) {
+function checkEmployee($user_id) {
     global $db;
     $query = 'select emp_id, security_lvl
                 from user
@@ -174,13 +174,13 @@ function employeeCheck ($user_id) {
         $statement->execute();
         $result = $statement->get_result();
         $res = $result->fetch_assoc();
-        $isemployee = TRUE;
+        $isEmployee = TRUE;
         if(empty($res)){
-            $isemployee = FALSE;
+            $isEmployee = FALSE;
         }
         $statement->close();
 
-        return $isemployee;
+        return $isEmployee;
     } catch (Exception $ex) {
         exit;
     } 

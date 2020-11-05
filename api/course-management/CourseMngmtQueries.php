@@ -1,5 +1,5 @@
 <?php
-function selectall() {
+function selectallCourses() {
     global $db;
     $query = 'SELECT * FROM course';
     try {
@@ -18,7 +18,7 @@ function selectall() {
     }  
 }
 
-function select($course_id) {
+function selectCourse($course_id) {
     global $db;
     $query = 'SELECT * FROM course WHERE course_id = ?';
     try {
@@ -35,7 +35,7 @@ function select($course_id) {
     }  
 }
 
-function delete($course_id) {
+function deleteCourse($course_id) {
     global $db;
     $query = 'DELETE FROM course WHERE course_id = ?';
     try {
@@ -51,7 +51,7 @@ function delete($course_id) {
     }
 }
 
-function insert($course_name, $address, $phone) {
+function insertCourse($course_name, $address, $phone) {
     global $db;
     $query = 'INSERT INTO course (course_name, address, phone) VALUES (?, ?, ?)';
     try {
@@ -67,7 +67,7 @@ function insert($course_name, $address, $phone) {
     }
 }
 
-function update($course_name, $address, $phone, $course_id) {
+function updateCourse($course_name, $address, $phone, $course_id) {
     global $db;
     $query = 'UPDATE course SET course_name = ?, address = ?, phone = ? WHERE course_id = ?';
     try {
@@ -83,7 +83,7 @@ function update($course_name, $address, $phone, $course_id) {
     }
 }
 
-function holeSelect($course_id, $start_hole, $end_hole) {
+function selectHoles($course_id, $start_hole, $end_hole) {
     global $db;
     $query = 'SELECT hole_number, hole_par, avg_pop,
               SUM(CASE WHEN tee_name = "tee1" THEN distance_to_pin else 0 END) as tee_1,
@@ -108,7 +108,7 @@ function holeSelect($course_id, $start_hole, $end_hole) {
     }
 }
 
-function teeSelect($course_id) {
+function selectTees($course_id) {
     global $db;
     $query = 'SELECT DISTINCT(tee_name)
                 FROM tee
