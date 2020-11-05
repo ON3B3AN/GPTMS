@@ -243,11 +243,11 @@ else {
 if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     // GPTMS/api/course-management/courses
     if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "insert";
+        $function = "insertCourse";
     }
-    // GPTMS/api/course-management/courses/1/holes/hole-select
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == "hole-select" && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
-        $function = "hole-select";
+    // GPTMS/api/course-management/courses/1/holes
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
+        $function = "selectHoles";
     }
     else {
         $function = "error";
@@ -256,11 +256,15 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     // GPTMS/api/course-management/courses
     if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "selectall";
+        $function = "selectAllCourses";
     }
     // GPTMS/api/course-management/courses/1
     elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "select";
+        $function = "selectCourse";
+    }
+    // GPTMS/api/course-management/courses/1/holes
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
+        $function = "selectTees";
     }
     else {
         $function = "error";
@@ -269,7 +273,7 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
     // GPTMS/api/course-management/courses/1
     if ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "update";
+        $function = "updateCourse";
     }
     else {
         $function = "error";
@@ -278,7 +282,7 @@ elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
     // GPTMS/api/course-management/courses/1
     if ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "delete";
+        $function = "deleteCourse";
     }
     else {
         $function = "error";
@@ -299,12 +303,12 @@ switch ($function) {
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
-    case 'select':
+    case 'selectCourse':
         // Assign collection URI to course_id
         $course_id = $collectionURI;
 
         // Get results from SQL query
-        $result = select($course_id);
+        $result = selectCourse($course_id);
         
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
@@ -317,9 +321,8 @@ switch ($function) {
             http_response_code(404);
             echo http_response_code().": No course with id=$param found";
         }
-        
         break;
-    case 'update':
+    case 'updateCourse':
         // Get JSON data
         $course_name = $input->data->course_name;
         $address = $input->data->address;
@@ -329,7 +332,7 @@ switch ($function) {
         $course_id = $collectionURI;
 
         // Get the updated row count from the SQL query
-        $result = update($course_name, $address, $phone, $course_id);
+        $result = updateCourse($course_name, $address, $phone, $course_id);
         
         if ($result >= 1) {
             http_response_code(200);
@@ -337,7 +340,6 @@ switch ($function) {
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
-            header('Accept: application/json');
             http_response_code(204);
             echo http_response_code();
         }
@@ -347,14 +349,14 @@ switch ($function) {
             echo http_response_code().": Error, course not updated";
         }
         break;
-    case 'insert':
+    case 'insertCourse':
         // Get JSON data
         $course_name = $input->data->course_name;
         $address = $input->data->address;
         $phone = $input->data->phone_number;
         
         // Get the last inserted row number from SQL query
-        $result = insert($course_name, $address, $phone);
+        $result = insertCourse($course_name, $address, $phone);
         
         if ($result != 0) {
             http_response_code(201);
@@ -366,12 +368,12 @@ switch ($function) {
             echo http_response_code().": Error, course not added";
         }
         break;
-    case 'delete':
+    case 'deleteCourse':
         // Assign collection URI to course_id
         $course_id = $collectionURI;
 
         // Get number of rows affected from SQL query
-        $result = delete($course_id);
+        $result = deleteCourse($course_id);
         
         if ($result >= 1) {
             http_response_code(200);
@@ -382,9 +384,9 @@ switch ($function) {
             echo http_response_code().": Error, course not deleted";
         }
         break;
-    case "selectall":       
+    case "selectAllCourses":       
         // Get result from SQL query
-        $result = selectall();
+        $result = selectallCourses();
 
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
@@ -398,11 +400,8 @@ switch ($function) {
             echo http_response_code().": No courses found";
         }
         break;
-    case "hole-select":
+    case "selectHoles":
         // Get JSON data
-        $tee1 = $input->data->tee1;
-        $tee2 = $input->data->tee2;
-        $tee3 = $input->data->tee3;
         $start_hole = $input->data->start_hole;
         $end_hole = $input->data->end_hole;
         
@@ -410,7 +409,7 @@ switch ($function) {
         $course_id = $collectionURI;
             
         // Get result from SQL query
-        $result = holeSelect($tee1, $tee2, $tee3, $course_id, $start_hole, $end_hole);
+        $result = selectHoles($course_id, $start_hole, $end_hole);
 
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
@@ -420,8 +419,33 @@ switch ($function) {
             echo json_encode($result);
         } 
         else {
+            header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().":Error, no holes found";
+            echo http_response_code().": Error, no holes found";
+        }
+        break;
+    case "selectTees":
+        $course_id = $collectionURI;
+        
+        // Start session
+        session_start();
+        
+        // Store course id into session variable
+        $_SESSION["course_id"] = $course_id;
+        
+        // Get tees from SQL query
+        $result = selectTees($course_id);
+        
+        if(!empty($result)) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+            
+            // Return tee data as JSON array
+            echo json_encode($result);
+        }
+        else {
+            http_response_code(404);
+            echo http_response_code().": Error, no tees found";
         }
         break;
 

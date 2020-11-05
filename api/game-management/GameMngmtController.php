@@ -22,13 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 require('../database-management/databaseConnect.php');
 require('./GameMngmtQueries.php');
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 
->>>>>>> master
->>>>>>> master
 /*********************************
  * Initialize Local Variables
 *********************************/
@@ -254,93 +248,38 @@ else {
     $exists = TRUE;
 }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-if ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "POST") {
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "partyInsert";
-=======
->>>>>>> master
 if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     // GPTMS/api/game-management/games
     if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "insert";
-<<<<<<< HEAD
-=======
->>>>>>> master
->>>>>>> master
+        $function = "insertPlayer";
+    }
+    // GPTMS/api/game-management/games/1/scores
+    elseif ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
+        $function = "insertScore";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
-<<<<<<< HEAD
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
- //       $function = "partyInsert";
-=======
-<<<<<<< HEAD
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "partyInsert";
->>>>>>> master
-    }
-    else {
-        $function = "error";
-    }
+    $function = "error";
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-<<<<<<< HEAD
-  //      $function = "partyInsert";
-=======
-        $function = "partyInsert";
->>>>>>> master
+    // GPTMS/api/game-management/games/1/scores
+    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
+        $function = "updateScore";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-<<<<<<< HEAD
- //       $function = "";
-=======
-        $function = "";
->>>>>>> master
-    }
-    else {
-        $function = "error";
-    }
-<<<<<<< HEAD
-=======
-=======
     $function = "error";
-}
-elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    $function = "error";
-}
-elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
-    $function = "error";
->>>>>>> master
->>>>>>> master
 }
 else {
     $function = "error";
 }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> master
->>>>>>> master
 /**************************************************************
  * Build and execute requested controller function &  SQL query
 **************************************************************/
@@ -351,66 +290,75 @@ switch ($function) {
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-    case 'partyInsert':
-        // Assign collection URI to course_id
-        $size = $input->data->size;
-
-        // Get results from SQL query
-        $result = partyInsert($size);
-=======
->>>>>>> master
-    
-    case 'insert':
+    case 'insertPlayer':
         // Assign collection URI to course_id
         $user_id = $input->data->user_id;
         $handicap = $input->data->handicap;
         $course_id = $input->data->course_id;
-<<<<<<< HEAD
-        $date = $input->data->date;
-        $start_time = $input->data->start_time;
-        $size = $input->data->size;
-        $longitude = $input->data->longitude;
-        $latitude = $input->data->latitude;
-        $golf_cart = $input->data->golf_cart;
-        
-
-        // Get results from SQL query
-        $result = insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart);
-        if ($result != NULL) {
-            header('Content-Type: application/json, charset=utf-8');
-            http_response_code(200);
-            echo http_response_code()." Party inserted sucessfully!";
-=======
         $size = $input->data->size;
         $longitude = $input->data->longitude;
         $latitude = $input->data->latitude;
         $golf_cart = $input->data->golf_cart; 
 
         // Get results from SQL query
-        $result = insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart);
->>>>>>> master
+        $result = insertPlayer($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart);
         
-        if ($result != NULL) {
-            header('Content-Type: application/json, charset=utf-8');
+        if ($result != 0) {
             http_response_code(200);
-<<<<<<< HEAD
-            
-            // Return course data as JSON array
-            echo "it worked";
-=======
-            echo http_response_code()." Party inserted sucessfully!";
->>>>>>> master
->>>>>>> master
+            echo http_response_code()." Player and Party added sucessfully!";
         }
         else {
+            header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Could not create party.";
+            echo http_response_code().": Error, player and party not added";
         }
-        
         break;
+    case "insertScore":
+        $hole_id = $input->data->Hole_hole_id;
+        $user_id = $input->data->Player_User_user_id;
+        $party_id = $collectionURI;
+        $stroke = $input->data->stroke;
+        $total_score = $input->data->total_score;
+        
+        // Get results from SQL query
+        $result = insertScore($hole_id, $user_id, $party_id, $stroke, $total_score);
+        
+        if ($result != 0) {
+            http_response_code(201);
+            echo http_response_code().": Score added successfully";
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, score not added";
+        }
+        break;
+    case "updateScore":
+        $stroke = $input->data->stroke;
+        $total_score = $input->data->total_score;
+        $hole_id = $input->data->Hole_hole_id;
+        $user_id = $input->data->Player_User_user_id;
+        $party_id = $input->data->Player_Party_party_id;
+        
+        // Get results from SQL query
+        $result = updateScore($stroke, $total_score, $hole_id, $user_id, $party_id);
+        
+        if ($result >= 1) {
+            http_response_code(200);
+            echo http_response_code().": Score updated successfully";
+        }
+        // No changes were made (Acts as a "Save" function)
+        elseif ($result === 0) {
+            http_response_code(204);
+            echo http_response_code();
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, score not updated";
+        }
+        break;
+    
 }
 
 
@@ -418,29 +366,6 @@ switch ($function) {
  * Troubleshooting
  **********************************************/
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> master
-echo "\n\n"."URL ";
-print_r($url);
-echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
-echo "\n"."URL count: ".count($url)."\n";
-echo "Data exists (1=TRUE,''=FALSE): ".$exists."\n";
-if ($exists == "TRUE") {
-    echo "Data: "."\n";
-    print_r($input->data);
-}
-echo "Document: ".$document."\n";
-echo "Collection: ".$collection."\n";
-echo "Collection URI: ".$collectionURI."\n";
-echo "Store: ".$store."\n";
-echo "Store URI: ".$storeURI."\n";
-<<<<<<< HEAD
-echo "Controller: ".$controller."\n";
-=======
-echo "Controller: ".$controller."\n";
-=======
 //echo "\n\n"."URL ";
 //print_r($url);
 //echo "\n"."HTTP Method: ".$_SERVER['REQUEST_METHOD'];
@@ -456,5 +381,3 @@ echo "Controller: ".$controller."\n";
 //echo "Store: ".$store."\n";
 //echo "Store URI: ".$storeURI."\n";
 //echo "Controller: ".$controller."\n";
->>>>>>> master
->>>>>>> master

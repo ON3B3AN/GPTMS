@@ -1,122 +1,21 @@
 <?php
-<<<<<<< HEAD
-/*function select($game_id) {
-=======
-<<<<<<< HEAD
-function insert($course_id, $party_id) {
-    global $db;
-    $query = 'INSERT INTO golf_game (Course_course_id, Party_party_id) VALUES (?, ?)';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bind_param('i', $course_id, $party_id);
-=======
-function partyInsert($course_id, $size, $longitude,$latitude, $golf_cart) {
+function insertParty($course_id, $size, $longitude,$latitude, $golf_cart) {
     global $db;
     $query = 'INSERT INTO party (Course_course_id, date, start_time, size, longitude, latitude, golf_cart) VALUES (?, CURRENT_DATE(), CURRENT_TIME(), ?, ?, ?, ?)';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sssss', $course_id, $size, $longitude,$latitude, $golf_cart);
->>>>>>> master
+        $statement->bind_param('sssss', $course_id, $size, $longitude, $latitude, $golf_cart);
         $statement->execute();
-        $row_num = $statement->insert_id;
+        $last_id = $statement->insert_id;
         $statement->close();
 
-        return $row_num;
+        return $last_id;
     } catch (Exception $ex) {
         exit;
     }
 }
 
-<<<<<<< HEAD
-function select($game_id) {
->>>>>>> master
-    global $db;
-    $query = 'SELECT * FROM golf_game WHERE game_id = ?';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bind_param('i', $game_id);
-        $statement->execute();
-        $result = $statement->get_result();
-        $res = array();
-        while($row = $result->fetch_assoc()){
-            array_push($res, $row);
-        }
-        $statement->close();
-        return $res;
-    } catch (Exception $ex) {
-        exit;
-    }
-}
-<<<<<<< HEAD
-*/
-
-function partyInsert($course_id, $size, $longitude,$latitude, $golf_cart) {
-    global $db;
-    $query = 'INSERT INTO party (Course_course_id, date, start_time, size, longitude, latitude, golf_cart) VALUES (?, CURRENT_DATE(), CURRENT_TIME(), ?, ?, ?, ?)';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bind_param('sssss', $course_id, $size, $longitude,$latitude, $golf_cart);
-=======
-
-function getID(){
-    global $db;
-    $query = 'SELECT LAST_INSERT_ID();';
-    
-    try{
-        $statement = $db->prepare($query);
-        $statement->execute();
-        $result = $statement->get_result();
-        $res = array();
-        while($row = $result->fetch_assoc()){
-            array_push($res, $row);
-        }
-        $statement->close();
-        return $result;
-
-    } catch (Exception $ex) {
-        exit;
-    }
-}
-
-function partyInsert($size) {
-    global $db;
-    $query = 'INSERT INTO party (size, party_stime) VALUES (?, NOW());';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bind_param('i', $size);
->>>>>>> master
-        $statement->execute();
-        $row_num = $statement->insert_id;
-        $statement->close();
-
-<<<<<<< HEAD
-        return $row_num;
-=======
-//        return $row_num;
-        
-        
-        return getID();
->>>>>>> master
-    } catch (Exception $ex) {
-        exit;
-    }
-}
-
-<<<<<<< HEAD
-=======
-function playerInsert($party_id, $user_id, $handicap){
-    global $db;
-    $query = 'INSERT INTO player (Party_party_id, User_user_id, handicap) VALUES (?, ?, ?)';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bind_param('iii', $party_id, $user_id, $handicap);
-        $statement->execute();
-        $row_num = $statement->insert_id;
-        $statement->close();
-
-=======
->>>>>>> master
-function insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart){
+function insertPlayer($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart){
     global $db;
     $party_id = partyInsert($course_id, $size, $longitude, $latitude, $golf_cart);
     $query = 'INSERT INTO player (Party_party_id, User_user_id, handicap) VALUES (?, ?, ?)';
@@ -126,17 +25,42 @@ function insert($user_id, $handicap, $course_id, $size, $longitude, $latitude, $
         $statement->execute();
         $row_num = $statement->insert_id;
         $statement->close();
-    //    $insert_array = [$row_num, $course_id, $size, $longitude, $latitude, $golf_cart];
-<<<<<<< HEAD
-=======
->>>>>>> master
->>>>>>> master
+
         return $row_num;
     } catch (Exception $ex) {
         exit;
     }
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> master
+function updateScore($stroke, $total_score, $hole_id, $user_id, $party_id) {
+    global $db;
+    $query = 'UPDATE score SET stroke = ?, total_score = ? WHERE Hole_hole_id = ? AND Player_User_user_id = ? AND Player_Party_party_id = ?';
+	try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sssss', $stroke, $total_score, $hole_id, $user_id, $party_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+	
+function insertScore($hole_id, $user_id, $party_id, $stroke, $total_score) {
+    global $db;
+    $query = 'INSERT INTO score (Hole_hole_id, Player_User_user_id, Player_Party_party_id, stroke, total_score)'
+            . 'VALUES (?, ?, ?, ?, ?)';
+	try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sssss', $hole_id, $user_id, $party_id, $stroke, $total_score);
+        $statement->execute();
+        $row_num = $statement->insert_id;  
+        $statement->close();
+     
+        return $row_num;
+    } catch (Exception $ex) {
+        exit;
+    }	
+}

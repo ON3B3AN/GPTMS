@@ -1,4 +1,4 @@
-# Users Route/Endpoint
+# User Management Routes/Endpoints
 
 ## [LOGIN]
 ### URI [POST] : http://localhost/user-management/users/login
@@ -34,7 +34,7 @@
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
 
-## [HISTORY SELECT ALL]
+## [SELECT ALL HISTORY]
 ### URI [GET] : http://localhost/user-management/users/1/history
 * This URI requests the "user-management" document, “users” collection, "1" collection URI (represents user_id), and the "history" store. This request must not include any data.
 #### Example Input: N/A
@@ -48,7 +48,7 @@
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
 
-## [USERS SELECT ALL]
+## [SELECT ALL USERS]
 ### URI [GET] : http://localhost/user-management/users
 * This URI requests the "user-management" document and the “users” collection. This request must not include any data.
 #### Example Input: N/A
@@ -62,7 +62,7 @@
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
 
-## [PROFILE UPDATE]
+## [UPDATE USER]
 ### URI [PUT] : http://localhost/user-management/users/1
 * This URI requests the "user-management" document, “users” collection, "1" collection URI (represents user_id). This request must include relevant data.
 #### Example Input: {"data":{"first_name":"Joe","last_name":"Blow","email":"jkk@gmail.com","password":"1234","check_password":"1234","phone":"000-000-0000"}}
@@ -82,7 +82,7 @@
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
 
-## [PROFILE DELETE]
+## [DELETE USER]
 ### URI [DELETE] : http://localhost/user-management/users/1
 * This URI requests the "user-management" document, “users” collection, "1" collection URI (represents user_id). This request must not include any data.
 #### Example Input: N/A
