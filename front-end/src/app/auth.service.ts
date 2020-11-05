@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {catchError, map} from "rxjs/operators";
-import {User} from "./user";
+import {catchError, map} from 'rxjs/operators';
+import {User} from './user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost/GPTMS/api/users';  // URL to web api
+  private baseUrl = 'http://localhost/GPTMS/api/user-management/users';  // URL to web api
   private userSubject: BehaviorSubject<any>;
   public user: Observable<User>;
 
@@ -33,7 +33,7 @@ export class AuthService {
       }),
         catchError(this.handleError));
   }
-  public isLoggedIn() {
+  public isLoggedIn(): boolean {
     return localStorage.getItem('user') !== null;
   }
 

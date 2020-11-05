@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of} from "rxjs";
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Course } from './course';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
-  private courseUrl = 'http://localhost/GPTMS/api/courses';  // URL to web api
+  private courseUrl = 'http://localhost/GPTMS/api/course-management/courses';  // URL to web api
 
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor( private http: HttpClient ) { }
 
   getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(this.courseUrl + '/')

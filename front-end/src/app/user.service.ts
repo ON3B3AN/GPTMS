@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, of} from "rxjs";
-import {catchError, tap} from "rxjs/operators";
-import {User} from "./user";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable, of} from 'rxjs';
+import {catchError, tap} from 'rxjs/operators';
+import {User} from './user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private userUrl = 'http://localhost/GPTMS/api/users';  // URL to web api
+  private userUrl = 'http://localhost/GPTMS/api/user-management/users';  // URL to web api
 
 
   httpOptions = {

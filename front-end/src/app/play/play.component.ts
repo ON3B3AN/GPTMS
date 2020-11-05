@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Course} from "../course";
+import {CourseService} from "../course.service";
 
 @Component({
   selector: 'app-play',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlayComponent implements OnInit {
 
-  constructor() { }
+  courses: Course[];
+  play_tee: string
+  constructor(private courseService: CourseService) { }
 
   ngOnInit(): void {
+    this.courseService.getCourses()
+      .subscribe(data => this.courses = data);
   }
-
+  courseChange(e){
+    this.courses = e.target.data
 }
+}
+
