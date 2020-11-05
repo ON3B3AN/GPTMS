@@ -909,7 +909,6 @@ VALUES
 -- Player #1 -------------------------
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -918,13 +917,11 @@ VALUES
 (1,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -933,13 +930,11 @@ VALUES
 (2,
 1,
 1,
-1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -948,13 +943,11 @@ VALUES
 (3,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -963,13 +956,11 @@ VALUES
 (4,
 1,
 1,
-1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -978,13 +969,11 @@ VALUES
 (5,
 1,
 1,
-1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -993,13 +982,11 @@ VALUES
 (6,
 1,
 1,
-1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1008,13 +995,11 @@ VALUES
 (7,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1023,13 +1008,11 @@ VALUES
 (8,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1038,13 +1021,11 @@ VALUES
 (9,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1053,13 +1034,11 @@ VALUES
 (10,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1068,13 +1047,11 @@ VALUES
 (11,
 1,
 1,
-1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1083,13 +1060,11 @@ VALUES
 (12,
 1,
 1,
-1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1098,13 +1073,11 @@ VALUES
 (13,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1113,13 +1086,11 @@ VALUES
 (14,
 1,
 1,
-1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1128,13 +1099,11 @@ VALUES
 (15,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1143,13 +1112,11 @@ VALUES
 (16,
 1,
 1,
-1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1158,20 +1125,17 @@ VALUES
 (17,
 1,
 1,
-1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
 `total_score`)
 VALUES
 (18,
-1,
 1,
 1,
 5,
@@ -1179,7 +1143,6 @@ VALUES
 -- Player #2 ----------------------------
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1187,14 +1150,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (1,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1202,14 +1163,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (2,
 2,
-2,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1217,14 +1176,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (3,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1232,14 +1189,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (4,
 2,
-2,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1247,14 +1202,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (5,
 2,
-2,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1262,14 +1215,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (6,
 2,
-2,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1277,14 +1228,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (7,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1292,14 +1241,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (8,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1307,14 +1254,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (9,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1322,14 +1267,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (10,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1337,14 +1280,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (11,
 2,
-2,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1352,14 +1293,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (12,
 2,
-2,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1367,14 +1306,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (13,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1382,14 +1319,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (14,
 2,
-2,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1397,14 +1332,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (15,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1412,14 +1345,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (16,
 2,
-2,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1427,21 +1358,18 @@ INSERT INTO `mydb`.`score`
 VALUES
 (17,
 2,
-2,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
 `total_score`)
 VALUES
 (18,
-2,
 2,
 1,
 5,
@@ -1449,7 +1377,6 @@ VALUES
 -- Player #3 ----------------------------
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1457,14 +1384,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (1,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1472,14 +1397,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (2,
 3,
-3,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1487,14 +1410,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (3,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1502,14 +1423,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (4,
 3,
-3,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1517,14 +1436,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (5,
 3,
-3,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1532,14 +1449,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (6,
 3,
-3,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1547,14 +1462,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (7,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1562,14 +1475,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (8,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1577,14 +1488,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (9,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1592,14 +1501,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (10,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1607,14 +1514,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (11,
 3,
-3,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1622,14 +1527,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (12,
 3,
-3,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1637,14 +1540,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (13,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1652,14 +1553,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (14,
 3,
-3,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1667,14 +1566,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (15,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1682,14 +1579,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (16,
 3,
-3,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1697,21 +1592,18 @@ INSERT INTO `mydb`.`score`
 VALUES
 (17,
 3,
-3,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
 `total_score`)
 VALUES
 (18,
-3,
 3,
 1,
 5,
@@ -1719,7 +1611,6 @@ VALUES
 -- Player #4 ----------------------------
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1727,14 +1618,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (1,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1742,14 +1631,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (2,
 4,
-4,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1757,14 +1644,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (3,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1772,14 +1657,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (4,
 4,
-4,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1787,14 +1670,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (5,
 4,
-4,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1802,14 +1683,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (6,
 4,
-4,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1817,14 +1696,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (7,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1832,14 +1709,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (8,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1847,14 +1722,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (9,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1862,14 +1735,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (10,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1877,14 +1748,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (11,
 4,
-4,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1892,14 +1761,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (12,
 4,
-4,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1907,14 +1774,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (13,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1922,14 +1787,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (14,
 4,
-4,
 1,
 6,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1937,14 +1800,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (15,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1952,14 +1813,12 @@ INSERT INTO `mydb`.`score`
 VALUES
 (16,
 4,
-4,
 1,
 5,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
@@ -1967,21 +1826,18 @@ INSERT INTO `mydb`.`score`
 VALUES
 (17,
 4,
-4,
 1,
 7,
 0);
 
 INSERT INTO `mydb`.`score`
 (`Hole_hole_id`,
-`Player_player_id`,
 `Player_User_user_id`,
 `Player_Party_party_id`,
 `stroke`,
 `total_score`)
 VALUES
 (18,
-4,
 4,
 1,
 5,

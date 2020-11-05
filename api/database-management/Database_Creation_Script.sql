@@ -92,11 +92,10 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Player`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Player` (
-  `player_id` INT NOT NULL AUTO_INCREMENT,
   `User_user_id` INT NOT NULL,
   `Party_party_id` INT NOT NULL,
   `handicap` INT NULL,
-  PRIMARY KEY (`player_id`, `User_user_id`, `Party_party_id`),
+  PRIMARY KEY (`User_user_id`, `Party_party_id`),
   INDEX `fk_Player_User_idx` (`User_user_id` ASC) ,
   INDEX `fk_Player_Party1_idx` (`Party_party_id` ASC) ,
   CONSTRAINT `fk_Player_User`
@@ -116,24 +115,22 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Score`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Score` (
-  `score_id` INT NOT NULL AUTO_INCREMENT,
   `Hole_hole_id` INT NOT NULL,
-  `Player_player_id` INT NOT NULL,
   `Player_User_user_id` INT NOT NULL,
   `Player_Party_party_id` INT NOT NULL,
   `stroke` INT NOT NULL,
   `total_score` INT NOT NULL,
-  PRIMARY KEY (`score_id`, `Hole_hole_id`, `Player_player_id`, `Player_User_user_id`, `Player_Party_party_id`),
+  PRIMARY KEY (`Hole_hole_id`, `Player_User_user_id`, `Player_Party_party_id`),
   INDEX `fk_Score_Hole1_idx` (`Hole_hole_id` ASC) ,
-  INDEX `fk_Score_Player1_idx` (`Player_player_id` ASC, `Player_User_user_id` ASC, `Player_Party_party_id` ASC) ,
+  INDEX `fk_Score_Player1_idx` (`Player_User_user_id` ASC, `Player_Party_party_id` ASC) ,
   CONSTRAINT `fk_Score_Hole1`
     FOREIGN KEY (`Hole_hole_id`)
     REFERENCES `mydb`.`Hole` (`hole_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Score_Player1`
-    FOREIGN KEY (`Player_player_id` , `Player_User_user_id` , `Player_Party_party_id`)
-    REFERENCES `mydb`.`Player` (`player_id` , `User_user_id` , `Party_party_id`)
+    FOREIGN KEY (`Player_User_user_id` , `Player_Party_party_id`)
+    REFERENCES `mydb`.`Player` (`User_user_id` , `Party_party_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

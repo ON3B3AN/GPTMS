@@ -62,13 +62,15 @@ export class TrackComponent implements OnInit, AfterViewInit {
     });
 
     tiles.addTo(this.map);
+    let i = 1;
     this.holes.forEach(hole => {
       L.polygon(hole, {
         weight: 1,
         fillOpacity: 0.7,
         color: 'red',
         dashArray: '3'
-      }).addTo(this.map);
+      }).bindTooltip("Hole "+i).addTo(this.map);
+      i++;
     });
   }
 

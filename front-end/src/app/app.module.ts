@@ -6,6 +6,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import {MatCardModule} from '@angular/material/card';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatIconModule} from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,6 +45,7 @@ import { EditprofileComponent } from './profile/editprofile/editprofile.componen
     FormsModule,
     HttpClientModule,
     MatCardModule,
+    MatIconModule,
     MatTableModule,
     MatToolbarModule,
     NgbModule,

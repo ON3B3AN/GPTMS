@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {CourseService} from "../../course.service";
+import {Course} from "../../course";
 
 @Component({
   selector: 'app-manage-courses',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./manage-courses.component.sass']
 })
 export class ManageCoursesComponent implements OnInit {
+  courses: Course[];
 
-  constructor() { }
+  constructor(private courseService: CourseService) { }
 
   ngOnInit(): void {
+    this.courseService.getCourses()
+      .subscribe(data => this.courses = data);
   }
+
+  editCourse(id): void {}
+
+  deleteCourse(id): void {}
 
 }
