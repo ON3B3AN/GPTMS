@@ -305,7 +305,7 @@ switch ($function) {
         
         if ($result != 0) {
             http_response_code(200);
-            echo http_response_code()." Player and Party added sucessfully!";
+            echo http_response_code()." Player and Party added successfully!";
         }
         else {
             header('Accept: application/json');

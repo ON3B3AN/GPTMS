@@ -1,6 +1,6 @@
 # User Management Routes/Endpoints
 
-## [LOGIN]
+## [LOG IN]
 ### URI [POST] : http://localhost/user-management/users/login
 * This URI requests the "user-management" document, "users" collection, and the "login" controller. This request must include relevant data.
 #### Example Input (app/json): {"data":{"email":"tthayer@oakland.edu","password":"1234"}}
@@ -14,13 +14,13 @@
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
 
-## [LOGOUT]
+## [LOG OUT]
 ### URI [DELETE] : http://localhost/user-management/users/logout
 * This URI requests the "user-management" document, “users” collection, and the “logout” controller. This request must not include any data.
 #### Example Input: N/A
 #### Output: N/A
 
-## [SIGNUP]
+## [SIGN UP]
 ### URI [POST] : http://localhost/user-management/users
 * This URI requests the "user-management" document and the “users” collection.  This request must include relevant data.
 #### Example Input (app/json): {"data":{"first_name":"Joe","last_name":"Blow","phone":"298-999-4343","email":"email@gmail.com","password":"1234"}}
@@ -34,7 +34,7 @@
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
 
-## [SELECT ALL HISTORY]
+## [SELECT ALL USER HISTORY]
 ### URI [GET] : http://localhost/user-management/users/1/history
 * This URI requests the "user-management" document, “users” collection, "1" collection URI (represents user_id), and the "history" store. This request must not include any data.
 #### Example Input: N/A
@@ -68,8 +68,8 @@
 #### Example Input: {"data":{"first_name":"Joe","last_name":"Blow","email":"jkk@gmail.com","password":"1234","check_password":"1234","phone":"000-000-0000"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Profile updated successfully
-#### Output: Successful
+    * Body (text/html): 200: Profile updated successfully
+#### Output: Successful (no changes were made)
     * Header: 204: No content
     * Body: N/A
 #### Output: Unsuccessful 
@@ -88,7 +88,7 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Profile deleted successfully
+    * Body (text/html): 200: Profile deleted successfully
 #### Output: Unsuccessful 
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, profile not deleted

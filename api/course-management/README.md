@@ -49,7 +49,7 @@
 #### Output: Successful
     * Header: 200: Ok
     * Body (text/html): 200: Course updated successfully
-#### Output: Successful
+#### Output: Successful (no changes were made)
     * Header: 204: No content
     * Body: N/A
 #### Output: Unsuccessful
