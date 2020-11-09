@@ -2,7 +2,7 @@
 - Makes use of HTTP verbs and headers for interactions with resources
 - Services return appropriate HTTP response statuses for errors based on the error type
 
-### REST Resource URI Case Templates
+### REST URI Case Templates
     * Case 4 -> http://localhost/GPTMS/api/document/collection
     * Case 4 -> http://localhost/GPTMS/api/document/collection?filter={filterVal}
     * Case 5 -> http://localhost/GPTMS/api/document/collection/{collectionURI}
