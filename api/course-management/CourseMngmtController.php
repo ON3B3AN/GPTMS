@@ -49,7 +49,7 @@ $url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
 
 
 /**************************************************************************************
- * -------- REST URI Case Templates --------
+ * -------- URI Case Templates --------
  * Case 4 -> http://localhost/GPTMS/api/document/collection
  * Case 4 -> http://localhost/GPTMS/api/document/collection?filter={filterVal}
  * Case 5 -> http://localhost/GPTMS/api/document/collection/{collectionURI}
