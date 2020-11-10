@@ -1,1 +1,23 @@
-<p>game works!</p>
+<mat-tab-group>
+  <mat-tab *ngFor="let hole of holes" label="#{{hole}}">
+    <h3 id="holeNum">Hole #{{hole}}</h3>
+    <p id="holeInfo">Par: # | # Yards | Men's Handicap: # | Ladies' Handicap: #</p>
+    <p>Tee Name: Distance</p>
+    <p>[...]</p>
+    <p>Hole #{{hole}} Tips: </p>
+    <p>[...]</p>
+
+    <form id="scoreForm">
+    <table id="scoreCard">
+      <tr>
+        <th>Player</th>
+        <th>Strokes</th>
+      </tr>
+      <tr>
+        <td><label>Name</label></td>
+        <td><input type="number" placeholder="Strokes" min="1" name="score[player][{{hole}}]"/></td>
+      </tr>
+    </table>
+    </form>
+  </mat-tab>
+</mat-tab-group>
