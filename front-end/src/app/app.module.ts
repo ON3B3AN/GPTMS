@@ -7,6 +7,10 @@ import { MatTableModule } from '@angular/material/table';
 import {MatCardModule} from '@angular/material/card';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatIconModule} from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { LayoutModule } from '@angular/cdk/layout';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,7 +25,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CourseDetailComponent } from './course-detail/course-detail.component';
-import { EditprofileComponent } from './profile/editprofile/editprofile.component';
+
+import { ManageCourseComponent } from './manage-course/manage-course.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +41,10 @@ import { EditprofileComponent } from './profile/editprofile/editprofile.componen
     NavbarComponent,
     PlayComponent,
     ProfileComponent,
-    EditprofileComponent,
-    CourseDetailComponent
+
+    CourseDetailComponent,
+    ManageCourseComponent,
+    GameComponent
   ],
   imports: [
     AppRoutingModule,
@@ -49,7 +57,11 @@ import { EditprofileComponent } from './profile/editprofile/editprofile.componen
     MatTableModule,
     MatToolbarModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatGridListModule,
+    MatMenuModule,
+    MatButtonModule,
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
