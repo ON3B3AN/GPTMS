@@ -25,8 +25,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CourseDetailComponent } from './course-detail/course-detail.component';
-import { EditprofileComponent } from './profile/editprofile/editprofile.component';
+
 import { ManageCourseComponent } from './manage-course/manage-course.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -40,9 +41,10 @@ import { ManageCourseComponent } from './manage-course/manage-course.component';
     NavbarComponent,
     PlayComponent,
     ProfileComponent,
-    EditprofileComponent,
+
     CourseDetailComponent,
-    ManageCourseComponent
+    ManageCourseComponent,
+    GameComponent
   ],
   imports: [
     AppRoutingModule,

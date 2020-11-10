@@ -11,6 +11,7 @@ import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignupComponent } from './signup/signup.component';
 import { TrackComponent } from './track/track.component';
+import { GameComponent } from './game/game.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'play', component: PlayComponent, canActivate: [AuthGuard] },
+  { path: 'game', component: GameComponent, canActivate: [AuthGuard] },
   { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) }
 ];
 
