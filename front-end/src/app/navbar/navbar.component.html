@@ -1,4 +1,4 @@
-<div *ngIf="router.url !== '/login'">
+<div *ngIf="(router.url !== '/login' && router.url !== '/signup')">
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
   <a class="navbar-brand" routerLink="/" routerLinkActive="active">GPTMS</a>
   <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
