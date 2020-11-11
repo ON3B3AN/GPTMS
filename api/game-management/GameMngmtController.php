@@ -331,7 +331,12 @@ switch ($function) {
             echo http_response_code().": Error, score not updated";
         }
         break;
-    
+    case "player-locations":
+        $course_id = $collectionURI;
+        
+        
+        
+        break;
 }
 
 

@@ -64,3 +64,20 @@ function insertScore($hole_id, $user_id, $party_id, $stroke, $total_score) {
         exit;
     }	
 }
+
+//function playerLocations() {
+//    global $db;
+//    $query = 'SELECT * FROM user';
+//    try {
+//        $statement = $db->prepare($query);
+//        $statement->execute();
+//        $result = $statement->get_result();
+//        $res = array();
+//        $row = $result->fetch_assoc();
+//        $statement->close();
+//
+//        return $res;
+//    } catch (Exception $ex) {
+//        exit;
+//    }
+//}
