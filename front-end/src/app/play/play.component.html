@@ -24,9 +24,9 @@
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">Round Type:</label>
-              <select class="form-control" id="requestFormControlSelect1" (change)="populateRange($event)" formControlName = "hole" >
+              <select class="form-control" id="requestFormControlSelect1" formControlName = "hole" >
                 <option>Select</option>
-                <option *ngFor="let round of rounds" [ngValue]="round">{{round}}</option>
+                <option *ngFor="let round of rounds" [ngValue]="round.key">{{round.value}}</option>
               </select>
             </div>
             <div class="form-group">

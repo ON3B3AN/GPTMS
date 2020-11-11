@@ -18,7 +18,7 @@ export class PlayComponent implements OnInit {
   tees: any = [];
   holes: Hole[] = [];
   courses: Course[] = [];
-  rounds = ['Front 9', 'Back 9', 'Whole 18'];
+  rounds = [{key: '1-9', value: 'Front 9'}, {key: '10-18', value: 'Back 9'}, {key: '1-18', value: 'Whole 18'}];
   id: number;
   start: number;
   end: number;
@@ -43,11 +43,6 @@ export class PlayComponent implements OnInit {
   populateTees(e) {
     this.courseService.getTees(this.playForm.controls['course'].value)
     .subscribe(data => this.tees = data);
-  }
-
-  populateRange(e) {
-    const selectedRound = e.target.value;
-    console.log(selectedRound)
   }
 
   onSubmit() {

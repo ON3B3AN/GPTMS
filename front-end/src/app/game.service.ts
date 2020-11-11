@@ -9,15 +9,26 @@ import {User} from './user';
   providedIn: 'root'
 })
 export class GameService {
-
-  private baseUrl = 'http://localhost/course-management/courses/1/holes';
+  private gameUrl = 'http://localhost/game-management/games';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   constructor(private router: Router, private http: HttpClient) {}
 
-  public begin() {
+  startGame() {
+
+  }
+
+  endGame() {
+
+  }
+
+  addScore() {
+
+  }
+
+  updateScore() {
 
   }
 }
