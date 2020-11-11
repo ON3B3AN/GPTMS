@@ -68,7 +68,7 @@
     * Body (app/json): Returns party round (Course, Holes, and Tees)
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, no round found
+    * Body (text/html): 404: Error, no round started
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized

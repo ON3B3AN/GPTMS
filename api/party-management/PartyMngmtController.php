@@ -375,7 +375,7 @@ switch ($function) {
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, no round found";
+            echo http_response_code().": Error, no round started";
         }
         break;
 }
