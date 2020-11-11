@@ -1,6 +1,12 @@
+import {Course} from './course';
+
 export interface Hole {
-  id: number;
-  num: number;
-  par: number;
-  distance: number;
+  hole_id: number;
+  course_id: number;
+  hole_number: number;
+  hole_par: number;
+  latitude: number;
+  longitude: number;
+  avg_pop: number;
+  hole_distance: number;
 }
