@@ -1,8 +1,8 @@
-# Game Management Routes/Endpoints
+# Party Management Routes/Endpoints
 
 ## [INSERT PLAYER & PARTY]
-### URI [POST] : http://localhost/game-management/games
-* This URI requests the "game-management" document and “games” collection. This request must include relevant data.
+### URI [POST] : http://localhost/party-management/parties
+* This URI requests the "party-management" document and “parties” collection. This request must include relevant data.
 #### Example Input: {"data":{"user_id":"1","handicap":"15","course_id":"1","size":"4","longitude":"0","latitude":"0","golf_cart":"TRUE"}}
 #### Output: Successful
     * Header: 200: Ok
@@ -15,8 +15,8 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [INSERT SCORE]
-### URI [POST] : http://localhost/game-management/games/1/scores
-* This URI requests the "game-management" document, “games” collection, "1" collection URI, and "scores" store. This request must include relevant data.
+### URI [POST] : http://localhost/party-management/parties/1/scores
+* This URI requests the "party-management" document, “parties” collection, "1" collection URI (represents party_id), and "scores" store. This request must include relevant data.
 #### Example Input: {"data":{"hole_id":"1","user_id":"1","party_id":"1","stroke":"6","total_score":"10"}}
 #### Output: Successful
     * Header: 200: Ok
@@ -29,8 +29,8 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [UPDATE SCORE]
-### URI [PUT] : http://localhost/game-management/games/1/scores
-* This URI requests the "game-management" document, “games” collection, "1" collection URI, and "scores" store. This request must include relevant data.
+### URI [PUT] : http://localhost/party-management/parties/1/scores
+* This URI requests the "party-management" document, “parties” collection, "1" collection URI (represents party_id), and "scores" store. This request must include relevant data.
 #### Example Input: {"data":{"hole_id":"1","user_id":"1","party_id":"1","stroke":"6","total_score":"10"}}
 #### Output: Successful
     * Header: 200: Ok
@@ -41,6 +41,20 @@
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, score not updated
+#### Output: Server Error
+    * Header: 501: Not Implemented
+    * Body (text/html): 501: Error, service not recognized
+
+## [START ROUND]
+### URI [POST] : http://localhost/party-management/parties/start-round
+* This URI requests the "party-management" document, “parties” collection, and "start-round" controller. This request must include relevant data.
+#### Example Input: {"data":{"course_id":"1","start_hole":"1","end_hole":"9"}}
+#### Output: Successful
+    * Header: 200: Ok
+    * Body (app/json): Returns party round (Course, Holes, and Tees)
+#### Output: Unsuccessful
+    * Header: 404: Page Not Found
+    * Body (text/html): 404: Error, no round found
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized

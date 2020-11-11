@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 require('../database-management/databaseConnect.php');
-require('./GameMngmtQueries.php');
+require('./PartyMngmtQueries.php');
 
 
 /*****************************************
@@ -64,12 +64,12 @@ $url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
  * URL length [6] -> Store
  * URL length [7] -> Store URI OR Controller
  * -------- Resource Options --------
- * Document => game-management
+ * Document => party-management
  * Collection => games
- * Collection URI => party_id
+ * Collection URI => party_id, course_id
  * Store => scores
  * Store URI => N/A
- * Controller => N/A
+ * Controller => start-round
 ***************************************************************************************/
 
 // Switch cases based on URI length
@@ -222,13 +222,17 @@ else {
 }
 
 if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "insertPlayer";
     }
-    // GPTMS/api/game-management/games/1/scores
-    elseif ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties/1/scores
+    elseif ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
         $function = "insertScore";
+    }
+    // GPTMS/api/party-management/parties/start-round
+    elseif ($document == "party-management" && $collection == "parties" && $controller == "start-round" && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "startRound";
     }
     else {
         $function = "error";
@@ -238,8 +242,8 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     $function = "error";
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    // GPTMS/api/game-management/games/1/scores
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties/1/scores
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
         $function = "updateScore";
     }
     else {
@@ -311,7 +315,7 @@ switch ($function) {
         $total_score = $input->data->total_score;
         $hole_id = $input->data->Hole_hole_id;
         $user_id = $input->data->Player_User_user_id;
-        $party_id = $input->data->Player_Party_party_id;
+        $party_id = $collectionURI;
         
         // Get results from SQL query
         $result = updateScore($stroke, $total_score, $hole_id, $user_id, $party_id);
@@ -335,7 +339,27 @@ switch ($function) {
         $course_id = $collectionURI;
         
         
+        break;
+    case "startRound":
+        $course_id = $input->data->course_id;
+        $start_hole = $input->data->start_hole;
+        $end_hole = $input->data->end_hole;
         
+        // Get results from SQL query
+        $result = startRound($course_id, $start_hole, $end_hole);
+        
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+            
+            // Return game round data as JSON array
+            echo json_encode($result);
+        } 
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, no game round found";
+        }
         break;
 }
 

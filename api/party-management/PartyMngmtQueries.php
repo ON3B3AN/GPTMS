@@ -65,7 +65,31 @@ function insertScore($hole_id, $user_id, $party_id, $stroke, $total_score) {
     }	
 }
 
-//function playerLocations() {
+function startRound($course_id, $start_hole, $end_hole) {
+    global $db;
+    $query = 'SELECT course_name, address, phone, hole_number, hole_par, avg_pop, tee_name, distance_to_pin
+                FROM course 
+                join hole on course_id = Course_course_id
+                join tee on hole_id = Hole_hole_id
+                WHERE Course_course_id = ? 
+                AND hole_number BETWEEN ? AND ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('iii', $course_id, $start_hole, $end_hole);
+        $statement->execute();
+        $result = $statement->get_result();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
+        $statement->close();
+        return $res;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+//function selectActiveParties() {
 //    global $db;
 //    $query = 'SELECT * FROM user';
 //    try {
