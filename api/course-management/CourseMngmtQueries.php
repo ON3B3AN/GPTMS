@@ -113,7 +113,7 @@ function selectTees($course_id) {
     $query = 'SELECT DISTINCT(tee_name)
                 FROM tee
                 JOIN hole ON hole_id = Hole_hole_id
-                JOIN course ON course_id = Course_course_id
+                JOIN course ON Hole.course_id = Course.course_id
                 WHERE course_id = ?;';
     try {
         $statement = $db->prepare($query);
