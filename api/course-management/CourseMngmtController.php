@@ -243,8 +243,8 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "selectCourse";
     }
-    // GPTMS/api/course-management/courses/1/holes
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
+    // GPTMS/api/course-management/courses/1/tees
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "tees" && $storeURI == NULL) {
         $function = "selectTees";
     }
     else {

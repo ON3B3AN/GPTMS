@@ -88,8 +88,8 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [SELECT TEES]
-### URI [GET] : http://localhost/course-management/courses/1/holes
-* This URI requests the "course-management" document, “courses” collection, "1" collection URI (represents course_id), "holes" store. This request must not include any data.
+### URI [GET] : http://localhost/course-management/courses/1/tees
+* This URI requests the "course-management" document, “courses” collection, "1" collection URI (represents course_id), "tees" store. This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
