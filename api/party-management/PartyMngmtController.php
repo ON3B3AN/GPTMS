@@ -65,7 +65,7 @@ $url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
  * URL length [7] -> Store URI OR Controller
  * -------- Resource Options --------
  * Document => party-management
- * Collection => games
+ * Collection => parties
  * Collection URI => party_id, course_id
  * Store => scores
  * Store URI => N/A
@@ -239,7 +239,13 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
-    $function = "error";
+    // GPTMS/api/party-management/parties
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "selectActiveParties";
+    }
+    else {
+        $function = "error";
+    }
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
     // GPTMS/api/party-management/parties/1/scores
@@ -335,10 +341,21 @@ switch ($function) {
             echo http_response_code().": Error, score not updated";
         }
         break;
-    case "player-locations":
-        $course_id = $collectionURI;
+    case "selectActiveParties":
+        // Get results from SQL query
+        $result = selectActiveParties();
         
-        
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+            
+            // Return active parties as JSON array
+            echo json_encode($result);
+        } 
+        else {
+            http_response_code(404);
+            echo http_response_code().": Error, no active parties found";
+        }
         break;
     case "startRound":
         $course_id = $input->data->course_id;
@@ -358,7 +375,7 @@ switch ($function) {
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, no game round found";
+            echo http_response_code().": Error, no round found";
         }
         break;
 }

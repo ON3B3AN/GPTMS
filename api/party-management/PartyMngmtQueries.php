@@ -89,19 +89,20 @@ function startRound($course_id, $start_hole, $end_hole) {
     }
 }
 
-//function selectActiveParties() {
-//    global $db;
-//    $query = 'SELECT * FROM user';
-//    try {
-//        $statement = $db->prepare($query);
-//        $statement->execute();
-//        $result = $statement->get_result();
-//        $res = array();
-//        $row = $result->fetch_assoc();
-//        $statement->close();
-//
-//        return $res;
-//    } catch (Exception $ex) {
-//        exit;
-//    }
-//}
+function selectActiveParties() {
+    global $db;
+    $query = 'SELECT * FROM party WHERE end_time IS NULL';
+    try {
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $result = $statement->get_result();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
+        $statement->close();
+        return $res;
+    } catch (Exception $ex) {
+        exit;
+    }
+}

@@ -1,5 +1,19 @@
 # Party Management Routes/Endpoints
 
+## [SELECT ACTIVE PARTIES]
+### URI [GET] : http://localhost/party-management/parties
+* This URI requests the "party-management" document and “parties” collection. This request must not include any data.
+#### Example Input: N/A
+#### Output: Successful
+    * Header: 200: Ok
+    * Body (app/json): 200: Returns all active parties
+#### Output: Unsuccessful
+    * Header: 404: Page Not Found
+    * Body (text/html): 404: Error, no active parties found
+#### Output: Server Error
+    * Header: 501: Not Implemented
+    * Body (text/html): 501: Error, service not recognized
+
 ## [INSERT PLAYER & PARTY]
 ### URI [POST] : http://localhost/party-management/parties
 * This URI requests the "party-management" document and “parties” collection. This request must include relevant data.
