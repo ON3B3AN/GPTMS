@@ -47,7 +47,7 @@ export class CourseService {
   }
 
   getTees(id: number): Observable<Course> {
-    const url = `${this.courseUrl}/${id}/holes`;
+    const url = `${this.courseUrl}/${id}/tees`;
     return this.http.get<Course>(url)
       .pipe(
         tap(_ => console.log(`fetched Tee id=${id}`)),

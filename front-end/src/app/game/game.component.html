@@ -1,11 +1,11 @@
 <mat-tab-group>
-  <mat-tab class="navNumbers" *ngFor="let hole of holes" label="#{{hole}}">
-    <h3 id="holeNum">Hole #{{hole}}</h3>
-    <p id="holeInfo">Par: [...] • [...] Yards</p>
+  <mat-tab class="navNumbers" *ngFor="let hole of course.holes" label="#{{hole.hole_number}}">
+    <h3 id="holeNum">Hole #{{hole.hole_number}}</h3>
+    <p id="holeInfo">Par: {{hole.hole_par}} • [...] Yards</p>
     <p id="holeInfo">Men's Handicap: [...] • Ladies' Handicap: [...]</p>
     <p>Tee Name: Distance</p>
     <p>[...]</p>
-    <p>Hole #{{hole}} Tips: </p>
+    <p>Hole #{{hole.hole_number}} Tips: </p>
     <p>[...]</p>
 
     <form id="scoreForm">
@@ -16,7 +16,7 @@
       </tr>
       <tr>
         <td><label>Name</label></td>
-        <td><input type="number" placeholder="Strokes" min="1" name="score[player][{{hole}}]"/></td>
+        <td><input type="number" placeholder="Strokes" min="1" name="score[player][{{hole.hole_number}}]"/></td>
       </tr>
     </table>
     </form>

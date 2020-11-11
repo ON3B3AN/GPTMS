@@ -8,5 +8,5 @@ export interface Course {
   address: string;
   phone_number: string;
   course_tee: string;
-  hole?: Hole[];
+  holes?: Hole[];
 }
