@@ -11,6 +11,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
+import {MatTabsModule} from '@angular/material/tabs'; 
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +30,7 @@ import { CourseDetailComponent } from './course-detail/course-detail.component';
 
 import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { GameComponent } from './game/game.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,9 @@ import { GameComponent } from './game/game.component';
     MatGridListModule,
     MatMenuModule,
     MatButtonModule,
-    LayoutModule
+    LayoutModule,
+    MatTabsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

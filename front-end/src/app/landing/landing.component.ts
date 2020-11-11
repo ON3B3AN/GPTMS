@@ -16,16 +16,16 @@ export class LandingComponent {
       if (matches) {
         this.columns = 1;
         return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
+          { title: 'Play game', cols: 1, rows: 1 },
+          { title: 'Last course played', cols: 1, rows: 1 },
           { title: 'Card 3', cols: 1, rows: 1 }
         ];
       }
 
       this.columns = 2;
       return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
+        { title: 'Play game', cols: 2, rows: 1 },
+        { title: 'Last course played', cols: 1, rows: 1 },
         { title: 'Card 3', cols: 1, rows: 1 }
       ];
     })
