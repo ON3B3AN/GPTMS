@@ -31,7 +31,7 @@
 ## [INSERT SCORE]
 ### URI [POST] : http://localhost/party-management/parties/1/scores
 * This URI requests the "party-management" document, “parties” collection, "1" collection URI (represents party_id), and "scores" store. This request must include relevant data.
-#### Example Input: {"data":{"hole_id":"1","user_id":"1","party_id":"1","stroke":"6","total_score":"10"}}
+#### Example Input: {"data":{"hole_id":"1","user_id":"1","party_id":"1","stroke":"6"}}
 #### Output: Successful
     * Header: 200: Ok
     * Body (text/html): 200: Score added successfully!
@@ -45,7 +45,7 @@
 ## [UPDATE SCORE]
 ### URI [PUT] : http://localhost/party-management/parties/1/scores
 * This URI requests the "party-management" document, “parties” collection, "1" collection URI (represents party_id), and "scores" store. This request must include relevant data.
-#### Example Input: {"data":{"hole_id":"1","user_id":"1","party_id":"1","stroke":"6","total_score":"10"}}
+#### Example Input: {"data":{"hole_id":"1","user_id":"1","party_id":"1","stroke":"6"}}
 #### Output: Successful
     * Header: 200: Ok
     * Body (text/html): 200: Score updated successfully!
