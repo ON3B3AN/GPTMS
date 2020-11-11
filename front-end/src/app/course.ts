@@ -1,6 +1,8 @@
 import {Hole} from './hole';
 
 export interface Course {
+  tees: any;
+  course: any;
   course_id: number;
   course_name: string;
   address: string;

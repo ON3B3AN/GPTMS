@@ -9,6 +9,7 @@ import {AuthService} from '../auth.service';
 export class HistoryComponent implements OnInit {
   playerHistory: any;
 
+
   constructor(private userService: UserService, private authService: AuthService) { }
 
   ngOnInit(): void {

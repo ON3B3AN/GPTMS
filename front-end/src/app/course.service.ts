@@ -3,12 +3,15 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Course } from './course';
+import { Hole } from './hole';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
   private courseUrl = 'http://localhost/GPTMS/api/course-management/courses';  // URL to web api
+
 
 
   httpOptions = {
@@ -31,6 +34,24 @@ export class CourseService {
       .pipe(
         tap(_ => console.log(`fetched course id=${id}`)),
         catchError(this.handleError<Course>(`getCourse id=${id}`))
+      );
+  }
+
+  getHoles(id: number, start: number, end: number): Observable<Hole[]> {
+    const url = `${this.courseUrl}/${id}/holes`;
+    return this.http.post<Hole[]>(url, {data: {start_hole: start, end_hole: end}}, this.httpOptions)
+      .pipe(
+        tap(_ => console.log(`fetched hole id=${id}`)),
+        catchError(this.handleError<Hole[]>(`getHole id=${id}`))
+      );
+  }
+
+  getTees(id: number): Observable<Course> {
+    const url = `${this.courseUrl}/${id}/holes`;
+    return this.http.get<Course>(url)
+      .pipe(
+        tap(_ => console.log(`fetched Tee id=${id}`)),
+        catchError(this.handleError<Course>(`getTee id=${id}`))
       );
   }
 
