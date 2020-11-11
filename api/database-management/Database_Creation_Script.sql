@@ -17,6 +17,7 @@ USE `mydb` ;
 -- -----------------------------------------------------
 -- Table `mydb`.`User`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`User`;
 CREATE TABLE IF NOT EXISTS `mydb`.`User` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NOT NULL,
@@ -33,6 +34,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Course`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Course`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Course` (
   `course_id` INT NOT NULL AUTO_INCREMENT,
   `course_name` VARCHAR(45) NOT NULL,
@@ -46,6 +48,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Hole`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Hole`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Hole` (
   `hole_id` INT NOT NULL AUTO_INCREMENT,
   `Course_course_id` INT NOT NULL,
@@ -67,6 +70,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Party`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Party`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Party` (
   `party_id` INT NOT NULL AUTO_INCREMENT,
   `Course_course_id` INT NOT NULL,
@@ -91,6 +95,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Player`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Player`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Player` (
   `User_user_id` INT NOT NULL,
   `Party_party_id` INT NOT NULL,
@@ -114,6 +119,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Score`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Score`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Score` (
   `Hole_hole_id` INT NOT NULL,
   `Player_User_user_id` INT NOT NULL,
@@ -139,6 +145,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Employee`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Employee`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Employee` (
   `emp_id` INT NOT NULL AUTO_INCREMENT,
   `User_user_id` INT NOT NULL,
@@ -163,6 +170,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Tee`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Tee`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Tee` (
   `tee_id` INT NOT NULL AUTO_INCREMENT,
   `Hole_hole_id` INT NOT NULL,

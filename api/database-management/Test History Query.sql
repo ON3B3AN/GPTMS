@@ -97,3 +97,16 @@ ORDER BY hole_number, party.date, end_time;
 select distinct(tee_name) from tee
 join hole on hole_id = Hole_hole_id
 where Course_course_id = 1;
+
+
+select *
+from user
+join employee
+on user_id = User_user_id;
+
+SELECT DISTINCT(tee_name)
+FROM tee
+JOIN hole ON hole_id = Hole_hole_id
+JOIN course on course_id = Course_course_id
+WHERE course_id = 1;
+
