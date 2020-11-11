@@ -2,6 +2,7 @@
 /***********************
  * Cross-Origin Policy
 ************************/
+
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
     header('Access-Control-Allow-Credentials: true');
@@ -23,9 +24,9 @@ require('../database-management/databaseConnect.php');
 require('./GameMngmtQueries.php');
 
 
-/*********************************
- * Initialize Local Variables
-*********************************/
+/*****************************************
+ * Declare and Initialize Local Variables
+*****************************************/
 
 $function = NULL;
 $url = NULL;
@@ -48,46 +49,36 @@ $url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
 
 
 /**************************************************************************************
- * -------- REST Resource Naming Templates --------
- * I.E.; http://localhost/GPTMS/api/document/collection/{URI}/store/controller
- * I.E.; http://localhost/GPTMS/api/document/collection?filter=value/{URI}/store/controller
- * -------- URI Indexing --------
+ * -------- URI Case Templates --------
+ * Case 4 -> http://localhost/GPTMS/api/document/collection
+ * Case 4 -> http://localhost/GPTMS/api/document/collection?filter={filterVal}
+ * Case 5 -> http://localhost/GPTMS/api/document/collection/{collectionURI}
+ * Case 5 -> http://localhost/GPTMS/api/document/collection/controller
+ * Case 6 -> http://localhost/GPTMS/api/document/collection/{collectionURI}/store
+ * Case 7 -> http://localhost/GPTMS/api/document/collection/{collectionURI}/store/{storeURI}
+ * Case 7 -> http://localhost/GPTMS/api/document/collection/{collectionURI}/store/controller
+ * -------- URI Resource Indexing --------
  * URL length [3] -> Document
- * URL length [4] -> Collection
- * URL length [5] -> URI
+ * URL length [4] -> Collection w/ OR w/o Query Component
+ * URL length [5] -> Collection URI OR Controller
  * URL length [6] -> Store
- * URL length [7] -> Controller
- * -------- REST Resource Naming Examples --------
- * Document
-    * http://localhost/game-management
- * Collection
-    * http://localhost/game-management/games
-        * -------- Query Component to Filter URI Collection --------
-        * http://localhost/game-management/games?first-name=John
- * Store
-    * http://localhost/game-management/games/{user_id}/employees
- * Controller
-    * http://localhost/game-management/games/{user_id}/employees/check-in
+ * URL length [7] -> Store URI OR Controller
  * -------- Resource Options --------
  * Document => game-management
  * Collection => games
- * URI => user_id
- * Store => history
- * Controller => login, logout, signup
+ * Collection URI => party_id
+ * Store => scores
+ * Store URI => N/A
+ * Controller => N/A
 ***************************************************************************************/
 
+// Switch cases based on URI length
 switch (count($url)) {
-    // I.E.; GPTMS/api/document
-    case 3:
-        $document = $url[2];
-        break;
-    // I.E.; GPTMS/api/document/collection
     case 4:
         $document = $url[2];
         $collection = $url[3];
         
         // Check Collecion for a Query Component
-        // I.E.; GPTMS/api/document/collection?filter
         $pos = strpos($collection, "?");
         if ($pos == TRUE) {
             $collectionExploded = explode("?", $collection);
@@ -95,7 +86,6 @@ switch (count($url)) {
             $filter = $collectionExploded[1];
             
             // Check the Filter for a Value(s)
-            // I.E.; GPTMS/api/document/collection?filter=filterVal
             $pos = strpos($filter, "=");
             if ($pos == TRUE) {
                 $filterExploded = explode("=", $filter);
@@ -104,12 +94,25 @@ switch (count($url)) {
             }
         }
         break;
-    // I.E.; GPTMS/api/document/collection/collectionURI
-    // --- OR ---
-    // I.E.; GPTMS/api/document/collection/controller
     case 5:
         $document = $url[2];
         $collection = $url[3];
+        
+        // Check Collecion for a Query Component
+        $pos = strpos($collection, "?");
+        if ($pos == TRUE) {
+            $collectionExploded = explode("?", $collection);
+            $collection = $collectionExploded[0];
+            $filter = $collectionExploded[1];
+            
+            // Check the Filter for a Value(s)
+            $pos = strpos($filter, "=");
+            if ($pos == TRUE) {
+                $filterExploded = explode("=", $filter);
+                $filter = $filterExploded[0];
+                $filterVal = $filterExploded[1];
+            }
+        }
         
         // Check if URL index [4] is a controller name or URI numerical value
         if(is_numeric($url[4])) {
@@ -117,35 +120,13 @@ switch (count($url)) {
         }
         else {
             $controller = $url[4];
-        }
-        
-        // Check Collecion for a Query Component
-        // I.E.; GPTMS/api/document/collection?filter
-        $pos = strpos($collection, "?");
-        if ($pos == TRUE) {
-            $collectionExploded = explode("?", $collection);
-            $collection = $collectionExploded[0];
-            $filter = $collectionExploded[1];
-            
-            // Check the Filter for a Value(s)
-            // I.E.; GPTMS/api/document/collection?filter=filterVal
-            $pos = strpos($filter, "=");
-            if ($pos == TRUE) {
-                $filterExploded = explode("=", $filter);
-                $filter = $filterExploded[0];
-                $filterVal = $filterExploded[1];
-            }
-        }
+        }     
         break;
-    // I.E.; GPTMS/api/document/collection/collectionURI/store
     case 6:
         $document = $url[2];
         $collection = $url[3];
-        $collectionURI = $url[4];
-        $store = $url[5];
         
         // Check Collecion for a Query Component
-        // I.E.; GPTMS/api/document/collection?filter/store
         $pos = strpos($collection, "?");
         if ($pos == TRUE) {
             $collectionExploded = explode("?", $collection);
@@ -153,7 +134,6 @@ switch (count($url)) {
             $filter = $collectionExploded[1];
             
             // Check the Filter for a Value(s)
-            // I.E.; GPTMS/api/document/collection?filter=filterVal/store
             $pos = strpos($filter, "=");
             if ($pos == TRUE) {
                 $filterExploded = explode("=", $filter);
@@ -161,52 +141,45 @@ switch (count($url)) {
                 $filterVal = $filterExploded[1];
             }
         }
+        else {
+            $collectionURI = $url[4];
+            $store = $url[5];
+        }
         break;
-    // I.E.; GPTMS/api/document/collection/collectionURI/store/controller
-    // --- OR ---
-    // I.E.; GPTMS/api/document/collection/collectionURI/store/storeURI
     case 7:
         $document = $url[2];
         $collection = $url[3];
-        $collectionURI = $url[4];
-        $store = $url[5];
-        
-//        // Check if URL index [4] is a controller name or URI numerical value
-//        if(is_numeric($url[4])) {
-//            $collectionURI = $url[4];
-//        }
-//        else {
-//            $controller = $url[4];
-//        }
-        
-        // Check if URL index [6] is a controller name or URI numerical value
-        if(is_numeric($url[6])) {
-            $storeURI = $url[6];
-        }
-        else {
-            $controller = $url[6];
-        }
         
         // Check Collecion for a Query Component
-        // I.E.; GPTMS/api/document/collection?filter/store/controller
         $pos = strpos($collection, "?");
         if ($pos == TRUE) {
             $collectionExploded = explode("?", $collection);
             $collection = $collectionExploded[0];
             $filter = $collectionExploded[1];
             
-            // Check the Filter for a Value(s)
-            // I.E.; GPTMS/api/document/collection?filter=filterVal/store/controller
+            // Check the Query for a Value(s)
             $pos = strpos($filter, "=");
             if ($pos == TRUE) {
                 $filterExploded = explode("=", $filter);
                 $filter = $filterExploded[0];
                 $filterVal = $filterExploded[1];
+            }
+        }
+        else {
+            $collectionURI = $url[4];
+            $store = $url[5];
+            
+            // Check if URL index [6] is a controller name or URI numerical value
+            if(is_numeric($url[6])) {
+                $storeURI = $url[6];
+            }
+            else {
+                $controller = $url[6];
             }
         }
         break;
     default:
-        $collection = "error";
+        $function = "error";
         break;
 }
 
@@ -305,7 +278,7 @@ switch ($function) {
         
         if ($result != 0) {
             http_response_code(200);
-            echo http_response_code()." Player and Party added sucessfully!";
+            echo http_response_code()." Player and Party added successfully!";
         }
         else {
             header('Accept: application/json');
@@ -358,7 +331,12 @@ switch ($function) {
             echo http_response_code().": Error, score not updated";
         }
         break;
-    
+    case "player-locations":
+        $course_id = $collectionURI;
+        
+        
+        
+        break;
 }
 
 

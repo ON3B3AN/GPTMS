@@ -113,8 +113,31 @@ function selectTees($course_id) {
     $query = 'SELECT DISTINCT(tee_name)
                 FROM tee
                 JOIN hole ON hole_id = Hole_hole_id
-                JOIN course ON course_id = Course_course_id
-                WHERE course_id = ?;';
+                JOIN course ON Course_course_id = course.course_id
+                WHERE course.course_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('s', $course_id);
+        $statement->execute();
+        $result = $statement->get_result();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
+        $statement->close();
+        return $res;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function selectCourseRecords($course_id){
+    global $db;
+    $query = 'SELECT course_id, course_name, address, phone, hole_number, hole_par, longitude, latitude, avg_pop, tee_name, distance_to_pin
+                from course
+                join hole on course_id = Course_course_id
+                join tee on hole_id = Hole_hole_id
+                where course_id = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('s', $course_id);

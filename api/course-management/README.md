@@ -49,7 +49,7 @@
 #### Output: Successful
     * Header: 200: Ok
     * Body (text/html): 200: Course updated successfully
-#### Output: Successful
+#### Output: Successful (no changes were made)
     * Header: 204: No content
     * Body: N/A
 #### Output: Unsuccessful
@@ -88,8 +88,8 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [SELECT TEES]
-### URI [GET] : http://localhost/course-management/courses/1/holes
-* This URI requests the "course-management" document, “courses” collection, "1" collection URI (represents course_id), "holes" store. This request must not include any data.
+### URI [GET] : http://localhost/course-management/courses/1/tees
+* This URI requests the "course-management" document, “courses” collection, "1" collection URI (represents course_id), "tees" store. This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
@@ -97,6 +97,20 @@
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, no tees found
+#### Output: Server Error
+    * Header: 501: Not Implemented
+    * Body (text/html): 501: Error, service not recognized
+
+## [SELECT COURSE RECORDS]
+### URI [GET] : http://localhost/course-management/courses/1/records
+* This URI requests the "course-management" document, “courses” collection, "1" collection URI (represents course_id), "records" store. This request must not include any data.
+#### Example Input: N/A
+#### Output: Successful
+    * Header: 200: Ok
+    * Body (app/json): Returns all course records (course, holes, tees)
+#### Output: Unsuccessful
+    * Header: 404: Page Not Found
+    * Body (text/html): 404: Error, no course records with id=1 found
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
