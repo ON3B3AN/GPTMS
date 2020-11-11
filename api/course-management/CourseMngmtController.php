@@ -247,6 +247,10 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "tees" && $storeURI == NULL) {
         $function = "selectTees";
     }
+    // GPTMS/api/course-management/courses/1/records
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "records" && $storeURI == NULL) {
+        $function = "selectCourseRecords";
+    }
     else {
         $function = "error";
     }
@@ -300,7 +304,7 @@ switch ($function) {
         }
         else {
             http_response_code(404);
-            echo http_response_code().": No course with id=$param found";
+            echo http_response_code().": No course with id=$collectionURI found";
         }
         break;
     case 'updateCourse':
@@ -429,7 +433,25 @@ switch ($function) {
             echo http_response_code().": Error, no tees found";
         }
         break;
+    case "selectCourseRecords":
+        // Assign collection URI to course_id
+        $course_id = $collectionURI;
 
+        // Get results from SQL query
+        $result = selectCourseRecords($course_id);
+        
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+            
+            // Return course data as JSON array
+            echo json_encode($result);
+        }
+        else {
+            http_response_code(404);
+            echo http_response_code().": No course records with id=$collectionURI found";
+        }
+        break;
 }
 
 

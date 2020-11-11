@@ -6,7 +6,7 @@
 #### Example Input (app/json): {"data":{"email":"tthayer@oakland.edu","password":"1234"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all user data associated with email and password
+    * Body (app/json): Returns all user data and/or employee data associated with email and password
 #### Output: Unsuccessful
     * Header: 401 Unauthorized 
     * Body (text/html): 401: Login failed
