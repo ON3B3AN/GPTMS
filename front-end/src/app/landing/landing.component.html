@@ -1,24 +1,16 @@
 <div class="grid-container">
   <h1 class="mat-h1">Dashboard</h1>
-  <mat-grid-list cols="{{columns}}" rowHeight="350px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{card.title}}
-<!--            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">-->
-<!--              <mat-icon>more_vert</mat-icon>-->
-<!--            </button>-->
-<!--            <mat-menu #menu="matMenu" xPosition="before">-->
-<!--              <button mat-menu-item>Expand</button>-->
-<!--              <button mat-menu-item>Remove</button>-->
-<!--            </mat-menu>-->
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div><button routerLink="/play" class="btn btn-secondary btn-lg">Start Game</button></div>
-        </mat-card-content>
-      </mat-card>
+  <mat-grid-list cols="{{( cardLayout | async )?.columns}}" rowHeight="300px">
+    <mat-grid-tile *ngFor="let i of [1]" [colspan]="( cardLayout | async )?.play.cols" [rowspan]="( cardLayout | async )?.play.rows">
+      <app-card title="Play game">
+        <div><button routerLink="/play" class="btn btn-secondary btn-lg">Start Game</button></div>
+      </app-card>
+    </mat-grid-tile>
+    <mat-grid-tile *ngFor="let i of [2]" [colspan]="( cardLayout | async )?.hist.cols" [rowspan]="( cardLayout | async )?.hist.rows">
+      <app-card title="Last round">
+        <div>Last round info goes here</div><br />
+        <a routerLink="/history">View more</a>
+      </app-card>
     </mat-grid-tile>
   </mat-grid-list>
 </div>

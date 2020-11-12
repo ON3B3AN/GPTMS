@@ -150,6 +150,7 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     let i = 0;
     this.holes.forEach(hole => {
       L.polygon(hole.geo, {
+        id: hole.hole_number,
         weight: 1,
         fillOpacity: 0.7,
         color: 'red',
@@ -180,7 +181,7 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     });
     this.map.addControl(drawControl);
 
-    this.map.on(L.Draw.Event.CREATED, (e) => {
+    this.map.on('draw:created', (e) => {
       var type = e.layerType,
         layer = e.layer;
       if (type === 'marker') {
@@ -188,6 +189,16 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
       }
       // Do whatever else you need to. (save to db; add to map etc)
       this.courseMap.addLayer(layer);
+    });
+
+    this.map.on('draw:edited', (e) => {
+      var layers = e.layers;
+      layers.eachLayer((layer) => {
+        //do whatever you want; most likely save back to db
+        const i = this.holes.findIndex(h => h.hole_number === layer.options.id);
+        this.holes[i].geo = layer.getLatLngs();
+        console.log("Hole "+layer.options.id+" updated: "+this.holes[i].geo.toString());
+      });
     });
   }
 

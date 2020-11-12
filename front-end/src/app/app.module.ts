@@ -31,6 +31,7 @@ import { CourseDetailComponent } from './course-detail/course-detail.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { GameComponent } from './game/game.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CardComponent } from './landing/card/card.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
     CourseDetailComponent,
     ManageCourseComponent,
-    GameComponent
+    GameComponent,
+    CardComponent
   ],
   imports: [
     AppRoutingModule,
