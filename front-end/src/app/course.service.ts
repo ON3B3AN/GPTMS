@@ -37,9 +37,9 @@ export class CourseService {
       );
   }
 
-  getHoles(id: number, start: number, end: number): Observable<Hole[]> {
+  getHoles(id: number): Observable<Hole[]> {
     const url = `${this.courseUrl}/${id}/holes`;
-    return this.http.post<Hole[]>(url, {data: {start_hole: start, end_hole: end}}, this.httpOptions)
+    return this.http.get<Hole[]>(url)
       .pipe(
         tap(_ => console.log(`fetched hole id=${id}`)),
         catchError(this.handleError<Hole[]>(`getHole id=${id}`))
