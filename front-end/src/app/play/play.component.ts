@@ -36,7 +36,7 @@ export class PlayComponent implements OnInit {
     this.courseService.getCourses()
       .subscribe(data => this.courses = data);
 
-    this.courseService.getHoles(this.id, this.start, this.end)
+    this.courseService.getHoles(this.id)
       .subscribe(data => this.holes = data);
   }
 

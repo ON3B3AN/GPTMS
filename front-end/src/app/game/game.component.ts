@@ -11,11 +11,11 @@ export class GameComponent implements OnInit {
   course: Course;
 
   constructor(private courseService: CourseService) { }
-  
+
 
   ngOnInit(): void {
     this.courseService.getCourse(3).subscribe(data => this.course = data);
-    this.courseService.getHoles(3, 1, 9).subscribe(data => {this.course.holes = data; console.log(this.course) });
+    this.courseService.getHoles(3).subscribe(data => {this.course.holes = data; console.log(this.course) });
   }
 
 }
