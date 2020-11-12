@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import { User } from  '../user';
-import {AuthService} from '../auth.service';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-signup',
@@ -10,15 +10,15 @@ import {AuthService} from '../auth.service';
   styleUrls: ['./signup.component.sass']
 })
 export class SignupComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private userService: UserService, private router: Router, private formBuilder: FormBuilder) { }
   authForm: FormGroup;
   isSubmitted  =  false;
 
 
   ngOnInit(): void {
     this.authForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
       phone: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required]
@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit {
     if(this.authForm.invalid){
       return;
     }
-    //this.authService.signUp(this.authForm.value);
+    this.userService.addUser(this.authForm.value).subscribe();
     this.router.navigateByUrl('/login');
   }
 }

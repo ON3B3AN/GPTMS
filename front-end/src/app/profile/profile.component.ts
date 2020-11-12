@@ -23,7 +23,8 @@ export class ProfileComponent implements OnInit {
       last_name: [this.user.last_name, Validators.required],
       phone: [this.user.phone, Validators.required],
       email: [this.user.email, [Validators.required, Validators.email]],
-      password: ['']
+      password: [''],
+      password_conf: ['']
     });
   }
 

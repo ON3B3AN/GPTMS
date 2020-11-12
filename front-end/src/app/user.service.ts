@@ -37,10 +37,20 @@ export class UserService {
 
   /**** Saving ****/
 
-  addUser(user: User) { } // signup form submission
+  addUser(user: User) {
+    console.log(user);
+    return this.http.post<User>(this.userUrl, {data: user}, this.httpOptions).pipe(
+      tap((newUser: User) => console.log(`added user w/ id=${newUser.user_id}`)),
+      catchError(this.handleError<User>('addUser'))
+    );
+  } // signup form submission
 
   updateUser(user: User): Observable<any> {
-    return new Observable();
+    const url = `${this.userUrl}/${user.user_id}`;
+    return this.http.put<User>(url, {data: user}, this.httpOptions).pipe(
+      tap((newUser: User) => console.log(`updated user w/ id=${newUser.user_id}`)),
+      catchError(this.handleError<User>('updatedUser'))
+    );
   } // user profile update
 
   private handleError<T>(operation = 'operation', result?: T) {
