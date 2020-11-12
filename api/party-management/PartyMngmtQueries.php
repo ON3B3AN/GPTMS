@@ -1,5 +1,5 @@
 <?php
-function insertParty($course_id, $size, $longitude,$latitude, $golf_cart) {
+function insertParty($course_id, $size, $longitude, $latitude, $golf_cart) {
     global $db;
     $query = 'INSERT INTO party (Course_course_id, date, start_time, size, longitude, latitude, golf_cart) VALUES (?, CURRENT_DATE(), CURRENT_TIME(), ?, ?, ?, ?)';
     try {
@@ -15,18 +15,17 @@ function insertParty($course_id, $size, $longitude,$latitude, $golf_cart) {
     }
 }
 
-function insertPlayer($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart){
-    global $db;
-    $party_id = partyInsert($course_id, $size, $longitude, $latitude, $golf_cart);
-    $query = 'INSERT INTO player (Party_party_id, User_user_id, handicap) VALUES (?, ?, ?)';
+function insertPlayer($user_ids, $party_id, $handicap){
+    global $db;   
+    $query = 'INSERT INTO player (User_user_id, Party_party_id, handicap) VALUES (?, ?, ?)';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sss', $party_id, $user_id, $handicap);
+        $statement->bind_param('sss', $user_ids, $party_id, $handicap);
         $statement->execute();
-        $row_num = $statement->insert_id;
+        $num_rows = $statement->affected_rows;
         $statement->close();
-
-        return $row_num;
+        
+        return $num_rows;
     } catch (Exception $ex) {
         exit;
     }

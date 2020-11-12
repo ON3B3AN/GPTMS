@@ -14,13 +14,13 @@
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
 
-## [INSERT PLAYER & PARTY]
+## [INSERT PARTY & PLAYER]
 ### URI [POST] : http://localhost/party-management/parties
 * This URI requests the "party-management" document and “parties” collection. This request must include relevant data.
-#### Example Input: {"data":{"user_id":"1","handicap":"15","course_id":"1","size":"4","longitude":"0","latitude":"0","golf_cart":"TRUE"}}
+#### Example Input: {"data":{"handicap":"15","email":"smith@gmail.com,barker@gmail.com,email@gmail.com","course_id":"1","size":"3","longitude":"0","latitude":"0","golf_cart":"1"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): 200: Player and Party added successfully!
+    * Body (text/html): Returns number of rows affected
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, player and party not added
