@@ -21,7 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 require('../database-management/databaseConnect.php');
-require('./GameMngmtQueries.php');
+require('./PartyMngmtQueries.php');
+require('../user-management/UserMngmtQueries.php');
 
 
 /*****************************************
@@ -64,12 +65,12 @@ $url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
  * URL length [6] -> Store
  * URL length [7] -> Store URI OR Controller
  * -------- Resource Options --------
- * Document => game-management
- * Collection => games
- * Collection URI => party_id
+ * Document => party-management
+ * Collection => parties
+ * Collection URI => party_id, course_id
  * Store => scores
  * Store URI => N/A
- * Controller => N/A
+ * Controller => start-round
 ***************************************************************************************/
 
 // Switch cases based on URI length
@@ -222,24 +223,34 @@ else {
 }
 
 if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
-    // GPTMS/api/game-management/games
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "insertPlayer";
+    // GPTMS/api/party-management/parties
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "insertParty";
     }
-    // GPTMS/api/game-management/games/1/scores
-    elseif ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties/1/scores
+    elseif ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
         $function = "insertScore";
+    }
+    // GPTMS/api/party-management/parties/start-round
+    elseif ($document == "party-management" && $collection == "parties" && $controller == "start-round" && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "startRound";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
-    $function = "error";
+    // GPTMS/api/party-management/parties
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "selectActiveParties";
+    }
+    else {
+        $function = "error";
+    }
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    // GPTMS/api/game-management/games/1/scores
-    if ($document == "game-management" && $collection == "games" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties/1/scores
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
         $function = "updateScore";
     }
     else {
@@ -253,6 +264,7 @@ else {
     $function = "error";
 }
 
+
 /**************************************************************
  * Build and execute requested controller function &  SQL query
 **************************************************************/
@@ -263,28 +275,41 @@ switch ($function) {
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
-    case 'insertPlayer':
-        // Assign collection URI to course_id
-        $user_id = $input->data->user_id;
+    case "insertParty":
         $handicap = $input->data->handicap;
+        $email = $input->data->email;
         $course_id = $input->data->course_id;
         $size = $input->data->size;
+        $party_size = (int)$size;
         $longitude = $input->data->longitude;
         $latitude = $input->data->latitude;
-        $golf_cart = $input->data->golf_cart; 
-
-        // Get results from SQL query
-        $result = insertPlayer($user_id, $handicap, $course_id, $size, $longitude, $latitude, $golf_cart);
+        $golf_cart = $input->data->golf_cart;
         
-        if ($result != 0) {
+        // Get party id from SQL query
+        $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
+        
+        $result_array = array();
+        
+        // Parse emails from data object array
+        $user_emails = explode(",", $email);
+        
+        // Insert players into the newly created party
+        for($i = 0; $i < $party_size; $i++) {
+            $user_id_object = selectUserByEmail($user_emails[$i]);
+            $user_id = (string)$user_id_object["user_id"];            
+            $result = insertPlayer($user_id, $party_id, $handicap);
+            array_push($result_array, $result);
+        }
+        
+        if (count($result_array) != 0) {
             http_response_code(200);
-            echo http_response_code()." Player and Party added successfully!";
+            echo json_encode(count($result_array));
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, player and party not added";
-        }
+            echo http_response_code().": Error, player not added";
+        }   
         break;
     case "insertScore":
         $hole_id = $input->data->Hole_hole_id;
@@ -311,7 +336,7 @@ switch ($function) {
         $total_score = $input->data->total_score;
         $hole_id = $input->data->Hole_hole_id;
         $user_id = $input->data->Player_User_user_id;
-        $party_id = $input->data->Player_Party_party_id;
+        $party_id = $collectionURI;
         
         // Get results from SQL query
         $result = updateScore($stroke, $total_score, $hole_id, $user_id, $party_id);
@@ -331,11 +356,42 @@ switch ($function) {
             echo http_response_code().": Error, score not updated";
         }
         break;
-    case "player-locations":
-        $course_id = $collectionURI;
+    case "selectActiveParties":
+        // Get results from SQL query
+        $result = selectActiveParties();
         
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+            
+            // Return active parties as JSON array
+            echo json_encode($result);
+        } 
+        else {
+            http_response_code(404);
+            echo http_response_code().": Error, no active parties found";
+        }
+        break;
+    case "startRound":
+        $course_id = $input->data->course_id;
+        $start_hole = $input->data->start_hole;
+        $end_hole = $input->data->end_hole;
         
+        // Get results from SQL query
+        $result = startRound($course_id, $start_hole, $end_hole);
         
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+            
+            // Return game round data as JSON array
+            echo json_encode($result);
+        } 
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, no round started";
+        }
         break;
 }
 

@@ -185,3 +185,20 @@ function checkEmployee($user_id) {
         exit;
     } 
 }
+
+function selectUserByEmail($email) {
+    global $db;
+    $query = 'SELECT user_id FROM user WHERE email = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('s', $email);
+        $statement->execute();
+        $result = $statement->get_result();
+        $res = $result->fetch_assoc();
+        $statement->close();
+        
+        return $res;
+    } catch (Exception $ex) {
+        exit;
+    }
+}

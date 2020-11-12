@@ -226,10 +226,6 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "insertCourse";
     }
-    // GPTMS/api/course-management/courses/1/holes
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
-        $function = "selectHoles";
-    }
     else {
         $function = "error";
     }
@@ -242,6 +238,10 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     // GPTMS/api/course-management/courses/1
     elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "selectCourse";
+    }
+    // GPTMS/api/course-management/courses/1/holes
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
+        $function = "selectHoles";
     }
     // GPTMS/api/course-management/courses/1/tees
     elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "tees" && $storeURI == NULL) {
@@ -386,15 +386,11 @@ switch ($function) {
         }
         break;
     case "selectHoles":
-        // Get JSON data
-        $start_hole = $input->data->start_hole;
-        $end_hole = $input->data->end_hole;
-        
         // Assign collection URI to course_id
         $course_id = $collectionURI;
             
         // Get result from SQL query
-        $result = selectHoles($course_id, $start_hole, $end_hole);
+        $result = selectHoles($course_id);
 
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');

@@ -83,18 +83,14 @@ function updateCourse($course_name, $address, $phone, $course_id) {
     }
 }
 
-function selectHoles($course_id, $start_hole, $end_hole) {
+function selectHoles($course_id) {
     global $db;
-    $query = 'SELECT hole_number, hole_par, avg_pop,
-              SUM(CASE WHEN tee_name = "tee1" THEN distance_to_pin else 0 END) as tee_1,
-              SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
-              SUM(CASE WHEN tee_name = "tee3" THEN distance_to_pin else 0 END) as tee_3
-              FROM hole join tee on hole_id = Hole_hole_id
-              where Course_course_id = ? AND hole_number BETWEEN ? AND ?
-              group by hole_id';
+    $query = 'SELECT *
+                FROM hole
+                WHERE Course_course_id = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('iii', $course_id, $start_hole, $end_hole);
+        $statement->bind_param('i', $course_id);
         $statement->execute();
         $result = $statement->get_result();
         $res = array();

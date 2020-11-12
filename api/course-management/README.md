@@ -74,9 +74,9 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [SELECT HOLES]
-### URI [POST] : http://localhost/course-management/courses/1/holes
-* This URI requests the "course-management" document, “course” collection, "1" collection URI (represents course_id), and "holes" store. This request must include relevant data.
-#### Example Input: {"data":{"start_hole":"1","end_hole":"9"}}
+### URI [GET] : http://localhost/course-management/courses/1/holes
+* This URI requests the "course-management" document, “course” collection, "1" collection URI (represents course_id), and "holes" store. This request must not include any data.
+#### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
     * Body (app/json): Returns all holes
