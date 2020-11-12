@@ -23,6 +23,10 @@ export class PlayComponent implements OnInit {
   start: number;
   end: number;
 
+  member: any = {};
+  members: any = [];
+
+
 
 
   constructor(private courseService: CourseService, private gameService: GameService, private router: Router, private formBuilder: FormBuilder) { }
@@ -32,6 +36,7 @@ export class PlayComponent implements OnInit {
       course: ['', [Validators.required]],
       tee: ['', [Validators.required]],
       hole: ['', [Validators.required]]
+
     });
     this.courseService.getCourses()
       .subscribe(data => this.courses = data);
@@ -44,13 +49,16 @@ export class PlayComponent implements OnInit {
     this.courseService.getTees(this.playForm.controls['course'].value)
     .subscribe(data => this.tees = data);
   }
+  addPlayer(){
+    this.members.push({member: this.member});
+    this.member = '';
 
+  }
   onSubmit() {
     this.isSubmitted = true;
     if (this.playForm.invalid){
       return;
     }
-
 }
 
 }
