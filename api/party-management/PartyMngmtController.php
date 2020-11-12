@@ -264,6 +264,7 @@ else {
     $function = "error";
 }
 
+
 /**************************************************************
  * Build and execute requested controller function &  SQL query
 **************************************************************/
@@ -294,14 +295,13 @@ switch ($function) {
         
         // Insert players into the newly created party
         for($i = 0; $i < $party_size; $i++) {
-            $user_id = selectUserByEmail($user_emails[$i]);
-            $user_ids = (string)$user_id["user_id"];            
-            $result = insertPlayer($user_ids, $party_id, $handicap);
+            $user_id_object = selectUserByEmail($user_emails[$i]);
+            $user_id = (string)$user_id_object["user_id"];            
+            $result = insertPlayer($user_id, $party_id, $handicap);
             array_push($result_array, $result);
         }
         
         if (count($result_array) != 0) {
-            header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
             echo json_encode(count($result_array));
         }

@@ -6,7 +6,7 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): 200: Returns all active parties
+    * Body (app/json): 200: Returns all active party and player data
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, no active parties found

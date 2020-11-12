@@ -15,12 +15,12 @@ function insertParty($course_id, $size, $longitude, $latitude, $golf_cart) {
     }
 }
 
-function insertPlayer($user_ids, $party_id, $handicap){
+function insertPlayer($user_id, $party_id, $handicap){
     global $db;   
     $query = 'INSERT INTO player (User_user_id, Party_party_id, handicap) VALUES (?, ?, ?)';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sss', $user_ids, $party_id, $handicap);
+        $statement->bind_param('sss', $user_id, $party_id, $handicap);
         $statement->execute();
         $num_rows = $statement->affected_rows;
         $statement->close();
@@ -90,7 +90,14 @@ function startRound($course_id, $start_hole, $end_hole) {
 
 function selectActiveParties() {
     global $db;
-    $query = 'SELECT * FROM party WHERE end_time IS NULL';
+    $query = "SELECT course_name, address, course.phone AS 'Course Phone', date, 
+                start_time, end_time, size, longitude, latitude, golf_cart,
+                first_name, last_name, email, user.phone AS 'Player Phone'
+                FROM course
+                JOIN party ON course_id = Course_course_id
+                JOIN player ON party_id = Party_party_id
+                JOIN user ON User_user_id = user_id
+                WHERE end_time IS NULL";
     try {
         $statement = $db->prepare($query);
         $statement->execute();
