@@ -6,6 +6,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { ManageCoursesComponent } from './manage-courses/manage-courses.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import {MatIconModule} from "@angular/material/icon";
+import { AddEditCourseComponent } from './manage-courses/add-edit-course/add-edit-course.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {MatIconModule} from "@angular/material/icon";
   declarations: [
     AdminComponent,
     ManageCoursesComponent,
-    ManageUsersComponent
+    ManageUsersComponent,
+    AddEditCourseComponent
   ]
 })
 export class AdminModule {}

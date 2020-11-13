@@ -4,6 +4,7 @@ import {CourseService} from "../course.service";
 import {ActivatedRoute} from "@angular/router";
 import * as L from 'leaflet';
 import 'leaflet-draw';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -16,6 +17,16 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
   course: Course;
   private map;
   private courseMap;
+  dataSource: MatTableDataSource<any>;
+  labels = ["Hole", "Men's Par", "Ladies' Par", "Men's Handicap", "Ladies' Handicap"];
+  dataColumns = [
+    'hole_number',
+    'par_men',
+    'par_ladies',
+    'handicap_men',
+    'handicap_ladies'
+  ];
+  displayedColumns = [];
   holes = [
     {hole_number: 1,
       par_men: 5,
@@ -129,6 +140,8 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
 
   constructor(private courseService: CourseService, private route: ActivatedRoute) {
     this.flipCoords();
+    this.transpose();
+    this.fillLabels();
   }
 
   ngOnInit(): void {
@@ -209,6 +222,28 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
         poly.push([this.holes[i].geo[n][1],this.holes[i].geo[n][0]]);
       }
       this.holes[i].geo = poly;
+    }
+  }
+
+  transpose() {
+    let transposedData = [];
+    for (let column = 0; column < this.dataColumns.length; column++) {
+      let tee = -1;
+      let lbl = this.labels[column];
+      transposedData[column] = {
+        label: lbl
+      };
+      for (let row = 0; row < this.holes.length; row++) {
+        transposedData[column][`column${row}`] = this.holes[row][this.dataColumns[column]];
+      }
+    }
+    this.dataSource = new MatTableDataSource(transposedData);
+  }
+
+  fillLabels() {
+    this.displayedColumns = ['label'];
+    for (let i = 0; i < this.holes.length; i++) {
+      this.displayedColumns.push('column' + i);
     }
   }
 

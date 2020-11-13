@@ -9,6 +9,8 @@ import {Course} from "../../course";
 })
 export class ManageCoursesComponent implements OnInit {
   courses: Course[];
+  selectedCourse: Course;
+  showEditor = false;
 
   constructor(private courseService: CourseService) { }
 
@@ -17,8 +19,15 @@ export class ManageCoursesComponent implements OnInit {
       .subscribe(data => this.courses = data);
   }
 
-  editCourse(id): void {}
+  editCourse(course?: Course): void {
+    this.selectedCourse = course;
+    this.showEditor = true;
+  }
 
   deleteCourse(id): void {}
 
+  closeModal(course: Course) {
+    this.showEditor = false;
+    if (course) console.log("WOOT!");
+  }
 }

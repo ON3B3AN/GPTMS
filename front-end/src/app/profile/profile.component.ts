@@ -11,10 +11,10 @@ import {User} from "../user";
   styleUrls: ['./profile.component.sass']
 })
 export class ProfileComponent implements OnInit {
-
-  constructor(private authService: AuthService, private userService: UserService, private formBuilder: FormBuilder) { }
   userForm: FormGroup;
   user: User;
+
+  constructor(private authService: AuthService, private userService: UserService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.user = this.authService.currentUser;
@@ -25,7 +25,13 @@ export class ProfileComponent implements OnInit {
       email: [this.user.email, [Validators.required, Validators.email]],
       password: [''],
       password_conf: ['']
-    });
+    },
+      {validator: this.passwordMatchValidator});
+  }
+
+  passwordMatchValidator(frm: FormGroup) {
+    return frm.controls['password'].value ===
+    frm.controls['password_conf'].value ? null : {'mismatch': true};
   }
 
   get formControls() { return this.userForm.controls; }

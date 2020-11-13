@@ -1,62 +1,36 @@
 
 <h2 style="text-align:center" id="listTitle">
-   Course List
+  Course List
 </h2>
-<button type="submit" class="addButton">Add Course</button>
+<button type="submit" class="addButton" (click)="editCourse()">Add Course</button>
 <div style="clear:both"></div>
 
 <table style="margin: 0 auto;" class="courseInfo">
-    <tr>
-      <th>Course Name</th>
-      <th>Course Address</th>
-      <th>Phone Number</th>
-      <th>Actions</th>
-    </tr>
-    <tr *ngFor="let course of courses">
-      <td id="courseName">{{course.course_name}}</td>
-      <td id="address">{{course.address}}</td>
-      <td id="phone">{{course.phone_number}}</td>
-      <td><mat-icon aria-hidden="false" aria-label="Edit" (click)="editCourse(course.course_id)">create</mat-icon> <mat-icon aria-hidden="false" aria-label="Delete" (click)="deleteCourse(course.course_id)">delete</mat-icon></td>
-    </tr>
+  <tr>
+    <th>Course Name</th>
+    <th>Course Address</th>
+    <th>Phone Number</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let course of courses">
+    <td id="courseName">{{course.course_name}}</td>
+    <td id="address">{{course.address}}</td>
+    <td id="phone">{{course.phone_number}}</td>
+    <td><mat-icon aria-hidden="false" aria-label="Edit" (click)="editCourse(course)">create</mat-icon> <mat-icon aria-hidden="false" aria-label="Delete" (click)="deleteCourse(course.course_id)">delete</mat-icon></td>
+  </tr>
 </table>
 
 <div class="container">
-    <h4 style="text-align:center" id="addText">
-        Add or Edit Course
-    </h4>
+  <h4 style="text-align:center" id="delText">
+    Delete Course
+  </h4>
+  <div class="container">
+    <select id="delCourse" name="delCourse">
+      <option value="course">Please select a course...</option>
+    </select>
     <div class="container">
-        <div class="container">
-            <input type="text" id="addCourseName" name="addCourseName" placeholder="Course name">
-        </div>
-        <div>
-            <input type="text" id="addStreet" name="addStreet" placeholder="Street address">
-            <input type="text" id="addCityState" name="addCityState" placeholder="City, State">
-            <input type="text" id="addZip" name="addZip" placeholder="Zip code">
-        </div>
-        <div>
-            <input type="text" id="addPhone" name="addPhone" placeholder="Phone Number">
-        </div>
-
-        <div>
-            <select id="editCourse" name="editCourse">
-                <option value="course">Please select a course to edit...</option>
-            </select>
-            <div>
-                <button type="submit" class="editButton">Edit Course</button>
-            </div>
-        </div>
-        <div>
-
-        </div>
+      <button type="submit" class="delButton">Delete Course</button>
     </div>
-    <h4 style="text-align:center" id="delText">
-        Delete Course
-    </h4>
-    <div class="container">
-        <select id="delCourse" name="delCourse">
-            <option value="course">Please select a course...</option>
-        </select>
-    <div class="container">
-        <button type="submit" class="delButton">Delete Course</button>
-    </div>
+  </div>
 </div>
+<app-add-edit-course *ngIf="showEditor" [course]="selectedCourse" (close)="closeModal($event)"></app-add-edit-course>
