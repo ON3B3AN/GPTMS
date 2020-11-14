@@ -19,21 +19,29 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.authService.currentUser;
     this.userForm  =  this.formBuilder.group({
+      user_id: [this.user.user_id],
       first_name: [this.user.first_name, Validators.required],
       last_name: [this.user.last_name, Validators.required],
       phone: [this.user.phone, Validators.required],
       email: [this.user.email, [Validators.required, Validators.email]],
       password: [''],
-      password_conf: ['']
+      check_password: ['']
     },
       {validator: this.passwordMatchValidator});
   }
 
   passwordMatchValidator(frm: FormGroup) {
     return frm.controls['password'].value ===
-    frm.controls['password_conf'].value ? null : {'mismatch': true};
+    frm.controls['check_password'].value ? null : {'mismatch': true};
   }
 
   get formControls() { return this.userForm.controls; }
 
+  updateProfile() {
+    if(this.userForm.invalid){
+      return;
+    }
+
+    this.userService.updateUser(this.userForm.value).subscribe();
+  }
 }

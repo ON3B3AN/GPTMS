@@ -9,7 +9,7 @@ import { GameService } from '../game.service';
 })
 export class GameComponent implements OnChanges {
   @Input() game;
-  course: Course = {};
+  course: Course = new Course();
 
   constructor(private gameService: GameService) { }
 
@@ -20,7 +20,7 @@ export class GameComponent implements OnChanges {
       this.gameService.getRound(this.game.course_id, holes[0], holes[1]).subscribe(data => {
         this.course.course_name = data[0].course_name;
         this.course.address = data[0].address;
-        this.course.phone_number = data[0].phone;
+        this.course.phone = data[0].phone;
         this.course.holes = [];
         for (const datum of data) {
           const i = this.course.holes.findIndex(h => h.hole_number === datum.hole_number);

@@ -251,7 +251,7 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
     // GPTMS/api/user-management/users/1
     if ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "updateProfile";
+        $function = "updateUser";
     }
     else {
         $function = "error";

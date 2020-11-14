@@ -9,7 +9,7 @@ import {Course} from "../../course";
 })
 export class ManageCoursesComponent implements OnInit {
   courses: Course[];
-  selectedCourse: Course;
+  selectedCourse: number;
   showEditor = false;
 
   constructor(private courseService: CourseService) { }
@@ -19,8 +19,8 @@ export class ManageCoursesComponent implements OnInit {
       .subscribe(data => this.courses = data);
   }
 
-  editCourse(course?: Course): void {
-    this.selectedCourse = course;
+  editCourse(id?: number): void {
+    this.selectedCourse = (id) ? id : null;
     this.showEditor = true;
   }
 

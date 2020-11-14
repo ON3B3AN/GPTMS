@@ -1,16 +1,14 @@
 <div>
-  <h4 style="text-align:center" id="addText">
-    Add or Edit Course
-  </h4>
+  <h4 style="text-align:center" id="addText">{{title}}</h4>
   <form [formGroup]="editCourse" class="form-horizontal">
     <div>
-      <input type="text" id="addCourseName" formControlName="course_name" placeholder="Course name">
+      <input type="text" formControlName="course_name" placeholder="Course name" />
     </div>
     <div>
-      <input type="text" id="addStreet" formControlName="address" placeholder="Street address">
+      <input type="text" formControlName="address" placeholder="Street address" />
     </div>
     <div>
-      <input type="text" id="addPhone" formControlName="phone_number" placeholder="Phone Number">
+      <input type="text" formControlName="phone" placeholder="Phone Number" />
     </div>
     <button type="button" (click)="ok()">OK</button>
     <button type="button" (click)="cancel()">Cancel</button>

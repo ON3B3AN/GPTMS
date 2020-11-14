@@ -13,6 +13,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
   id: number;
   course: Course;
   private map;
+  private courseMap;
   icon = {
     icon: L.icon({
       iconSize: [ 25, 41 ],
@@ -60,7 +61,8 @@ export class TrackComponent implements OnInit, AfterViewInit {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
-
+    this.courseMap = new L.FeatureGroup();
+    this.map.addLayer(this.courseMap);
     tiles.addTo(this.map);
     let i = 1;
     this.holes.forEach(hole => {
@@ -69,9 +71,10 @@ export class TrackComponent implements OnInit, AfterViewInit {
         fillOpacity: 0.7,
         color: 'red',
         dashArray: '3'
-      }).bindTooltip("Hole "+i).addTo(this.map);
+      }).bindTooltip("Hole "+i).addTo(this.courseMap);
       i++;
     });
+    this.map.fitBounds(this.courseMap.getBounds());
   }
 
   private initMap(): void {

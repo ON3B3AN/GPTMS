@@ -1,5 +1,3 @@
-import {Course} from './course';
-
 export interface Hole {
   hole_id?: number;
   course_id?: number;
@@ -8,5 +6,10 @@ export interface Hole {
   latitude?: number;
   longitude?: number;
   avg_pop: number;
-  tees: any[];
+  tees: Tee[];
+}
+
+export interface Tee {
+  name: string;
+  distance: number;
 }

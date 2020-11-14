@@ -15,22 +15,8 @@
   <tr *ngFor="let course of courses">
     <td id="courseName">{{course.course_name}}</td>
     <td id="address">{{course.address}}</td>
-    <td id="phone">{{course.phone_number}}</td>
-    <td><mat-icon aria-hidden="false" aria-label="Edit" (click)="editCourse(course)">create</mat-icon> <mat-icon aria-hidden="false" aria-label="Delete" (click)="deleteCourse(course.course_id)">delete</mat-icon></td>
+    <td id="phone">{{course.phone}}</td>
+    <td><mat-icon aria-hidden="false" aria-label="Edit" (click)="editCourse(course.course_id)" style="cursor: pointer">create</mat-icon> <mat-icon aria-hidden="false" aria-label="Delete" (click)="deleteCourse(course.course_id)" style="cursor: pointer">delete</mat-icon></td>
   </tr>
 </table>
-
-<div class="container">
-  <h4 style="text-align:center" id="delText">
-    Delete Course
-  </h4>
-  <div class="container">
-    <select id="delCourse" name="delCourse">
-      <option value="course">Please select a course...</option>
-    </select>
-    <div class="container">
-      <button type="submit" class="delButton">Delete Course</button>
-    </div>
-  </div>
-</div>
-<app-add-edit-course *ngIf="showEditor" [course]="selectedCourse" (close)="closeModal($event)"></app-add-edit-course>
+<app-add-edit-course *ngIf="showEditor" [id]="selectedCourse" (close)="closeModal($event)"></app-add-edit-course>

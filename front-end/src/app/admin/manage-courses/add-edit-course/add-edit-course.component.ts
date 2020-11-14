@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { CourseService } from 'src/app/course.service';
 import { Course } from 'src/app/course';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-add-edit-course',
@@ -9,23 +9,36 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./add-edit-course.component.sass']
 })
 export class AddEditCourseComponent implements OnInit, OnChanges {
-  @Input() course: Course;
+  @Input() id: number;
   @Output() close = new EventEmitter<any>();
+  course: Course;
   editCourse: FormGroup;
+  title: string = 'Add Course';
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private courseService: CourseService) { }
 
   ngOnInit(): void {
+    this.course = new Course();
     this.editCourse = this.formBuilder.group({
-      course_name: [this.course.course_name],
-      address: [this.course.address],
-      phone_number: [this.course.phone_number]
+      course_name: [''],
+      address: [''],
+      phone: ['']
     });
   }
 
   ngOnChanges(): void {
-    console.log(this.course);
-    this.editCourse.controls['course_name'].setValue(this.course.course_name);
+    this.course = new Course();
+    if (this.id) {
+      this.title = 'Edit Course';
+      this.courseService.getCourse(this.id)
+        .subscribe(data => {
+          this.course = data;
+          this.editCourse.patchValue(this.course);
+        });
+    } else {
+      this.title = 'Add Course';
+      this.editCourse.reset();
+    }
   }
 
   ok() {
