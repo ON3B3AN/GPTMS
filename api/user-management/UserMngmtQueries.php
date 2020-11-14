@@ -62,36 +62,38 @@ function selectAllHistory($user_id) {
                 SUM(CASE WHEN hole_number >= "10" THEN stroke ELSE 0 END) as back_nine,
                 SUM(stroke) as total_score
                 FROM party
-                JOIN player ON party_id = Party_party_id
-                JOIN course ON Course_course_id = course_id
-                JOIN score ON player_id = score.Player_player_id
-                JOIN hole ON hole.hole_id = score.Hole_hole_id
-                WHERE player.User_user_id = ?
-                GROUP BY player.User_user_id
-                ORDER BY date_played, end_time;';
+                JOIN course ON party.Course_course_id = course_id
+                JOIN hole ON course_id = hole.Course_course_id
+                JOIN score ON hole_id = Hole_hole_id
+                WHERE Player_User_user_id = ?
+                GROUP BY Player_User_user_id
+                ORDER BY date_played, end_time';
     
     $query2 = 'SELECT SUM(CASE WHEN tee_name = "tee1" THEN distance_to_pin else 0 END) as tee_1,
                 SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
                 SUM(CASE WHEN tee_name = "tee3" THEN distance_to_pin else 0 END) as tee_3,
-                hole_number, hole_par, stroke, avg_pop
+                hole_number, 
+                hole_par, 
+                stroke, 
+                avg_pop
                 FROM hole
                 JOIN tee ON hole_id = tee.Hole_hole_id
-                JOIN score ON hole_id = score.Hole_hole_id
-                JOIN player ON player_id = score.Player_player_id
-                JOIN party ON party_id = player.Party_party_id
-                WHERE player.User_user_id = ? AND party.party_id = ?
+                JOIN score ON tee.Hole_hole_id = score.Hole_hole_id
+                JOIN player ON score.Player_Party_party_id = player.Party_party_id AND score.Player_User_user_id = player.User_user_id
+                JOIN party ON player.Party_party_id = party_id
+                WHERE player.User_user_id = ? AND party_id = ?
                 group by hole_id, party.date, start_time
-                ORDER BY hole_number, party.date, end_time;';
+                ORDER BY hole_number, party.date, end_time';
     
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('i', $user_id);
+        $statement->bind_param('s', $user_id);
         $statement->execute();
         $result = $statement->get_result();
         $res = array();
         while($row = $result->fetch_assoc()){
             $stmt = $db->prepare($query2);
-            $stmt->bind_param('ii', $user_id, $row["party_id"]);
+            $stmt->bind_param('ss', $user_id, $row["party_id"]);
             $stmt->execute();
             $result2 = $stmt->get_result();
             $res2 = array();

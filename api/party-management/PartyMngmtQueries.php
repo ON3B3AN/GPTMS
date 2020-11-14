@@ -33,7 +33,13 @@ function insertPlayer($user_id, $party_id, $handicap){
 
 function updateScore($stroke, $total_score, $hole_id, $user_id, $party_id) {
     global $db;
-    $query = 'UPDATE score SET stroke = ?, total_score = ? WHERE Hole_hole_id = ? AND Player_User_user_id = ? AND Player_Party_party_id = ?';
+    $query = "UPDATE `score`
+                SET
+                `stroke` = ?,
+                `total_score` = ?
+                WHERE `Hole_hole_id` = ? 
+                AND `Player_User_user_id` = ? 
+                AND `Player_Party_party_id` = ?";
 	try {
         $statement = $db->prepare($query);
         $statement->bind_param('sssss', $stroke, $total_score, $hole_id, $user_id, $party_id);
@@ -49,16 +55,22 @@ function updateScore($stroke, $total_score, $hole_id, $user_id, $party_id) {
 	
 function insertScore($hole_id, $user_id, $party_id, $stroke, $total_score) {
     global $db;
-    $query = 'INSERT INTO score (Hole_hole_id, Player_User_user_id, Player_Party_party_id, stroke, total_score)'
-            . 'VALUES (?, ?, ?, ?, ?)';
+    $query = "INSERT INTO `score`
+                (`Hole_hole_id`,
+                `Player_User_user_id`,
+                `Player_Party_party_id`,
+                `stroke`,
+                `total_score`)
+                VALUES
+                (?, ?, ?, ?, ?)";
 	try {
         $statement = $db->prepare($query);
         $statement->bind_param('sssss', $hole_id, $user_id, $party_id, $stroke, $total_score);
         $statement->execute();
-        $row_num = $statement->insert_id;  
+        $num_rows = $statement->affected_rows;  
         $statement->close();
      
-        return $row_num;
+        return $num_rows;
     } catch (Exception $ex) {
         exit;
     }	
