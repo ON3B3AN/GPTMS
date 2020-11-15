@@ -244,6 +244,10 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "selectActiveParties";
     }
+    // GPTMS/api/party-management/parties/1/request-services
+    elseif ($document == "party-management" && $collection == "parties" && $controller == "request-services" && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "requestServices";
+    }
     else {
         $function = "error";
     }
@@ -392,6 +396,11 @@ switch ($function) {
             http_response_code(404);
             echo http_response_code().": Error, no round started";
         }
+        break;
+    case "requestServices":
+        $party_id = $collectionURI;
+        http_response_code(200);
+        echo http_response_code().": Services have been successfully requested!";
         break;
 }
 
