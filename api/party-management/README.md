@@ -79,7 +79,7 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): Services have been successfully requested!)
+    * Body (text/html): Services have been successfully requested!
 #### Output: Unsuccessful
     * Header: N/A
     * Body: N/A
