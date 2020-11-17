@@ -14,9 +14,9 @@
         <th>Player</th>
         <th>Strokes</th>
       </tr>
-      <tr>
-        <td><label>Name</label></td>
-        <td><input type="number" placeholder="Strokes" min="1" name="score[player][{{hole.hole_number}}]"/></td>
+      <tr *ngFor="let player of players">
+        <td><label>{{player.first_name}}</label></td>
+        <td><input type="number" placeholder="Strokes" min="1" name="score[{{player.user_id}}][{{hole.hole_number}}]"/></td>
       </tr>
     </table>
     </form>

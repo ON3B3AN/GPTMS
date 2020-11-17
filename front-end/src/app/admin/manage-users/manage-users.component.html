@@ -11,11 +11,11 @@
         <th>Role</th>
 
     </tr>
-    <tr>
-        <td id="lName"></td>
-        <td id="fName"></td>
-        <td id="email"></td>
-        <td id="phone"></td>
+    <tr *ngFor="let user of users">
+        <td id="lName">{{user.last_name}}</td>
+        <td id="fName">{{user.first_name}}</td>
+        <td id="email">{{user.email}}</td>
+        <td id="phone">{{user.phone}}</td>
         <td id="role"></td>
 
     </tr>

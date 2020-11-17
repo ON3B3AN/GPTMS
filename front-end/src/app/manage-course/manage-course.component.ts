@@ -277,8 +277,19 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
       layers.eachLayer((layer) => {
         //do whatever you want; most likely save back to db
         const i = this.holes.findIndex(h => h.hole_number === layer.options.id);
-        this.holes[i].geo = layer.getLatLngs();
+        this.holes[i].geo = layer.getLatLngs()[0].map(point => [point.lat, point.lng]);
         console.log("Hole "+layer.options.id+" updated: "+this.holes[i].geo.toString());
+      });
+    });
+
+    this.map.on('draw:deleted', (e) => {
+      var layers = e.layers;
+      layers.eachLayer((layer) => {
+        //do whatever you want; most likely save back to db
+        const i = this.holes.findIndex(h => h.hole_number === layer.options.id);
+        delete this.holes[i].geo;
+        console.log("Hole "+layer.options.id+" geo removed");
+        this.transpose();
       });
     });
   }
@@ -335,6 +346,8 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
       }
     }
     this.dataSource = new MatTableDataSource(transposedData);
+    console.log(transposedData);
+    console.log(this.dataSource);
   }
 
   fillLabels() {
