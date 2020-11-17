@@ -72,3 +72,17 @@
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
+
+## [REQUEST SERVICES]
+### URI [GET] : http://localhost/party-management/parties/1/request-services
+* This URI requests the "party-management" document, “parties” collection, and "request-services" controller. This request must not include any data.
+#### Example Input: N/A
+#### Output: Successful
+    * Header: 200: Ok
+    * Body (text/html): Services have been successfully requested!
+#### Output: Unsuccessful
+    * Header: N/A
+    * Body: N/A
+#### Output: Server Error
+    * Header: 501: Not Implemented
+    * Body (text/html): 501: Error, service not recognized
