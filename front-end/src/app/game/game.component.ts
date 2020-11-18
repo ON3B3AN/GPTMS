@@ -22,6 +22,10 @@ export class GameComponent implements OnChanges {
       this.userService.getUsers().subscribe(data => {
         this.players = data.filter(u => this.game.email.split(',').indexOf(u.email)>-1);
       });
+      this.gameService.getPosition().then(pos=>
+        {
+           console.log(`Positon: ${pos.lng} ${pos.lat}`);
+        });
       this.gameService.getRound(this.game.course_id, holes[0], holes[1]).subscribe(data => {
         this.course.course_name = data[0].course_name;
         this.course.address = data[0].address;
@@ -46,6 +50,12 @@ export class GameComponent implements OnChanges {
         console.log(this.course);
       });
     }
+  }
+  getLocation(){
+    this.gameService.getPosition().then(pos=>
+      {
+         console.log(`Positon: ${pos.lng} ${pos.lat}`);
+      });
   }
 
 }
