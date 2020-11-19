@@ -169,13 +169,7 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     this.flipCoords();
   }
 
-  ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.id = +params.id;
-    });
-    this.courseService.getCourse(this.id)
-      .subscribe(data => this.course = data);
-  }
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.initMap();

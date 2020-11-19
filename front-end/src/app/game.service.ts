@@ -57,6 +57,9 @@ export class GameService {
           reject(err);
         });
     });
+  }
+
+  requestService() {
 
   }
 

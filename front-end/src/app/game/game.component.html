@@ -20,8 +20,10 @@
       </tr>
     </table>
     </form>
-    <div>
-      <button type="submit" class="submitButton">Finish Current Hole</button>
+    <div class="btn-toolbar">
+      <button type="submit" class="btn btn-primary" (click)="getLocation()">Finish Current Hole</button>
+      <button type="submit" class="btn btn-primary" (click)="serviceRequest()" >Request Service</button>
+      <button type="button" routerLink="/landing" class="btn btn-danger">End Game</button>
     </div>
   </mat-tab>
 </mat-tab-group>
