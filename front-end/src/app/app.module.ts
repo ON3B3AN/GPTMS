@@ -11,7 +11,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MatTabsModule} from '@angular/material/tabs'; 
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,16 +22,17 @@ import { SignupComponent } from './signup/signup.component';
 import { LandingComponent } from './landing/landing.component';
 import { HistoryComponent } from './history/history.component';
 import { CourseListComponent } from './course-list/course-list.component';
-import { TrackComponent } from './track/track.component';
+import { TrackComponent } from './course-detail/track/track.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PlayComponent } from './play/play.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CourseDetailComponent } from './course-detail/course-detail.component';
 
-import { ManageCourseComponent } from './manage-course/manage-course.component';
+import { ManageCourseComponent } from './course-detail/manage-course/manage-course.component';
 import { GameComponent } from './game/game.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CardComponent } from './landing/card/card.component';
+import { CourseOverviewComponent } from './course-detail/course-overview/course-overview.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { CardComponent } from './landing/card/card.component';
     CourseDetailComponent,
     ManageCourseComponent,
     GameComponent,
-    CardComponent
+    CardComponent,
+    CourseOverviewComponent
   ],
   imports: [
     AppRoutingModule,

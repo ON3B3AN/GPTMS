@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
-import {Course} from "../course";
-import {CourseService} from "../course.service";
-import {ActivatedRoute} from "@angular/router";
+import {Course} from "../../course";
+import {CourseService} from "../../course.service";
 
 @Component({
   selector: 'app-track',
@@ -42,18 +41,11 @@ export class TrackComponent implements OnInit, AfterViewInit {
     [[-83.19964181388235, 42.664244007383346],[-83.19954525435782, 42.66398365936905],[-83.19913755858755, 42.66392054453475],[-83.1989122530303, 42.66425978601586],[-83.1984079977355, 42.66512554416833],[-83.19776426757193, 42.66724770419205],[-83.19805394614554, 42.66739759379651],[-83.19868694747305, 42.6671609258348],[-83.19897662604666, 42.66610379793819],[-83.19964181388235, 42.664244007383346]],
     [[-83.19837581122732, 42.667371574877144],[-83.19882642234182, 42.66730057455352],[-83.19876204932547, 42.66836557089284],[-83.19621931517935, 42.6725386029347],[-83.19587599242544, 42.6725386029347],[-83.19586526358938, 42.671931203595136],[-83.19664846862173, 42.67014234848462],[-83.19778572524405, 42.668832832286874],[-83.19827925170279, 42.66787039917928],[-83.19837581122732, 42.667371574877144]]];
 
-  constructor(private courseService: CourseService, private route: ActivatedRoute) {
+  constructor(private courseService: CourseService) {
     this.flipCoords();
   }
 
-  ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.id = +params.id;
-    });
-    this.courseService.getCourse(this.id)
-      .subscribe(data => this.course = data);
-
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.initMap();

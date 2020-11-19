@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import {UserService} from '../user.service';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-landing',
@@ -9,6 +11,8 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 })
 
 export class LandingComponent {
+  playerHistory: any;
+
   /** Based on the screen size, switch from standard to one column per row */
   cardLayout = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
@@ -30,5 +34,10 @@ export class LandingComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver, private userService: UserService, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.userService.getUserHistory(this.authService.currentUser.user_id)
+      .subscribe(data => this.playerHistory = data);
+  }
 }
