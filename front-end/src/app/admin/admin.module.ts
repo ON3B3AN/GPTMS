@@ -8,6 +8,7 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import {MatIconModule} from "@angular/material/icon";
 import { AddEditCourseComponent } from './manage-courses/add-edit-course/add-edit-course.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { EditUserRolesComponent } from './manage-users/edit-user-roles/edit-user-roles.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     AdminComponent,
     ManageCoursesComponent,
     ManageUsersComponent,
-    AddEditCourseComponent
+    AddEditCourseComponent,
+    EditUserRolesComponent
   ]
 })
 export class AdminModule {}
