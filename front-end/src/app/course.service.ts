@@ -10,7 +10,7 @@ import { Hole } from './hole';
   providedIn: 'root'
 })
 export class CourseService {
-  private courseUrl = 'http://localhost/GPTMS/api/course-management/courses';  // URL to web api
+  private courseUrl = 'https://localhost/GPTMS/api/course-management/courses';  // URL to web api
 
 
 
