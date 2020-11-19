@@ -1,0 +1,38 @@
+<p>Use the scorecard and map below to update the course.</p>
+<button>Add Hole</button><button (click)="addTee()">Add Tee</button>
+<div style="width: 100%; overflow: scroll">
+<table>
+  <tr>
+    <th>Hole</th>
+    <td *ngFor="let hole of holes; let i = index">{{hole.hole_number}}</td>
+  </tr>
+  <tr *ngFor="let tee of tees; let t = index">
+    <th><input type="text" value="{{tee.name}}" /></th>
+    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.tees[t].distance}}" min="1" max="1999" /></td>
+  </tr>
+  <tr>
+    <th>Men's Par</th>
+    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.par_men}}" min="3" max="7" /></td>
+  </tr>
+  <tr>
+    <th>Ladies' Par</th>
+    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.par_ladies}}" min="3" max="7" /></td>
+  </tr>
+  <tr>
+    <th>Men's Handicap</th>
+    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.handicap_men}}" min="1" max="{{holes.length}}" /></td>
+  </tr>
+  <tr>
+    <th>Ladies' Handicap</th>
+    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.handicap_ladies}}" min="1" max="{{holes.length}}" /></td>
+  </tr>
+  <tr>
+    <th>Mapped</th>
+    <td *ngFor="let hole of holes; let i = index"><span *ngIf="hole.geo; else nogeo">Yes</span><ng-template #nogeo>No</ng-template></td>
+  </tr>
+</table>
+</div>
+<br />
+<div class="map-container">
+  <div id="map"></div>
+</div>

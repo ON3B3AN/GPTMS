@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
-import {Course} from "../course";
-import {CourseService} from "../course.service";
+import {Course} from "../../course";
+import {CourseService} from "../../course.service";
 import {ActivatedRoute} from "@angular/router";
 import * as L from 'leaflet';
 import 'leaflet-draw';
@@ -14,21 +14,9 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class ManageCourseComponent implements OnInit, AfterViewInit {
   id: number;
-  course: Course;
+  course: Course = new Course;
   private map;
   private courseMap;
-  dataSource: MatTableDataSource<any>;
-  labels = ["Hole", "Men's Par", "Ladies' Par", "Men's Handicap", "Ladies' Handicap", "Mapped"];
-  dataColumns = [
-    'hole_number',
-    'tees',
-    'par_men',
-    'par_ladies',
-    'handicap_men',
-    'handicap_ladies',
-    'geo'
-  ];
-  displayedColumns = [];
   holes = [{
     hole_number: 1,
     par_men: 5,
@@ -174,13 +162,11 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
     geo: [[-83.19837581122732, 42.667371574877144],[-83.19882642234182, 42.66730057455352],[-83.19876204932547, 42.66836557089284],[-83.19621931517935, 42.6725386029347],[-83.19587599242544, 42.6725386029347],[-83.19586526358938, 42.671931203595136],[-83.19664846862173, 42.67014234848462],[-83.19778572524405, 42.668832832286874],[-83.19827925170279, 42.66787039917928],[-83.19837581122732, 42.667371574877144]]
   }];
+  tees = this.holes[0].tees.slice();
 
 
   constructor(private courseService: CourseService, private route: ActivatedRoute, private elementRef: ElementRef) {
     this.flipCoords();
-    this.addTees();
-    this.transpose();
-    this.fillLabels();
   }
 
   ngOnInit(): void {
@@ -289,7 +275,6 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
         const i = this.holes.findIndex(h => h.hole_number === layer.options.id);
         delete this.holes[i].geo;
         console.log("Hole "+layer.options.id+" geo removed");
-        this.transpose();
       });
     });
   }
@@ -319,56 +304,9 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
       color: 'red',
       dashArray: '3'
     }).bindTooltip("Hole " + hole).addTo(this.courseMap);
-    this.transpose();
   }
 
-  transpose() {
-    let transposedData = [];
-    for (let column = 0; column < this.dataColumns.length; column++) {
-      let tee = -1;
-      let lbl = this.labels[column];
-      if (this.dataColumns[column].startsWith('distance')) {
-        tee = parseInt(this.dataColumns[column].substr(-1));
-      }
-      transposedData[column] = {
-        label: lbl
-      };
-      for (let row = 0; row < this.holes.length; row++) {
-        if (tee !== -1) {
-          transposedData[column][`column${row}`] = this.holes[row]['tees'][tee].distance;
-        } else {
-          if (this.dataColumns[column] === 'geo') {
-            transposedData[column][`column${row}`] = (this.holes[row][this.dataColumns[column]]) ? 'Yes' : 'No';
-          } else {
-            transposedData[column][`column${row}`] = this.holes[row][this.dataColumns[column]];
-          }
-        }
-      }
-    }
-    this.dataSource = new MatTableDataSource(transposedData);
-    console.log(transposedData);
-    console.log(this.dataSource);
-  }
-
-  fillLabels() {
-    this.displayedColumns = ['label'];
-    for (let i = 0; i < this.holes.length; i++) {
-      this.displayedColumns.push('column' + i);
-    }
-  }
-
-  addTees() {
-    let i = this.dataColumns.indexOf('tees');
-    let tees = [];
-    this.dataColumns.splice(i, 1);
-    let n = 0;
-    for (let tee of this.holes[0].tees) {
-      tees.push(tee.name);
-      this.dataColumns.splice(i,0, 'distance-'+n);
-      i++;
-      n++
-    }
-    const addedTees = [1, 0].concat(tees);
-    Array.prototype.splice.apply(this.labels, addedTees)
+  addTee() {
+    this.tees.push({name:'', distance:0});
   }
 }

@@ -8,7 +8,7 @@ import {User} from './user';
   providedIn: 'root'
 })
 export class GameService {
-  private gameUrl = 'http://localhost/GPTMS/api/party-management/parties';
+  private gameUrl = 'https://localhost/GPTMS/api/party-management/parties';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
