@@ -17,6 +17,14 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.userUrl)
+      .pipe(
+        tap(_ => console.log(`fetched all users`)),
+        catchError(this.handleError<User[]>(`getUsers`))
+      );
+  }
+
   getUser(id: number): Observable<User> {
     const url = `${this.userUrl}/${id}`;
     return this.http.get<User>(url)

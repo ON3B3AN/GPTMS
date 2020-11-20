@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Course } from '../course';
 import { GameService } from '../game.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-game',
@@ -10,13 +11,17 @@ import { GameService } from '../game.service';
 export class GameComponent implements OnChanges {
   @Input() game;
   course: Course = new Course();
+  players: any[];
 
-  constructor(private gameService: GameService) { }
+  constructor(private gameService: GameService, private userService: UserService) { }
 
 
   ngOnChanges(): void {
     if (this.game) {
       let holes = this.game.hole.split('-');
+      this.userService.getUsers().subscribe(data => {
+        this.players = data.filter(u => this.game.email.split(',').indexOf(u.email)>-1);
+      });
       this.gameService.getRound(this.game.course_id, holes[0], holes[1]).subscribe(data => {
         this.course.course_name = data[0].course_name;
         this.course.address = data[0].address;
