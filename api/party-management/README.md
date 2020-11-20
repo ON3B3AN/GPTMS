@@ -1,12 +1,12 @@
 # Party Management Routes/Endpoints
 
 ## [SELECT ACTIVE PARTIES]
-### URI [GET] : http://localhost/party-management/parties
-* This URI requests the "party-management" document and “parties” collection. This request must not include any data.
+### URI [GET] : http://localhost/party-management/parties?course_id=1
+* This URI requests the "party-management" document, “parties” collection, "course_id" filter, and value of "1". This request must not include any data.
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): 200: Returns all active party and player data
+    * Body (app/json): 200: Returns all active party and player data based on course id
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, no active parties found
@@ -20,7 +20,7 @@
 #### Example Input: {"data":{"handicap":"15","email":"smith@gmail.com,barker@gmail.com,email@gmail.com","course_id":"1","size":"3","longitude":"0","latitude":"0","golf_cart":"1"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): Returns number of rows affected
+    * Body (text/html): Returns party id
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, player and party not added

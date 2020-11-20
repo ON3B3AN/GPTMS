@@ -100,18 +100,21 @@ function startRound($course_id, $start_hole, $end_hole) {
     }
 }
 
-function selectActiveParties() {
+function selectActiveParties($course_id) {
     global $db;
     $query = "SELECT course_name, address, course.phone AS 'Course Phone', date, 
-                start_time, end_time, size, longitude, latitude, golf_cart,
+                start_time, end_time, party_id, size, longitude, latitude, golf_cart,
                 first_name, last_name, email, user.phone AS 'Player Phone'
                 FROM course
                 JOIN party ON course_id = Course_course_id
                 JOIN player ON party_id = Party_party_id
                 JOIN user ON User_user_id = user_id
-                WHERE end_time IS NULL";
+                WHERE end_time IS NULL
+                AND course_id = ?
+                ORDER BY party_id";
     try {
         $statement = $db->prepare($query);
+        $statement->bind_param('i', $course_id);
         $statement->execute();
         $result = $statement->get_result();
         $res = array();

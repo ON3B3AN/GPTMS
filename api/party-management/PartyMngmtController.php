@@ -240,8 +240,8 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
-    // GPTMS/api/party-management/parties
-    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties?course_id=1
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter != NULL && $filterVal != NULL && $store == NULL && $storeURI == NULL) {
         $function = "selectActiveParties";
     }
     // GPTMS/api/party-management/parties/1/request-services
@@ -307,7 +307,7 @@ switch ($function) {
         
         if (count($result_array) != 0) {
             http_response_code(200);
-            echo json_encode(count($result_array));
+            echo json_encode($party_id);
         }
         else {
             header('Accept: application/json');
@@ -361,8 +361,13 @@ switch ($function) {
         }
         break;
     case "selectActiveParties":
+        // Check if collection filter is course id and assign value
+        if($filter == "course_id") {
+            $course_id = $filterVal;
+        }
+        
         // Get results from SQL query
-        $result = selectActiveParties();
+        $result = selectActiveParties($course_id);
         
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');

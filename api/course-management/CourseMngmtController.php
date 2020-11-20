@@ -235,10 +235,6 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "selectAllCourses";
     }
-    // GPTMS/api/course-management/courses/1/request-hints
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == "request-hints" && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "requestHints";
-    }
     // GPTMS/api/course-management/courses/1
     elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "selectCourse";
@@ -452,23 +448,7 @@ switch ($function) {
             echo http_response_code().": No course records with id=$collectionURI found";
         }
         break;
-    case "requestHints":
-        $course_id = $collectionURI;
-        $result = requestHints($course_id);
-        
-        if ($result != NULL) {
-            shuffle($result);
-            http_response_code(200);
-            http_response_code();
-            
-            // Return helpful hints data as JSON array
-            echo json_encode($result[0]);
-        } 
-        else {
-            http_response_code(404);
-            echo http_response_code().": Error, no helpful hints with id=$collectionURI found";
-        }
-        break;
+
 }
 
 

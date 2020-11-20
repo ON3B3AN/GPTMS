@@ -8,6 +8,7 @@ function login($email, $pwd) {
         $statement->execute();
         $result = $statement->get_result();
         $res = $result->fetch_assoc();
+        unset($res["password"]);
         $statement->close();
         $user_id = $res["user_id"];
         
@@ -153,6 +154,7 @@ function selectAllUsers() {
         $result = $statement->get_result();
         $res = array();
         while($row = $result->fetch_assoc()){
+            unset($row["password"]);
             array_push($res, $row);
         }
         $statement->close();
