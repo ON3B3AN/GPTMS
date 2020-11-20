@@ -257,6 +257,10 @@ elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
     if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
         $function = "updateScore";
     }
+    // GPTMS/api/party-management/parties/1/coordinates
+    elseif ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "coordinates" && $storeURI == NULL) {
+        $function = "updatePartyCoordinates";
+    }
     else {
         $function = "error";
     }
@@ -407,6 +411,31 @@ switch ($function) {
         http_response_code(200);
         echo http_response_code().": Services have been successfully requested!";
         break;
+    case "updatePartyCoordinates":
+        // Get JSON data
+        $longitude = $input->data->longitude;
+        $latitude = $input->data->latitude;
+        
+        // Assign collection URI to party_id
+        $party_id = $collectionURI;
+
+        // Get the updated row count from the SQL query
+        $result = updatePartyCoordinates($party_id, $longitude, $latitude);
+
+        if ($result >= 1) {
+            http_response_code(200);
+            echo http_response_code().": Party coordinates updated successfully";
+        }
+        // No changes were made (Acts as a "Save" function)
+        elseif ($result === 0) {
+            http_response_code(204);
+            echo http_response_code();
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, party coordinates not updated";
+        }
 }
 
 

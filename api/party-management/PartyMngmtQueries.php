@@ -127,3 +127,19 @@ function selectActiveParties($course_id) {
         exit;
     }
 }
+
+function updatePartyCoordinates($party_id, $longitude, $latitude) {
+    global $db;
+    $query = 'UPDATE party SET longitude = ?, latitude = ? WHERE party_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sss', $party_id, $longitude, $latitude);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}

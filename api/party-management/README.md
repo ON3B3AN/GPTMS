@@ -86,3 +86,20 @@
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (text/html): 501: Error, service not recognized
+
+## [UPDATE PARTY COORDINATES]
+### URI [PUT] : http://localhost/party-management/parties/1/coordinates
+* This URI requests the "party-management" document, “parties” collection, "1" collection URI (represents party_id), and "coordinates" store. This request must include relevant data.
+#### Example Input: {"data":{"longitude":"1","latitude":"1"}}
+#### Output: Successful
+    * Header: 200: Ok
+    * Body (text/html): 200: Coordinates updated successfully!
+#### Output: Successful (no changes were made)
+    * Header: 204: No content
+    * Body: N/A
+#### Output: Unsuccessful
+    * Header: 404: Page Not Found
+    * Body (text/html): 404: Error, coordinates not updated
+#### Output: Server Error
+    * Header: 501: Not Implemented
+    * Body (text/html): 501: Error, service not recognized
