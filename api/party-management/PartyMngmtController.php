@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 require('../database-management/databaseConnect.php');
 require('./PartyMngmtQueries.php');
+require('../course-management/CourseMngmtQueries.php');
 require('../user-management/UserMngmtQueries.php');
 
 
@@ -231,8 +232,8 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     elseif ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
         $function = "insertScore";
     }
-    // GPTMS/api/party-management/parties/start-round
-    elseif ($document == "party-management" && $collection == "parties" && $controller == "start-round" && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties/1/rounds
+    elseif ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "rounds" && $storeURI == NULL) {
         $function = "startRound";
     }
     else {
@@ -382,19 +383,27 @@ switch ($function) {
         }
         break;
     case "startRound":
+        $party_id = $collectionURI;
         $course_id = $input->data->course_id;
         $start_hole = $input->data->start_hole;
         $end_hole = $input->data->end_hole;
         
         // Get results from SQL query
-        $result = startRound($course_id, $start_hole, $end_hole);
+        $party_info = selectParty($party_id);
+        unset($party_info["Course_course_id"]);
+        $course_info = selectCourse($course_id);
+        $hole_info = selectRangeOfHoles($course_id, $start_hole, $end_hole);
+        unset($hole_info["Course_course_id"]);
+        $tee_info = selectTees($course_id);
+
+        $result_array = new ArrayObject(array($party_info, $course_info, $hole_info, $tee_info));
         
-        if ($result != NULL) {
+        if ($result_array != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
             
             // Return game round data as JSON array
-            echo json_encode($result);
+            echo json_encode($result_array);
         } 
         else {
             header('Accept: application/json');

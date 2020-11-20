@@ -76,30 +76,6 @@ function insertScore($hole_id, $user_id, $party_id, $stroke, $total_score) {
     }	
 }
 
-function startRound($course_id, $start_hole, $end_hole) {
-    global $db;
-    $query = 'SELECT course_name, address, phone, hole_number, hole_par, avg_pop, tee_name, distance_to_pin
-                FROM course 
-                join hole on course_id = Course_course_id
-                join tee on hole_id = Hole_hole_id
-                WHERE Course_course_id = ? 
-                AND hole_number BETWEEN ? AND ?';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bind_param('iii', $course_id, $start_hole, $end_hole);
-        $statement->execute();
-        $result = $statement->get_result();
-        $res = array();
-        while($row = $result->fetch_assoc()){
-            array_push($res, $row);
-        }
-        $statement->close();
-        return $res;
-    } catch (Exception $ex) {
-        exit;
-    }
-}
-
 function selectActiveParties($course_id) {
     global $db;
     $query = "SELECT course_name, address, course.phone AS 'Course Phone', date, 
@@ -126,4 +102,21 @@ function selectActiveParties($course_id) {
     } catch (Exception $ex) {
         exit;
     }
+}
+
+function selectParty($party_id) {
+    global $db;
+    $query = "SELECT * FROM party WHERE party_id = ?";
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('s', $party_id);
+        $statement->execute();
+        $result = $statement->get_result();
+        $result = $result->fetch_assoc();
+        $statement->close();
+        
+        return $result;
+    } catch (Exception $ex) {
+        exit;
+    } 
 }

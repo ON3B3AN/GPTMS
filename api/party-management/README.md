@@ -60,12 +60,12 @@
     * Body (text/html): 501: Error, service not recognized
 
 ## [START ROUND]
-### URI [POST] : http://localhost/party-management/parties/start-round
-* This URI requests the "party-management" document, “parties” collection, and "start-round" controller. This request must include relevant data.
+### URI [POST] : http://localhost/party-management/parties/1/rounds
+* This URI requests the "party-management" document, “parties” collection, "1" collection URI (represents party id), and "rounds" store. This request must include relevant data.
 #### Example Input: {"data":{"course_id":"1","start_hole":"1","end_hole":"9"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns party round (Course, Holes, and Tees)
+    * Body (app/json): Returns party round info (Party, Course, Holes, and Tees)
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (text/html): 404: Error, no round started
