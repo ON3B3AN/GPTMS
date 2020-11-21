@@ -76,17 +76,21 @@ function insertScore($hole_id, $user_id, $party_id, $stroke, $total_score) {
     }	
 }
 
-function startRound($course_id, $start_hole, $end_hole) {
+function selectActiveParties($course_id) {
     global $db;
-    $query = 'SELECT course_name, address, phone, hole_number, hole_par, avg_pop, tee_name, distance_to_pin
-                FROM course 
-                join hole on course_id = Course_course_id
-                join tee on hole_id = Hole_hole_id
-                WHERE Course_course_id = ? 
-                AND hole_number BETWEEN ? AND ?';
+    $query = "SELECT course_name, address, course.phone AS 'Course Phone', date, 
+                start_time, end_time, party_id, size, longitude, latitude, golf_cart,
+                first_name, last_name, email, user.phone AS 'Player Phone'
+                FROM course
+                JOIN party ON course_id = Course_course_id
+                JOIN player ON party_id = Party_party_id
+                JOIN user ON User_user_id = user_id
+                WHERE end_time IS NULL
+                AND course_id = ?
+                ORDER BY party_id";
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('iii', $course_id, $start_hole, $end_hole);
+        $statement->bind_param('i', $course_id);
         $statement->execute();
         $result = $statement->get_result();
         $res = array();
@@ -100,26 +104,34 @@ function startRound($course_id, $start_hole, $end_hole) {
     }
 }
 
-function selectActiveParties() {
+function selectParty($party_id) {
     global $db;
-    $query = "SELECT course_name, address, course.phone AS 'Course Phone', date, 
-                start_time, end_time, size, longitude, latitude, golf_cart,
-                first_name, last_name, email, user.phone AS 'Player Phone'
-                FROM course
-                JOIN party ON course_id = Course_course_id
-                JOIN player ON party_id = Party_party_id
-                JOIN user ON User_user_id = user_id
-                WHERE end_time IS NULL";
+    $query = "SELECT * FROM party WHERE party_id = ?";
     try {
         $statement = $db->prepare($query);
+        $statement->bind_param('s', $party_id);
         $statement->execute();
         $result = $statement->get_result();
-        $res = array();
-        while($row = $result->fetch_assoc()){
-            array_push($res, $row);
-        }
+        $result = $result->fetch_assoc();
         $statement->close();
-        return $res;
+        
+        return $result;
+    } catch (Exception $ex) {
+        exit;
+    } 
+}
+
+function updatePartyCoordinates($party_id, $longitude, $latitude) {
+    global $db;
+    $query = 'UPDATE party SET longitude = ?, latitude = ? WHERE party_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sss', $party_id, $longitude, $latitude);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
     } catch (Exception $ex) {
         exit;
     }
