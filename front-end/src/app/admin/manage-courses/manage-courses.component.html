@@ -16,7 +16,7 @@
     <td id="courseName">{{course.course_name}}</td>
     <td id="address">{{course.address}}</td>
     <td id="phone">{{course.phone}}</td>
-    <td><mat-icon aria-hidden="false" aria-label="Edit" (click)="editCourse(course.course_id)" style="cursor: pointer">create</mat-icon> <mat-icon aria-hidden="false" aria-label="Delete" (click)="deleteCourse(course.course_id)" style="cursor: pointer">delete</mat-icon></td>
+    <td style="text-align: center"><mat-icon aria-hidden="false" aria-label="Edit" (click)="editCourse(course.course_id)" style="cursor: pointer">create</mat-icon> &nbsp; <mat-icon aria-hidden="false" aria-label="Delete" (click)="deleteCourse(course.course_id)" style="cursor: pointer">delete</mat-icon></td>
   </tr>
 </table>
 <app-add-edit-course *ngIf="showEditor" [id]="selectedCourse" (close)="closeModal($event)"></app-add-edit-course>

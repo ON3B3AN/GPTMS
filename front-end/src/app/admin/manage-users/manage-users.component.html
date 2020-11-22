@@ -16,7 +16,8 @@
         <td id="fName">{{user.first_name}}</td>
         <td id="email">{{user.email}}</td>
         <td id="phone">{{user.phone}}</td>
-        <td id="role"></td>
+        <td id="role"><button (click)="editRole(user.user_id)" style="cursor: pointer">View Role</button></td>
 
     </tr>
 </table>
+<app-edit-user-roles *ngIf="showEditor" [id]="selectedUser" (close)="closeModal($event)"></app-edit-user-roles>

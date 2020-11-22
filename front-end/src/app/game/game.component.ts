@@ -12,6 +12,7 @@ export class GameComponent implements OnChanges {
   @Input() game;
   course: Course = new Course();
   players: any[];
+  id: number[];
 
   constructor(private gameService: GameService, private userService: UserService) { }
 
@@ -45,7 +46,22 @@ export class GameComponent implements OnChanges {
         }
         console.log(this.course);
       });
+      this.gameService.getPosition().then(pos=>
+        {
+           console.log(`Positon: ${pos.lat} ${pos.lng}`);
+        });
     }
   }
+  getLocation(){
+    this.gameService.getPosition().then(pos=> {
+         console.log(`Positon: ${pos.lat} ${pos.lng}`);
+      });
+  }
+
+  serviceRequest() {
+   console.log("User Requested Service")
+
+}
+
 
 }
