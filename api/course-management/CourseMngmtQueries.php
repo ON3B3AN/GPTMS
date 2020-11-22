@@ -104,6 +104,30 @@ function selectHoles($course_id) {
     }
 }
 
+function selectRangeOfHoles($course_id, $start_hole, $end_hole) {
+    global $db;
+    $query = 'SELECT *
+                FROM hole
+                WHERE Course_course_id = ? 
+                AND hole_number BETWEEN ? AND ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('iii', $course_id, $start_hole, $end_hole);
+        $statement->execute();
+        $result = $statement->get_result();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            unset($row["hole_id"]);
+            unset($row["Course_course_id"]);
+            array_push($res, $row);
+        }
+        $statement->close();
+        return $res;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
 function selectTees($course_id) {
     global $db;
     $query = 'SELECT DISTINCT(tee_name)
@@ -137,25 +161,6 @@ function selectCourseRecords($course_id){
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('s', $course_id);
-        $statement->execute();
-        $result = $statement->get_result();
-        $res = array();
-        while($row = $result->fetch_assoc()){
-            array_push($res, $row);
-        }
-        $statement->close();
-        return $res;
-    } catch (Exception $ex) {
-        exit;
-    }
-}
-
-function requestHints($course_id) {
-    global $db;
-    $query = "SELECT * FROM hints WHERE course_id = ?";
-    try {
-        $statement = $db->prepare($query);
-        $statement->bind_param('i', $course_id);
         $statement->execute();
         $result = $statement->get_result();
         $res = array();
