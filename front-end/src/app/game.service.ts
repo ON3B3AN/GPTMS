@@ -8,19 +8,32 @@ import {User} from './user';
   providedIn: 'root'
 })
 export class GameService {
-  private gameUrl = 'http://localhost/party-management/parties';
+  private gameUrl = 'http://localhost/GPTMS/api/party-management/parties';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   constructor(private http: HttpClient) {}
 
-  startGame() {
-
+  startGame(info: any) {
+    console.log(info);
+    return this.http.post<any>(this.gameUrl, {data: info}, this.httpOptions).pipe(
+      tap((newParty: any) => console.log(`added party id=${newParty}`)),
+      catchError(this.handleError<any>('addParty'))
+    );
   }
 
   endGame() {
 
+  }
+
+  getRound(course, start_hole, end_hole) {
+    const url = `${this.gameUrl}/start-round`;
+    return this.http.post<any>(url,{data: {course_id: course, start_hole: start_hole, end_hole: end_hole}})
+      .pipe(
+        tap(_ => console.log(`fetched round info`)),
+        catchError(this.handleError<any>(`getRound`))
+      );
   }
 
   addScore(party, hole, user, stroke): Observable<any> {

@@ -27,7 +27,6 @@ const routes: Routes = [
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'play', component: PlayComponent, canActivate: [AuthGuard] },
-  { path: 'game', component: GameComponent, canActivate: [AuthGuard] },
   { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) }
 ];
 

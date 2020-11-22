@@ -1,12 +1,15 @@
-import {Course} from './course';
-
 export interface Hole {
-  hole_id: number;
-  course_id: number;
+  hole_id?: number;
+  course_id?: number;
   hole_number: number;
   hole_par: number;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
   avg_pop: number;
-  hole_distance: number;
+  tees: Tee[];
+}
+
+export interface Tee {
+  name: string;
+  distance: number;
 }

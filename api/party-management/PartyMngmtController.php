@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 require('../database-management/databaseConnect.php');
 require('./PartyMngmtQueries.php');
+require('../course-management/CourseMngmtQueries.php');
 require('../user-management/UserMngmtQueries.php');
 
 
@@ -231,8 +232,8 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     elseif ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
         $function = "insertScore";
     }
-    // GPTMS/api/party-management/parties/start-round
-    elseif ($document == "party-management" && $collection == "parties" && $controller == "start-round" && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties/1/rounds
+    elseif ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "rounds" && $storeURI == NULL) {
         $function = "startRound";
     }
     else {
@@ -240,9 +241,13 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
-    // GPTMS/api/party-management/parties
-    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+    // GPTMS/api/party-management/parties?course_id=1
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI == NULL && $filter != NULL && $filterVal != NULL && $store == NULL && $storeURI == NULL) {
         $function = "selectActiveParties";
+    }
+    // GPTMS/api/party-management/parties/1/request-services
+    elseif ($document == "party-management" && $collection == "parties" && $controller == "request-services" && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "requestServices";
     }
     else {
         $function = "error";
@@ -252,6 +257,10 @@ elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
     // GPTMS/api/party-management/parties/1/scores
     if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "scores" && $storeURI == NULL) {
         $function = "updateScore";
+    }
+    // GPTMS/api/party-management/parties/1/coordinates
+    elseif ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "coordinates" && $storeURI == NULL) {
+        $function = "updatePartyCoordinates";
     }
     else {
         $function = "error";
@@ -303,7 +312,7 @@ switch ($function) {
         
         if (count($result_array) != 0) {
             http_response_code(200);
-            echo json_encode(count($result_array));
+            echo json_encode($party_id);
         }
         else {
             header('Accept: application/json');
@@ -357,8 +366,13 @@ switch ($function) {
         }
         break;
     case "selectActiveParties":
+        // Check if collection filter is course id and assign value
+        if($filter == "course_id") {
+            $course_id = $filterVal;
+        }
+        
         // Get results from SQL query
-        $result = selectActiveParties();
+        $result = selectActiveParties($course_id);
         
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
@@ -373,19 +387,27 @@ switch ($function) {
         }
         break;
     case "startRound":
+        $party_id = $collectionURI;
         $course_id = $input->data->course_id;
         $start_hole = $input->data->start_hole;
         $end_hole = $input->data->end_hole;
         
         // Get results from SQL query
-        $result = startRound($course_id, $start_hole, $end_hole);
+        $party_info = selectParty($party_id);
+        unset($party_info["Course_course_id"]);
+        $course_info = selectCourse($course_id);
+        $hole_info = selectRangeOfHoles($course_id, $start_hole, $end_hole);
+        unset($hole_info["Course_course_id"]);
+        $tee_info = selectTees($course_id);
+
+        $result_array = new ArrayObject(array($party_info, $course_info, $hole_info, $tee_info));
         
-        if ($result != NULL) {
+        if ($result_array != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
             
             // Return game round data as JSON array
-            echo json_encode($result);
+            echo json_encode($result_array);
         } 
         else {
             header('Accept: application/json');
@@ -393,6 +415,36 @@ switch ($function) {
             echo http_response_code().": Error, no round started";
         }
         break;
+    case "requestServices":
+        $party_id = $collectionURI;
+        http_response_code(200);
+        echo http_response_code().": Services have been successfully requested!";
+        break;
+    case "updatePartyCoordinates":
+        // Get JSON data
+        $longitude = $input->data->longitude;
+        $latitude = $input->data->latitude;
+        
+        // Assign collection URI to party_id
+        $party_id = $collectionURI;
+
+        // Get the updated row count from the SQL query
+        $result = updatePartyCoordinates($party_id, $longitude, $latitude);
+
+        if ($result >= 1) {
+            http_response_code(200);
+            echo http_response_code().": Party coordinates updated successfully";
+        }
+        // No changes were made (Acts as a "Save" function)
+        elseif ($result === 0) {
+            http_response_code(204);
+            echo http_response_code();
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, party coordinates not updated";
+        }
 }
 
 

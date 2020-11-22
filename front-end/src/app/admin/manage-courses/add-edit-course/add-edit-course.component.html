@@ -1,0 +1,18 @@
+<div class="admodal">
+  <h4 style="text-align:center" id="addText">{{title}}</h4>
+  <form [formGroup]="editCourse" class="form-horizontal">
+    <div>
+      <input type="text" formControlName="course_name" placeholder="Course name" />
+    </div>
+    <div>
+      <input type="text" formControlName="address" placeholder="Street address" />
+    </div>
+    <div>
+      <input type="text" formControlName="phone" placeholder="Phone Number" />
+    </div>
+    <button type="button" (click)="ok()">OK</button>
+    <button type="button" (click)="cancel()">Cancel</button>
+  </form>
+</div>
+<div class="admodal-overlay" id="admodal-overlay">
+</div>

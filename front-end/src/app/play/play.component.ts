@@ -14,44 +14,52 @@ import { Hole } from '../hole';
 })
 export class PlayComponent implements OnInit {
   playForm: FormGroup;
-  isSubmitted  =  false;
   tees: any = [];
   holes: Hole[] = [];
   courses: Course[] = [];
-  rounds = [{key: '1-9', value: 'Front 9'}, {key: '10-18', value: 'Back 9'}, {key: '1-18', value: 'Whole 18'}];
-  id: number;
-  start: number;
-  end: number;
+  rounds = [{key: '1-9', value: 'Front 9'}, {key: '10-18', value: 'Back 9'}, {key: '1-18', value: 'Full 18'}];
+  members: any = [];
+  game: any;
 
-
-
-  constructor(private courseService: CourseService, private gameService: GameService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private courseService: CourseService, private gameService: GameService, private formBuilder: FormBuilder) {
+    this.game = JSON.parse(localStorage.getItem('game'));
+  }
 
   ngOnInit(): void {
     this.playForm  =  this.formBuilder.group({
-      course: ['', [Validators.required]],
+      course_id: ['', [Validators.required]],
       tee: ['', [Validators.required]],
-      hole: ['', [Validators.required]]
+      hole: ['', [Validators.required]],
+      email: ['']
     });
     this.courseService.getCourses()
       .subscribe(data => this.courses = data);
-
-    this.courseService.getHoles(this.id)
-      .subscribe(data => this.holes = data);
   }
 
   populateTees(e) {
-    this.courseService.getTees(this.playForm.controls['course'].value)
-    .subscribe(data => this.tees = data);
+    this.courseService.getTees(this.playForm.controls['course_id'].value)
+      .subscribe(data => this.tees = data);
   }
+  addPlayer(){
+    this.members.push(this.playForm.controls['email'].value);
+    this.playForm.controls['email'].setValue('');
 
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.playForm.invalid){
+  }
+  start() {
+    if (this.playForm.invalid || this.members.length < 1){
       return;
     }
-
-}
+    this.playForm.controls['email'].setValue(this.members.toString());
+    this.game = this.playForm.value;
+    this.game['size'] = this.members.length;
+    this.game.longitude = 0;
+    this.game.latitude = 0;
+    this.game.golf_cart = 1;
+    this.gameService.startGame(this.game).subscribe();
+    this.playForm.reset();
+    this.members = [];
+    localStorage.setItem('game', JSON.stringify(this.game));
+  }
 
 }
 

@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 require('../database-management/databaseConnect.php');
-require('./CourseMngmtQueries.php');
+require('./EmployeeMngmtQueries.php');
 
 
 /*****************************************
@@ -64,10 +64,10 @@ $url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
  * URL length [6] -> Store
  * URL length [7] -> Store URI OR Controller
  * -------- Resource Options --------
- * Document => course-management
- * Collection => courses
- * Collection URI => course_id
- * Store => holes
+ * Document => employee-management
+ * Collection => employees
+ * Collection URI => emp_id
+ * Store => N/A
  * Store URI => N/A
  * Controller => N/A
 ***************************************************************************************/
@@ -222,52 +222,44 @@ else {
 }
 
 if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
-    // GPTMS/api/course-management/courses
-    if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "insertCourse";
+    // GPTMS/api/employee-management/employees
+    if ($document == "employee-management" && $collection == "employees" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "insertEmployee";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
-    // GPTMS/api/course-management/courses
-    if ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "selectAllCourses";
+    // GPTMS/api/employee-management/employees
+    if ($document == "employee-management" && $collection == "employees" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "selectAllEmployees";
     }
-    // GPTMS/api/course-management/courses/1
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "selectCourse";
+    // GPTMS/api/employee-management/employees/1
+    elseif ($document == "employee-management" && $collection == "employees" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "selectEmployee";
     }
-    // GPTMS/api/course-management/courses/1/holes
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
-        $function = "selectHoles";
-    }
-    // GPTMS/api/course-management/courses/1/tees
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "tees" && $storeURI == NULL) {
-        $function = "selectTees";
-    }
-    // GPTMS/api/course-management/courses/1/records
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "records" && $storeURI == NULL) {
-        $function = "selectCourseRecords";
+    // GPTMS/api/employee-management/employees?course_id=1
+    elseif ($document == "employee-management" && $collection == "employees" && $controller == NULL && $collectionURI == NULL && $filter == "course_id" && $filterVal != NULL && $store == NULL && $storeURI == NULL) {
+        $function = "selectEmployeeByCourse";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
-    // GPTMS/api/course-management/courses/1
-    if ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "updateCourse";
+    // GPTMS/api/employee-management/employees/1
+    if ($document == "employee-management" && $collection == "employees" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "updateEmployee";
     }
     else {
         $function = "error";
     }
 }
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
-    // GPTMS/api/course-management/courses/1
-    if ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
-        $function = "deleteCourse";
+   // GPTMS/api/employee-management/employees/1
+    if ($document == "employee-management" && $collection == "employees" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "deleteEmployee";
     }
     else {
         $function = "error";
@@ -283,45 +275,44 @@ else {
 **************************************************************/
 
 switch ($function) {
-    case 'error':
+    case "error":
         header('Accept: application/json, charset=utf-8');
         http_response_code(501);
         echo http_response_code().": Error, service not recognized";
         break;
-    case 'selectCourse':
-        // Assign collection URI to course_id
-        $course_id = $collectionURI;
-
-        // Get results from SQL query
-        $result = selectCourse($course_id);
+    case "insertEmployee":
+        // Get JSON data
+        $user_id = $input->data->User_user_id;
+        $course_id = $input->data->Course_course_id;
+        $security_lvl = $input->data->security_lvl;
+        
+        // Get result from SQL query
+        $result = insertEmployee($user_id, $course_id, $security_lvl);
         
         if ($result != NULL) {
-            header('Content-Type: application/json, charset=utf-8');
-            http_response_code(200);
-            
-            // Return course data as JSON array
-            echo json_encode($result);
-        }
+            http_response_code(201);
+            echo http_response_code().": Employee created successfully";
+        } 
         else {
-            http_response_code(404);
-            echo http_response_code().": No course with id=$collectionURI found";
+            header('Accept: application/json');
+            http_response_code(500);
+            echo http_response_code().": Error, employee not created";
         }
         break;
-    case 'updateCourse':
+    case "updateEmployee":
         // Get JSON data
-        $course_name = $input->data->course_name;
-        $address = $input->data->address;
-        $phone = $input->data->phone_number;
+        $course_id = $input->data->Course_course_id;
+        $security_lvl = $input->data->security_lvl;
         
-        // Assign collection URI to course_id
-        $course_id = $collectionURI;
+        // Assign collection URI to emp_id
+        $emp_id = $collectionURI;
 
         // Get the updated row count from the SQL query
-        $result = updateCourse($course_name, $address, $phone, $course_id);
-        
+        $result = updateEmployee($course_id, $security_lvl, $emp_id);
+
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Course updated successfully";
+            echo http_response_code().": Employee updated successfully";
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
@@ -331,130 +322,89 @@ switch ($function) {
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, course not updated";
+            echo http_response_code().": Error, employee not updated";
         }
-        break;
-    case 'insertCourse':
-        // Get JSON data
-        $course_name = $input->data->course_name;
-        $address = $input->data->address;
-        $phone = $input->data->phone_number;
         
-        // Get the last inserted row number from SQL query
-        $result = insertCourse($course_name, $address, $phone);
-        
-        if ($result != 0) {
-            http_response_code(201);
-            echo http_response_code().": Course added successfully";
-        }
-        else {
-            header('Accept: application/json');
-            http_response_code(404);
-            echo http_response_code().": Error, course not added";
-        }
         break;
-    case 'deleteCourse':
-        // Assign collection URI to course_id
-        $course_id = $collectionURI;
+    case "deleteEmployee":
+        // Assign collection URI to emp_id
+        $emp_id = $collectionURI;
 
         // Get number of rows affected from SQL query
-        $result = deleteCourse($course_id);
+        $result = deleteEmployee($emp_id);
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Course deleted successfully";
+            echo http_response_code().": Employee deleted successfully";
         }
         else {
             http_response_code(404);
-            echo http_response_code().": Error, course not deleted";
+            echo http_response_code().": Error, employee not deleted";
         }
         break;
-    case "selectAllCourses":       
+    case "selectAllEmployees":
         // Get result from SQL query
-        $result = selectallCourses();
+        $result = selectAllEmployees();
 
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
-            
-            // Return course data as JSON array
+
+            // Return user data as JSON array
             echo json_encode($result);
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": No courses found";
+            echo http_response_code().": No employees found";
         }
         break;
-    case "selectHoles":
-        // Assign collection URI to course_id
-        $course_id = $collectionURI;
-            
+    case "selectEmployeeByCourse":
+        // Check if filter = course id
+        if ($filter == "course_id") {
+            //Get course id from URL
+            $course_id = $filterVal;
+        }
+        
         // Get result from SQL query
-        $result = selectHoles($course_id);
+        $result = selectEmployeeByCourse($course_id);
 
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
-            
-            // Return course data as JSON array
+
+            // Return user data as JSON array
             echo json_encode($result);
         } 
         else {
-            header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, no holes found";
+            echo http_response_code().": No employees found";
         }
         break;
-    case "selectTees":
-        $course_id = $collectionURI;
+    case "selectEmployee":
+        // Get employee id from URL
+        $emp_id = $collectionURI;
         
-        // Start session
-        session_start();
-        
-        // Store course id into session variable
-        $_SESSION["course_id"] = $course_id;
-        
-        // Get tees from SQL query
-        $result = selectTees($course_id);
-        
-        if(!empty($result)) {
-            header('Content-Type: application/json, charset=utf-8');
-            http_response_code(200);
-            
-            // Return tee data as JSON array
-            echo json_encode($result);
-        }
-        else {
-            http_response_code(404);
-            echo http_response_code().": Error, no tees found";
-        }
-        break;
-    case "selectCourseRecords":
-        // Assign collection URI to course_id
-        $course_id = $collectionURI;
-
-        // Get results from SQL query
-        $result = selectCourseRecords($course_id);
+        // Get result from SQL query
+        $result = selectEmployee(emp_id);
         
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
-            
-            // Return course data as JSON array
+
+            // Return employee data as JSON array
             echo json_encode($result);
-        }
+        } 
         else {
             http_response_code(404);
-            echo http_response_code().": No course records with id=$collectionURI found";
+            echo http_response_code().": No employees found";
         }
         break;
-
 }
 
 
-/*********************************************
+/********************
  * Troubleshooting
- **********************************************/
+*********************/
 
 //echo "\n\n"."URL ";
 //print_r($url);

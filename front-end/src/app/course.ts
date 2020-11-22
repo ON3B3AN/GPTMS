@@ -1,12 +1,15 @@
 import {Hole} from './hole';
 
-export interface Course {
-  tees: any;
-  course: any;
-  course_id: number;
+export class Course {
+  course?: any;
+  course_id?: number;
   course_name: string;
   address: string;
-  phone_number: string;
-  course_tee: string;
+  phone: string;
   holes?: Hole[];
+  constructor() {
+    this.course_name = '';
+    this.address = '';
+    this.phone = '';
+  }
 }
