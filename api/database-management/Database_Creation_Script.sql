@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Hole` (
   `longitude` DOUBLE NOT NULL,
   `latitude` DOUBLE NOT NULL,
   `avg_pop` TIME NOT NULL,
+  `hint` VARCHAR(1000) NULL,
   PRIMARY KEY (`hole_id`),
   INDEX `fk_Hole_Course1_idx` (`Course_course_id` ASC) ,
   CONSTRAINT `fk_Hole_Course1`
