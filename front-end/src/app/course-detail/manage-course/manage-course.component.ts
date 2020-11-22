@@ -5,7 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import * as L from 'leaflet';
 import 'leaflet-draw';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-course',
@@ -15,167 +15,387 @@ import { MatTableDataSource } from '@angular/material/table';
 export class ManageCourseComponent implements OnInit, AfterViewInit {
   id: number;
   course: Course = new Course;
+  courseForm: FormGroup;
   private map;
   private courseMap;
-  holes = [{
-    hole_number: 1,
-    par_men: 5,
-    par_ladies: 5,
-    handicap_men: 11,
-    handicap_ladies: 11,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19740568812945, 42.67230473714778],[-83.1965688389168, 42.67230473714778],[-83.19896136935809, 42.668155355871036],[-83.19940125163653, 42.668336798486294],[-83.19941198047259, 42.66892056678555],[-83.19740568812945, 42.67230473714778]]
-  }, {
-    hole_number: 2,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 9,
-    handicap_ladies: 9,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19967153201934, 42.668436324149624],[-83.19992902408477, 42.66843632414958],[-83.20012214313384, 42.66827854824511],[-83.20060494075652, 42.66721355041483],[-83.20083024631377, 42.66570279811752],[-83.2005298389041, 42.664124951669734],[-83.20022943149444, 42.66405394763799],[-83.19995048175689, 42.664140730332434],[-83.19980669896445, 42.66743210797909],[-83.19967153201934, 42.668436324149624]]
-  }, {
-    hole_number: 3,
-    par_men: 3,
-    par_ladies: 5,
-    handicap_men: 17,
-    handicap_ladies: 15,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19960414848555, 42.663978053542984],[-83.20030152282942, 42.66399383224298],[-83.20158898315657, 42.66452241637854],[-83.2019001194023, 42.66448296995644],[-83.20202886543501, 42.66426995884459],[-83.20194303474653, 42.66402538963096],[-83.20046245537031, 42.663615142337875],[-83.19946467361677, 42.66372559379845],[-83.19960414848555, 42.663978053542984]]
-  }, {
-    hole_number: 4,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 13,
-    handicap_ladies: 13,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.20265113792647, 42.66426206953013],[-83.202747697451, 42.663978053542984],[-83.2026940532707, 42.66381237695127],[-83.20250093422163, 42.66381237695127],[-83.20225417099226, 42.664009610938976],[-83.20098553192696, 42.66555784232994],[-83.20068512451729, 42.66673406197916],[-83.20109282028756, 42.66693128669748],[-83.20141468536934, 42.66693128669748],[-83.20162926209053, 42.66672617297742],[-83.20174727928719, 42.66596882414813],[-83.20212278854927, 42.66500070519499],[-83.20265113792647, 42.66426206953013]]
-  }, {
-    hole_number: 5,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 1,
-    handicap_ladies: 5,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.20178654142025, 42.66684104367369],[-83.20177581258419, 42.66648603821484],[-83.20473697133663, 42.66620203238801],[-83.20645421747616, 42.66688837758172],[-83.20647567514828, 42.66733804791014],[-83.20592850450925, 42.66733015898503],[-83.20479124788693, 42.66689626656288],[-83.20178654142025, 42.66684104367369]]
-  }, {
-    hole_number: 6,
-    par_men: 5,
-    par_ladies: 5,
-    handicap_men: 3,
-    handicap_ladies: 1,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.20608687476286, 42.668591306291454],[-83.20600104407438, 42.66827575486874],[-83.20217084960112, 42.668078534416054],[-83.20057225302824, 42.668409864419104],[-83.19951872513194, 42.669056741716005],[-83.19930414841075, 42.66948273040594],[-83.1998191325416, 42.66965628051668],[-83.20063452408213, 42.66918296089146],[-83.20253352806468, 42.668764858891144],[-83.20608687476286, 42.668591306291454]]
-  }, {
-    hole_number: 7,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 7,
-    handicap_ladies: 7,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19928057781699, 42.669653777682484],[-83.19910891644004, 42.67004820796612],[-83.2024348556185, 42.67034797330771],[-83.20325024715903, 42.67090016883668],[-83.20361502758506, 42.671334033310714],[-83.2040012656832, 42.671357698558545],[-83.20425875774863, 42.67116837632351],[-83.20382960430625, 42.670411081616464],[-83.2031000434542, 42.669803661485126],[-83.19928057781699, 42.669653777682484]]
-  }, {
-    hole_number: 8,
-    par_men: 3,
-    par_ladies: 5,
-    handicap_men: 15,
-    handicap_ladies: 17,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.20424802891257, 42.67175352675355],[-83.20420511356834, 42.67147743339302],[-83.20170529476646, 42.67118556193549],[-83.2014263450289, 42.671351218876886],[-83.20152290455344, 42.671635201177786],[-83.20424802891257, 42.67175352675355]]
-  }, {
-    hole_number: 9,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 5,
-    handicap_ladies: 3,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.20267089001182, 42.67056237234411],[-83.20241339794639, 42.67036515914655],[-83.20054658047202, 42.670294162242236],[-83.19931276432517, 42.67071225395574],[-83.19829352489951, 42.67167464306139],[-83.19828279606345, 42.67212427876549],[-83.1984544574404, 42.67225049171175],[-83.19886215321067, 42.67215583202607],[-83.19985993496421, 42.67120922723986],[-83.20066459766868, 42.670972573790635],[-83.20267089001182, 42.67056237234411]]
-  }, {
-    hole_number: 10,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 6,
-    handicap_ladies: 8,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19545274383121, 42.67239269257986],[-83.1955600321918, 42.670327324852074],[-83.19603210097843, 42.668828483189095],[-83.19648271209293, 42.6687653732735],[-83.19687967902713, 42.6690809222107],[-83.19647198325687, 42.67050876112729],[-83.1957515931647, 42.672433530738616],[-83.19545274383121, 42.67239269257986]]
-  }, {
-    hole_number: 11,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 16,
-    handicap_ladies: 14,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19752185111453, 42.66898906359645],[-83.19779007201602, 42.668807622885154],[-83.19742529159, 42.66732377510257],[-83.19666354422976, 42.66569074588643],[-83.19627730613162, 42.665603965355686],[-83.19601981406619, 42.66577752629601],[-83.19611637359073, 42.66670054679218],[-83.19713358033938, 42.66885910753128],[-83.19752185111453, 42.66898906359645]]
-  }, {
-    hole_number: 12,
-    par_men: 3,
-    par_ladies: 5,
-    handicap_men: 18,
-    handicap_ladies: 18,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19586606308779, 42.667218229709825],[-83.19623084351382, 42.66713145131142],[-83.19556565567812, 42.66507498842017],[-83.1952008752521, 42.66503554234867],[-83.19488973900637, 42.665256440026596],[-83.19586606308779, 42.667218229709825]]
-  }, {
-    hole_number: 13,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 2,
-    handicap_ladies: 2,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}]
-//    geo: [[-83.19578309020572, 42.66484135595096],[-83.19798250159793, 42.66358695390628],[-83.19931287726932, 42.66364217968617],[-83.2001926418262, 42.66344494453281],[-83.20004243812137, 42.66302181712038],[-83.19795031508976, 42.66292714338016],[-83.1971671100574, 42.66321905361611],[-83.19555614680326, 42.66463245300804],[-83.19578309020572, 42.66484135595096]]
-  }, {
-    hole_number: 14,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 10,
-    handicap_ladies: 10,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.20035193652188, 42.66330263487357],[-83.20019100398099, 42.66282137737167],[-83.20051286906278, 42.66136969283253],[-83.20096348017728, 42.66072273554314],[-83.20221875399625, 42.66043870338719],[-83.20265863627469, 42.66058860940896],[-83.20276592463529, 42.66084108189184],[-83.20187543124234, 42.661085663632],[-83.20106003970182, 42.66205609137706],[-83.20035193652188, 42.66330263487357]]
-  }, {
-    hole_number: 15,
-    par_men: 3,
-    par_ladies: 5,
-    handicap_men: 14,
-    handicap_ladies: 16,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.20258709358637, 42.661122486492026],[-83.20272656845515, 42.6615169709087],[-83.20367070602839, 42.66181677739146],[-83.2053658621258, 42.661856225505254],[-83.20546242165034, 42.66168265361735],[-83.20520492958491, 42.66137495680704],[-83.20258709358637, 42.661122486492026]]
-  }, {
-    hole_number: 16,
-    par_men: 5,
-    par_ladies: 5,
-    handicap_men: 8,
-    handicap_ladies: 6,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.20689770527198, 42.6620610677135],[-83.20683333225563, 42.661840158681734],[-83.20396873302772, 42.661966392510294],[-83.20144745655372, 42.662542331100774],[-83.20071789570167, 42.66329183223608],[-83.20100757427528, 42.66377308609624],[-83.20129725284889, 42.66385986918276],[-83.20178005047157, 42.66359163016024],[-83.20197316952064, 42.66305514864316],[-83.20689770527198, 42.6620610677135]]
-  }, {
-    hole_number: 17,
-    par_men: 4,
-    par_ladies: 5,
-    handicap_men: 12,
-    handicap_ladies: 12,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19964181388235, 42.664244007383346],[-83.19954525435782, 42.66398365936905],[-83.19913755858755, 42.66392054453475],[-83.1989122530303, 42.66425978601586],[-83.1984079977355, 42.66512554416833],[-83.19776426757193, 42.66724770419205],[-83.19805394614554, 42.66739759379651],[-83.19868694747305, 42.6671609258348],[-83.19897662604666, 42.66610379793819],[-83.19964181388235, 42.664244007383346]]
-  }, {
-    hole_number: 18,
-    par_men: 5,
-    par_ladies: 5,
-    handicap_men: 4,
-    handicap_ladies: 4,
-    tees: [{name:'Tournament', distance: 400},{name:'Champion', distance: 387}],
-    geo: [[-83.19837581122732, 42.667371574877144],[-83.19882642234182, 42.66730057455352],[-83.19876204932547, 42.66836557089284],[-83.19621931517935, 42.6725386029347],[-83.19587599242544, 42.6725386029347],[-83.19586526358938, 42.671931203595136],[-83.19664846862173, 42.67014234848462],[-83.19778572524405, 42.668832832286874],[-83.19827925170279, 42.66787039917928],[-83.19837581122732, 42.667371574877144]]
-  }];
-  tees = this.holes[0].tees.slice();
+  holes = [
+    {
+      "hole_number": 1,
+      "par_men": 5,
+      "par_ladies": 5,
+      "handicap_men": 11,
+      "handicap_ladies": 11,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.197381, 42.672343], [-83.196931, 42.672351], [-83.196569, 42.672305], [-83.198961, 42.668155], [-83.199401, 42.668337], [-83.199412, 42.668921], [-83.197381, 42.672343]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 2,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 9,
+      "handicap_ladies": 9,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.199672, 42.668436], [-83.19994, 42.668423], [-83.200122, 42.668279], [-83.200605, 42.667214], [-83.20083, 42.665703], [-83.20053, 42.664125], [-83.200229, 42.664054], [-83.19995, 42.664141], [-83.199807, 42.667432], [-83.199672, 42.668436]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 3,
+      "par_men": 3,
+      "par_ladies": 5,
+      "handicap_men": 17,
+      "handicap_ladies": 15,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.199604, 42.663978], [-83.200302, 42.663994], [-83.201589, 42.664522], [-83.201872, 42.664466], [-83.202029, 42.66427], [-83.201943, 42.664025], [-83.200462, 42.663615], [-83.199465, 42.663726], [-83.199604, 42.663978]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 4,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 13,
+      "handicap_ladies": 13,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.202651, 42.664262], [-83.202837, 42.664001], [-83.202735, 42.663855], [-83.202501, 42.663812], [-83.202254, 42.66401], [-83.200986, 42.665558], [-83.200685, 42.666734], [-83.201093, 42.666931], [-83.201415, 42.666931], [-83.201629, 42.666726], [-83.201747, 42.665969], [-83.202123, 42.665001], [-83.202651, 42.664262]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 5,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 1,
+      "handicap_ladies": 5,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.201787, 42.666841], [-83.201727, 42.666691], [-83.201839, 42.666509], [-83.204737, 42.666202], [-83.206454, 42.666888], [-83.206476, 42.667338], [-83.205929, 42.66733], [-83.204791, 42.666896], [-83.201787, 42.666841]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 6,
+      "par_men": 5,
+      "par_ladies": 5,
+      "handicap_men": 3,
+      "handicap_ladies": 1,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.206087, 42.668591], [-83.205959, 42.668292], [-83.202171, 42.668079], [-83.200572, 42.66841], [-83.199519, 42.669057], [-83.199304, 42.669483], [-83.199819, 42.669656], [-83.200635, 42.669183], [-83.202534, 42.668765], [-83.206087, 42.668591]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 7,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 7,
+      "handicap_ladies": 7,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.199275, 42.669665], [-83.199109, 42.670048], [-83.202435, 42.670348], [-83.20325, 42.6709], [-83.203615, 42.671334], [-83.204001, 42.671358], [-83.204259, 42.671168], [-83.20383, 42.670411], [-83.2031, 42.669804], [-83.199275, 42.669665]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 8,
+      "par_men": 3,
+      "par_ladies": 5,
+      "handicap_men": 15,
+      "handicap_ladies": 17,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.204248, 42.671754], [-83.204205, 42.671477], [-83.201705, 42.671186], [-83.201405, 42.671381], [-83.201523, 42.671635], [-83.204248, 42.671754]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 9,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 5,
+      "handicap_ladies": 3,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.202671, 42.670562], [-83.202413, 42.670365], [-83.200547, 42.670294], [-83.199313, 42.670712], [-83.198294, 42.671675], [-83.198283, 42.672124], [-83.198465, 42.672284], [-83.198862, 42.672156], [-83.19993, 42.671243], [-83.200665, 42.670973], [-83.202671, 42.670562]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 10,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 6,
+      "handicap_ladies": 8,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.195418, 42.672446], [-83.19556, 42.670327], [-83.196032, 42.668828], [-83.196483, 42.668765], [-83.19688, 42.669081], [-83.196472, 42.670509], [-83.195752, 42.672434], [-83.195418, 42.672446]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 11,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 16,
+      "handicap_ladies": 14,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.197522, 42.668989], [-83.19779, 42.668808], [-83.197425, 42.667324], [-83.196664, 42.665691], [-83.196282, 42.665606], [-83.19602, 42.665778], [-83.196116, 42.666701], [-83.197134, 42.668859], [-83.197522, 42.668989]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 12,
+      "par_men": 3,
+      "par_ladies": 5,
+      "handicap_men": 18,
+      "handicap_ladies": 18,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.195847, 42.667188], [-83.196046, 42.667184], [-83.196228, 42.667117], [-83.195566, 42.665075], [-83.195201, 42.665036], [-83.19489, 42.665256], [-83.195847, 42.667188]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 13,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 2,
+      "handicap_ladies": 2,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.195783, 42.664841], [-83.197983, 42.663587], [-83.199409, 42.663638], [-83.200193, 42.663445], [-83.200042, 42.663022], [-83.19795, 42.662927], [-83.197167, 42.663219], [-83.195556, 42.664632], [-83.195783, 42.664841]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 14,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 10,
+      "handicap_ladies": 10,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.200352, 42.663303], [-83.200203, 42.663117], [-83.200191, 42.662821], [-83.200513, 42.66137], [-83.200963, 42.660723], [-83.202219, 42.660439], [-83.202601, 42.660569], [-83.202766, 42.660841], [-83.201875, 42.661086], [-83.20106, 42.662056], [-83.200352, 42.663303]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 15,
+      "par_men": 3,
+      "par_ladies": 5,
+      "handicap_men": 14,
+      "handicap_ladies": 16,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.202587, 42.661122], [-83.202727, 42.661517], [-83.203671, 42.661817], [-83.205366, 42.661856], [-83.20545, 42.661642], [-83.205205, 42.661375], [-83.202587, 42.661122]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 16,
+      "par_men": 5,
+      "par_ladies": 5,
+      "handicap_men": 8,
+      "handicap_ladies": 6,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.20686, 42.66204], [-83.206737, 42.661823], [-83.203969, 42.661966], [-83.201447, 42.662542], [-83.200718, 42.663292], [-83.201008, 42.663773], [-83.201297, 42.66386], [-83.20178, 42.663592], [-83.20207, 42.663003], [-83.20686, 42.66204]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 17,
+      "par_men": 4,
+      "par_ladies": 5,
+      "handicap_men": 12,
+      "handicap_ladies": 12,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.199642, 42.664244], [-83.199545, 42.663984], [-83.199087, 42.663938], [-83.198912, 42.66426], [-83.198408, 42.665126], [-83.197764, 42.667248], [-83.198054, 42.667398], [-83.198687, 42.667161], [-83.198977, 42.666104], [-83.199642, 42.664244]
+          ]]
+        }
+      }
+    },{
+      "hole_number": 18,
+      "par_men": 5,
+      "par_ladies": 5,
+      "handicap_men": 4,
+      "handicap_ladies": 4,
+      "tees": [
+        {"name": "Tournament", "distance": 400},
+        {"name": "Champion", "distance": 387}
+      ],
+      "geo": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-83.198376, 42.667372],[-83.198826, 42.667301],[-83.198762, 42.668366], [-83.196266, 42.672525],[-83.195876, 42.672539],[-83.195865, 42.671931], [-83.196648, 42.670142],[-83.197786, 42.668833],[-83.198279, 42.66787], [-83.198376, 42.667372]
+          ]]
+        }
+      }
+    }
+  ];
+  teeNames: string[] = this.holes[0].tees.map(a => a.name);
+  submission = [];
 
 
-  constructor(private courseService: CourseService, private route: ActivatedRoute, private elementRef: ElementRef) {
-    this.flipCoords();
-  }
-
-  ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.id = +params.id;
+  constructor(private courseService: CourseService, private route: ActivatedRoute,
+              private fb: FormBuilder, private elementRef: ElementRef) {
+    this.courseForm = this.fb.group({
+      holes: this.fb.array([])
     });
-    this.courseService.getCourse(this.id)
-      .subscribe(data => this.course = data);
+    this.holes.map((item, index) => {
+      this.addItem(item);
+    });
   }
+
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -185,22 +405,12 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     });
 
     tiles.addTo(this.map);
-    this.holes.forEach(hole => {
-      try {
-        L.polygon(hole.geo, {
-          id: hole.hole_number,
-          weight: 1,
-          fillOpacity: 0.7,
-          color: 'red',
-          dashArray: '3'
-        }).bindTooltip("Hole " + hole.hole_number).addTo(this.courseMap);
-      } catch (e) {}
-    });
+    this.updateMap();
     this.map.fitBounds(this.courseMap.getBounds());
   }
 
   private initMap(): void {
-    this.map = L.map('map', {
+    this.map = L.map('cMap', {
       center: [42.6730347, -83.196061],
       zoom: 15
     });
@@ -224,14 +434,14 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     this.map.on('draw:created', (e) => {
       var type = e.layerType,
         layer = e.layer;
-      var coords = layer.getLatLngs();
+      var coords = layer.toGeoJSON();
       var tempMarker = this.courseMap.addLayer(layer);
-      const noGeo = this.holes.filter(h => h.geo == null);
-      const _this = this;
       var opt = '';
-      for (let hole of noGeo) {
-        opt += '<option value="'+hole.hole_number+'">'+hole.hole_number+'</option>';
+      for (let [i, hole] of this.courseForm.value.holes.entries()) {
+        if (hole.geo === '')
+          opt += '<option value="'+i+'">'+hole.hole_number+'</option>';
       }
+      const _this = this;
       var popupContent = '<form id="add-geo"><div class="form-group">'+
         '<label class="control-label col-sm-5"><strong>Hole: </strong></label>'+
         '<select id="hole" name="geoHole" class="form-control">'+opt+'</select>'+
@@ -263,8 +473,10 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
       layers.eachLayer((layer) => {
         //do whatever you want; most likely save back to db
         const i = this.holes.findIndex(h => h.hole_number === layer.options.id);
-        this.holes[i].geo = layer.getLatLngs()[0].map(point => [point.lat, point.lng]);
-        console.log("Hole "+layer.options.id+" updated: "+this.holes[i].geo.toString());
+        this.courseForm.get(`holes.${layer.options.id}.geo`).setValue(
+          layer.toGeoJSON()
+        );
+        console.log("Hole at index "+layer.options.id+" geo updated");
       });
     });
 
@@ -272,33 +484,23 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
       var layers = e.layers;
       layers.eachLayer((layer) => {
         //do whatever you want; most likely save back to db
-        const i = this.holes.findIndex(h => h.hole_number === layer.options.id);
-        delete this.holes[i].geo;
-        console.log("Hole "+layer.options.id+" geo removed");
+        if (layer.options.id) {
+          const i = this.holes.findIndex(h => h.hole_number === layer.options.id);
+          this.courseForm.get(`holes.${layer.options.id}.geo`).setValue('');
+          console.log("Hole at index " + layer.options.id + " geo removed");
+        }
       });
     });
   }
 
-  private flipCoords(): void {
-    for(let i = 0; i < this.holes.length; i++) {
-      try {
-        let poly = [];
-        for (let n = 0; n < this.holes[i].geo.length; n++) {
-          poly.push([this.holes[i].geo[n][1], this.holes[i].geo[n][0]]);
-        }
-        this.holes[i].geo = poly;
-      } catch (e) {}
-    }
-  }
-
-  addGeo(hole, coords) {
-    const points = coords[0].map(point => [point.lat, point.lng]);
-    hole = parseInt(hole);
-    const i = this.holes.findIndex(h => h.hole_number === hole);
-    this.holes[i].geo = points;
-
-    L.polygon(points, {
-      id: hole,
+  addGeo(i, coords) {
+    //const points = coords[0].map(point => [point.lat, point.lng]);
+    i = parseInt(i);
+    const hole = this.courseForm.value.holes[i].hole_number;
+    this.courseForm.get(`holes.${i}.geo`).setValue(coords);
+    console.log(coords);
+    L.geoJSON(coords, {
+      id: i,
       weight: 1,
       fillOpacity: 0.7,
       color: 'red',
@@ -306,7 +508,92 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     }).bindTooltip("Hole " + hole).addTo(this.courseMap);
   }
 
+  updateMap() {
+    this.courseMap.clearLayers();
+    for (let [i, hole] of this.courseForm.value.holes.entries()) {
+      try {
+        L.geoJSON(hole.geo, {
+          id: i,
+          weight: 1,
+          fillOpacity: 0.7,
+          color: 'red',
+          dashArray: '3'
+        }).bindTooltip("Hole " + hole.hole_number).addTo(this.courseMap);
+      } catch (e) {
+        console.log(hole.hole_number);
+      }
+    }
+  }
+
+  addItem(item: any) {
+    const tees = item.tees.map(x =>
+      this.fb.group({
+        name: [""],
+        distance: [""]
+      })
+    );
+    const geos = JSON.stringify(item.geo);
+
+    const formItem = this.fb.group({
+      hole_number: [],
+      par_men: [],
+      par_ladies: [],
+      handicap_men: [],
+      handicap_ladies: [],
+      tees: this.fb.array([...tees]),
+      geo: [geos]
+    });
+    formItem.setValue(item);
+    (this.courseForm.get("holes") as FormArray).push(formItem);
+  }
+
+  addHole() {
+    const item = {
+      hole_number: this.courseForm.get("holes")['controls'].length + 1,
+      par_men: null,
+      par_ladies: null,
+      handicap_men: null,
+      handicap_ladies: null,
+      tees: [...this.teeNames.map(x => ({ name: x, distance: null }))],
+      geo: ''
+    };
+    this.addItem(item);
+    this.updateMap();
+  }
+
   addTee() {
-    this.tees.push({name:'', distance:0});
+    for (let hole of this.courseForm.get("holes")["controls"]) {
+      (hole.get("tees") as FormArray).push(
+        this.fb.group({
+          name: [''],
+          distance: ['']
+        })
+      );
+    }
+    this.teeNames.push('');
+  }
+
+  updateTee(t: number, event) {
+    for (let hole of this.courseForm.get("holes")["controls"]) {
+      hole.get(`tees.${t}.name`)
+        .setValue(event.target.value, {emitEvent:false});
+    }
+    this.teeNames[t] = event.target.value;
+  }
+
+  removeTee(t: number) {
+    for (let hole of this.courseForm.get("holes")["controls"]) {
+      (hole.get("tees") as FormArray).removeAt(t);
+    }
+    this.teeNames.splice(t, 1);
+  }
+  removeHole(h: number) {
+    (this.courseForm.get("holes") as FormArray).removeAt(h);
+    this.updateMap();
+  }
+
+  updateCourse() {
+    const holes = this.courseForm.value.holes;
+    this.submission = holes;
   }
 }
