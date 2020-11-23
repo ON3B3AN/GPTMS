@@ -6,7 +6,7 @@
       <tr>
         <th>Hole</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          {{hole.get('hole_number').value}}
+          <input type="number" formControlName="hole_number" min="1" max="99" />
           <button type="button" (click)="removeHole(h)">X</button>
         </td>
       </tr>

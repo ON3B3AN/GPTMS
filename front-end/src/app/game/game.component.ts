@@ -23,11 +23,12 @@ export class GameComponent implements OnChanges {
       this.userService.getUsers().subscribe(data => {
         this.players = data.filter(u => this.game.email.split(',').indexOf(u.email)>-1);
       });
-      this.gameService.getRound(this.game.course_id, holes[0], holes[1]).subscribe(data => {
+      this.gameService.getRound(this.game.id, this.game.course_id, holes[0], holes[1]).subscribe(data => {
         this.course.course_name = data[0].course_name;
         this.course.address = data[0].address;
         this.course.phone = data[0].phone;
         this.course.holes = [];
+        console.log(data);
         for (const datum of data) {
           const i = this.course.holes.findIndex(h => h.hole_number === datum.hole_number);
           if (i >= 0) {

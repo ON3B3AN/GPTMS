@@ -30,8 +30,8 @@ export class GameService {
     this.router.navigate(['/landing']);
   }
 
-  getRound(course, start_hole, end_hole) {
-    const url = `${this.gameUrl}/start-round`;
+  getRound(party, course, start_hole, end_hole) {
+    const url = `${this.gameUrl}/${party}/rounds`;
     return this.http.post<any>(url,{data: {course_id: course, start_hole: start_hole, end_hole: end_hole}})
       .pipe(
         tap(_ => console.log(`fetched round info`)),
