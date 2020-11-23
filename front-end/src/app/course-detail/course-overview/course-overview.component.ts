@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Host } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import * as L from 'leaflet';
 import { Course } from 'src/app/course';
@@ -66,7 +66,7 @@ export class CourseOverviewComponent implements OnInit {
     });
 
     tiles.addTo(this.map);
-    // const marker = L.marker([ 42.42753075, -83.12527904 ], this.icon).addTo(this.map);
+    console.log(this.course);
     this.geocodeAddress(this.course.address).then(json => {
       const marker = L.marker([json[0].lat, json[0].lon], this.icon).addTo(this.map);
       this.map.panTo(marker.getLatLng());
@@ -74,7 +74,7 @@ export class CourseOverviewComponent implements OnInit {
   }
 
   private initMap(): void {
-    this.map = L.map('map', {
+    this.map = L.map('oMap', {
       center: [ 42.42283075, -83.12516904 ],
       zoom: 14
     });

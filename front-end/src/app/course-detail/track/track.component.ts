@@ -70,7 +70,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
   }
 
   private initMap(): void {
-    this.map = L.map('map', {
+    this.map = L.map('tMap', {
       center: [42.6730347, -83.196061],
       zoom: 15
     });

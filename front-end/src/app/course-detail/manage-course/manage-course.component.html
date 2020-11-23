@@ -1,38 +1,63 @@
 <p>Use the scorecard and map below to update the course.</p>
-<button>Add Hole</button><button (click)="addTee()">Add Tee</button>
-<div style="width: 100%; overflow: scroll">
-<table>
-  <tr>
-    <th>Hole</th>
-    <td *ngFor="let hole of holes; let i = index">{{hole.hole_number}}</td>
-  </tr>
-  <tr *ngFor="let tee of tees; let t = index">
-    <th><input type="text" value="{{tee.name}}" /></th>
-    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.tees[t].distance}}" min="1" max="1999" /></td>
-  </tr>
-  <tr>
-    <th>Men's Par</th>
-    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.par_men}}" min="3" max="7" /></td>
-  </tr>
-  <tr>
-    <th>Ladies' Par</th>
-    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.par_ladies}}" min="3" max="7" /></td>
-  </tr>
-  <tr>
-    <th>Men's Handicap</th>
-    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.handicap_men}}" min="1" max="{{holes.length}}" /></td>
-  </tr>
-  <tr>
-    <th>Ladies' Handicap</th>
-    <td *ngFor="let hole of holes; let i = index"><input type="number" value="{{hole.handicap_ladies}}" min="1" max="{{holes.length}}" /></td>
-  </tr>
-  <tr>
-    <th>Mapped</th>
-    <td *ngFor="let hole of holes; let i = index"><span *ngIf="hole.geo; else nogeo">Yes</span><ng-template #nogeo>No</ng-template></td>
-  </tr>
-</table>
-</div>
+<button (click)="addHole()">Add Hole</button><button (click)="addTee()">Add Tee</button>
+<form [formGroup]="courseForm" (ngSubmit)="updateCourse()">
+  <div style="width: 100%; overflow: scroll">
+    <table formArrayName="holes">
+      <tr>
+        <th>Hole</th>
+        <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
+          <input type="number" formControlName="hole_number" min="1" max="99" />
+          <button type="button" (click)="removeHole(h)">X</button>
+        </td>
+      </tr>
+      <tr *ngFor="let teeName of teeNames; let t = index">
+        <th><input type="text" value="{{teeName}}" (change)="updateTee(t,$event)" maxlength="16" /><button type="button" (click)="removeTee(t)">X</button>
+        </th>
+        <ng-container *ngFor="let hole of courseForm.get('holes')['controls'] let h = index" [formGroupName]="h">
+          <ng-container formArrayName="tees">
+            <td [formGroupName]="t">
+              <input type="number" formControlName="distance" min="1" max="1999" />
+            </td>
+          </ng-container>
+        </ng-container>
+      </tr>
+      <tr>
+        <th>Men's Par</th>
+        <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
+          <input type="number"  formControlName="par_men" min="3" max="7">
+        </td>
+      </tr>
+      <tr>
+        <th>Ladies' Par</th>
+        <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
+          <input type="number"  formControlName="par_ladies" min="3" max="7">
+        </td>
+      </tr>
+      <tr>
+        <th>Men's Handicap</th>
+        <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
+          <input type="number"  formControlName="handicap_men" min="1" max="{{courseForm.get('holes')['controls'].length}}">
+        </td>
+      </tr>
+      <tr>
+        <th>Ladies Handicap</th>
+        <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
+          <input type="number"  formControlName="handicap_ladies" min="1" max="{{courseForm.get('holes')['controls'].length}}">
+        </td>
+      </tr>
+      <tr>
+        <th>Mapped</th>
+        <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
+          <span *ngIf="hole.get('geo').value !== ''; else nogeo">Yes</span>
+          <ng-template #nogeo>No</ng-template>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <button type="submit">Update Course</button>
+</form>
 <br />
 <div class="map-container">
-  <div id="map"></div>
+  <div id="cMap"></div>
 </div>
+<pre>{{submission | json}}</pre>
