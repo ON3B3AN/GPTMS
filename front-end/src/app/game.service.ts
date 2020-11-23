@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from './user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class GameService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient, private router: Router) {}
 
   startGame(info: any) {
     console.log(info);
@@ -24,7 +26,8 @@ export class GameService {
   }
 
   endGame() {
-
+    localStorage.removeItem('game');
+    this.router.navigate(['/landing']);
   }
 
   getRound(course, start_hole, end_hole) {

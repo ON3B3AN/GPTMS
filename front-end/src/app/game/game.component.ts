@@ -59,9 +59,12 @@ export class GameComponent implements OnChanges {
   }
 
   serviceRequest() {
-   console.log("User Requested Service")
+    console.log("User Requested Service");
 
 }
-
+endGame(): void {
+  this.gameService.endGame()
+    console.log("Game Ended");
+}
 
 }
