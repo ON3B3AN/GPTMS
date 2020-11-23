@@ -9,6 +9,7 @@ import {User} from './user';
 })
 export class UserService {
   private userUrl = 'https://localhost/GPTMS/api/user-management/users';  // URL to web api
+  private empUrl = 'https://localhost/GPTMS/api/employee-management/employees';  // URL to web api
 
 
   httpOptions = {
@@ -60,6 +61,24 @@ export class UserService {
       catchError(this.handleError<User>('updatedUser'))
     );
   } // user profile update
+
+  getEmployees(): Observable<any[]> {
+    return this.http.get<any[]>(this.empUrl)
+      .pipe(
+        tap(_ => console.log(`fetched all employees`)),
+        catchError(this.handleError<any[]>(`getEmployees`))
+      );
+  }
+
+  addEmployee(emp: any) {
+    console.log(emp);
+    return this.http.post<any>(this.empUrl, {data: emp}, this.httpOptions).pipe(
+      tap((newEmp: any) => console.log(`added employee w/ id=${newEmp.emp_id}`)),
+      catchError(this.handleError<any>('addEmployee'))
+    );
+  }
+  
+  
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

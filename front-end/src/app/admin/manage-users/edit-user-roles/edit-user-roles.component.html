@@ -4,17 +4,19 @@
         <div id=name>
             <h5>{{user.last_name}}, {{user.first_name}}</h5>
         </div>
-        <div>
-            &lt;Course Name&gt;
+        <div *ngFor="let role of roles">
+
+            {{role.course_name}}
+            <br>
             <select name="role-type">
-                <option value="1">Admin</option>
-                <option value="2">Staff</option>
+                <option value="1" [selected]="(1 === role.security_lvl)">Admin</option>
+                <option value="2" [selected]="(2 === role.security_lvl)">Staff</option>
             </select>
         </div>
         <div>
-            <label for="courses">Choose a course:</label>
+            <label for="courses">Choose a course: </label>
             <select name="courses" id="courses">
-                <label class="col-sm-2 control-label">Select a Course:</label>
+                <label class="col-sm-2 control-label">Select a Course: </label>
                 <option>Select</option>
                 <option *ngFor="let course of courses"  value="{{course.course_id}}">{{course.course_name}}</option>
             </select>
