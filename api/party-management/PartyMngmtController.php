@@ -399,9 +399,16 @@ switch ($function) {
         $hole_info = selectRangeOfHoles($course_id, $start_hole, $end_hole);
         unset($hole_info["Course_course_id"]);
         $tee_info = selectTees($course_id);
-        $hole_info["Tee_Info"] = $tee_info;
-
-        $result_array = new ArrayObject(array($party_info, $course_info, $hole_info));
+        
+        foreach ($hole_info as &$hole) {
+            $hole['tees'] = array_values(array_filter($tee_info, function($v) use ($hole) {
+                return ($v['hole_number'] == $hole['hole_number']);
+            }));
+        }
+        
+        $course_info['holes'] = $hole_info;
+        
+        $result_array = new ArrayObject(array($party_info, $course_info));
         
         if ($result_array != NULL) {
             header('Content-Type: application/json, charset=utf-8');
