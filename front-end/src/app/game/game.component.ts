@@ -24,27 +24,11 @@ export class GameComponent implements OnChanges {
         this.players = data.filter(u => this.game.email.split(',').indexOf(u.email)>-1);
       });
       this.gameService.getRound(this.game.id, this.game.course_id, holes[0], holes[1]).subscribe(data => {
-        this.course.course_name = data[0].course_name;
-        this.course.address = data[0].address;
-        this.course.phone = data[0].phone;
-        this.course.holes = [];
+        this.course.course_name = data[1].course_name;
+        this.course.address = data[1].address;
+        this.course.phone = data[1].phone;
+        this.course.holes = data[1].holes;
         console.log(data);
-        for (const datum of data) {
-          const i = this.course.holes.findIndex(h => h.hole_number === datum.hole_number);
-          if (i >= 0) {
-            this.course.holes[i].tees.push({name: datum.tee_name, distance: datum.distance_to_pin})
-          } else {
-            this.course.holes.push({
-              hole_number: datum.hole_number,
-              hole_par: datum.hole_par,
-              avg_pop: datum.avg_pop,
-              tees: [{
-                name: datum.tee_name,
-                distance: datum.distance_to_pin
-              }]
-            })
-          }
-        }
         console.log(this.course);
       });
       this.gameService.getPosition().then(pos=>
