@@ -31,17 +31,10 @@ export class GameComponent implements OnChanges {
         console.log(data);
         console.log(this.course);
       });
-      this.gameService.getPosition().then(pos=>
-        {
-           console.log(`Positon: ${pos.lat} ${pos.lng}`);
-        });
+      this.gameService.watchPosition();
     }
   }
-  getLocation(){
-    this.gameService.getPosition().then(pos=> {
-         console.log(`Positon: ${pos.lat} ${pos.lng}`);
-      });
-  }
+
 
   serviceRequest() {
     console.log("User Requested Service");

@@ -51,16 +51,32 @@ export class GameService {
 
   }
 
-  getPosition(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resp => {
-          resolve({lng: resp.coords.longitude, lat: resp.coords.latitude});
-        },
-        err => {
-          reject(err);
-        });
+  getPosition() {
+    if (!navigator.geolocation) {
+      console.log('location is not supported');
+    }
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(
+        `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
+      );
     });
-  }
+}
+
+watchPosition() {
+  let watchID = navigator.geolocation.watchPosition(
+    (position) =>{
+    console.log(
+      `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude} watchID: ${watchID}`
+    );
+  },
+  (err) => {
+    console.log(err);
+  },{
+    enableHighAccuracy: true,
+    timeout: 60000,
+    maximumAge: 0
+  });
+}
 
   requestService() {
 
