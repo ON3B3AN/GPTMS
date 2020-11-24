@@ -399,8 +399,9 @@ switch ($function) {
         $hole_info = selectRangeOfHoles($course_id, $start_hole, $end_hole);
         unset($hole_info["Course_course_id"]);
         $tee_info = selectTees($course_id);
+        $hole_info["Tee_Info"] = $tee_info;
 
-        $result_array = new ArrayObject(array($party_info, $course_info, $hole_info, $tee_info));
+        $result_array = new ArrayObject(array($party_info, $course_info, $hole_info));
         
         if ($result_array != NULL) {
             header('Content-Type: application/json, charset=utf-8');

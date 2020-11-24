@@ -130,11 +130,10 @@ function selectRangeOfHoles($course_id, $start_hole, $end_hole) {
 
 function selectTees($course_id) {
     global $db;
-    $query = 'SELECT DISTINCT(tee_name)
+    $query = 'SELECT hole_number, tee_name, distance_to_pin
                 FROM tee
-                JOIN hole ON hole_id = Hole_hole_id
-                JOIN course ON Course_course_id = course.course_id
-                WHERE course.course_id = ?';
+                JOIN hole ON Hole_hole_id = hole_id
+                WHERE hole.Course_course_id = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('s', $course_id);
