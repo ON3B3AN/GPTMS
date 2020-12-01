@@ -13,6 +13,7 @@ export class GameComponent implements OnChanges {
   course: Course = new Course();
   players: any[];
   id: number[];
+  watchID: number;
 
   constructor(private gameService: GameService, private userService: UserService) { }
 
@@ -31,10 +32,26 @@ export class GameComponent implements OnChanges {
         console.log(data);
         console.log(this.course);
       });
-      this.gameService.watchPosition();
+      this.watchPosition()
     }
   }
 
+  watchPosition() {
+
+    this.watchID = navigator.geolocation.watchPosition(
+      (position) =>{
+      console.log(
+        `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude} watchID: ${this.watchID}`
+      );
+    },
+    (err) => {
+      console.log(err);
+    },{
+      enableHighAccuracy: true,
+      timeout: 60000,
+      maximumAge: 0
+    });
+  }
 
   serviceRequest() {
     console.log("User Requested Service");
@@ -42,6 +59,7 @@ export class GameComponent implements OnChanges {
 }
 endGame(): void {
   this.gameService.endGame()
+  navigator.geolocation.clearWatch(this.watchID)
     console.log("Game Ended");
 }
 
