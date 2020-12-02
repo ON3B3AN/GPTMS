@@ -23,6 +23,10 @@ export class GameComponent implements OnChanges {
 
 
   ngOnChanges(): void {
+    if (this.watchId) {
+      navigator.geolocation.clearWatch(this.watchId);
+      this.watchId = null;
+    }
     if (this.game) {
       const holes = this.game.hole.split('-');
       this.userService.getUsers().subscribe(data => {
@@ -40,10 +44,7 @@ export class GameComponent implements OnChanges {
           this.addFormItem(item);
         });
       });
-      this.gameService.getPosition().then(pos =>
-      {
-        this.gameService.updatePartyGeo(this.party.party_id, pos.coords.longitude, pos.coords.latitude);
-      });
+      this.watchPosition();
     }
   }
 
@@ -63,27 +64,22 @@ export class GameComponent implements OnChanges {
     this.scoreForms.push(formItem);
   }
 
-  // watchPosition() {
-  //
-  //   this.watchId = navigator.geolocation.watchPosition(
-  //     (position) => {
-  //       console.log(
-  //         `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude} watchID: ${this.watchId}`
-  //       );
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     },{
-  //       enableHighAccuracy: true,
-  //       timeout: 60000,
-  //       maximumAge: 0
-  //     });
-  // }
+  watchPosition(): void {
+    this.watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        console.log(`Lat: ${position.coords.latitude}, Lon: ${position.coords.longitude}`);
+        this.gameService.updatePartyGeo(this.party.party_id, position.coords.longitude, position.coords.latitude).subscribe();
+      },
+      (err) => {
+        console.log(err);
+      },{
+        enableHighAccuracy: true,
+        timeout: 60000,
+        maximumAge: 0
+      });
+  }
 
   addScore(hole): void {
-    this.gameService.getPosition().then(pos => {
-      console.log(`Positon: ${pos.lat} ${pos.lng}`);
-    });
     console.log(hole);
     console.log(this.scoreForms[hole].value);
   }
@@ -95,6 +91,10 @@ export class GameComponent implements OnChanges {
   endGame(): void {
     this.gameService.endGame();
     console.log('Game Ended');
+    if (this.watchId) {
+      navigator.geolocation.clearWatch(this.watchId);
+      this.watchId = null;
+    }
   }
 
 }

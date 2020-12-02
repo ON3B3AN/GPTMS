@@ -64,18 +64,6 @@ export class GameService {
 
   }
 
-  getPosition(): any {
-    if (!navigator.geolocation) {
-      console.log('location is not supported');
-    }
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log(
-        `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
-      );
-      return position;
-    });
-  }
-
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
