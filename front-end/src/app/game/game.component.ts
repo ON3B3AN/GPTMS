@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Course } from '../course';
 import { GameService } from '../game.service';
 import { UserService } from '../user.service';
+import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-game',
@@ -11,10 +12,13 @@ import { UserService } from '../user.service';
 export class GameComponent implements OnChanges {
   @Input() game;
   course: Course = new Course();
+  party: any;
   players: any[];
   id: number[];
+  scoreForms: FormGroup[] = new Array();
 
-  constructor(private gameService: GameService, private userService: UserService) { }
+  constructor(private fb: FormBuilder,private gameService: GameService, private userService: UserService) {
+  }
 
 
   ngOnChanges(): void {
@@ -28,8 +32,12 @@ export class GameComponent implements OnChanges {
         this.course.address = data[1].address;
         this.course.phone = data[1].phone;
         this.course.holes = data[1].holes;
+        this.party = data[0]
         console.log(data);
         console.log(this.course);
+        this.course.holes.map((item, index) => {
+          this.addFormItem(item);
+        });
       });
       this.gameService.getPosition().then(pos=>
         {
@@ -37,10 +45,29 @@ export class GameComponent implements OnChanges {
         });
     }
   }
-  getLocation(){
+
+  addFormItem(item: any) {
+    const scores = this.players.map(x =>
+      this.fb.group({
+        uid: [x.user_id],
+        strokes: [""]
+      })
+    );
+
+    const formItem = this.fb.group({
+      party: [this.party.party_id],
+      hole: [item.hole_id],
+      scores: this.fb.array([...scores])
+    });
+    this.scoreForms.push(formItem);
+  }
+
+  addScore(hole){
     this.gameService.getPosition().then(pos=> {
          console.log(`Positon: ${pos.lat} ${pos.lng}`);
       });
+    console.log(hole);
+    console.log(this.scoreForms[hole]['value']);
   }
 
   serviceRequest() {

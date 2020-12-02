@@ -41,7 +41,7 @@ export class GameService {
 
   addScore(party, hole, user, stroke): Observable<any> {
     const url = `${this.gameUrl}/${party}/scores`;
-    return this.http.post<any>(url, {data: {hole_id: hole, user_id: user, stroke: stroke}}, this.httpOptions).pipe(
+    return this.http.post<any>(url, {data: {Hole_hole_id: hole, Player_User_user_id: user, stroke: stroke, total_score: 0}}, this.httpOptions).pipe(
       tap((newScore: any) => console.log(`added score for party id=${newScore.course_id}`)),
       catchError(this.handleError<any>('addScore'))
     );

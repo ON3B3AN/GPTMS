@@ -1,30 +1,35 @@
 <mat-tab-group>
-  <mat-tab class="navNumbers" *ngFor="let hole of course.holes" label="#{{hole.hole_number}}">
+  <mat-tab class="navNumbers" *ngFor="let hole of course.holes; let h = index;" label="#{{hole.hole_number}}">
     <h3 id="holeNum">Hole #{{hole.hole_number}}</h3>
     <p id="holeInfo">Par: {{hole.hole_par}} • {{hole.tees[0].distance_to_pin}} Yards</p>
-<!--    <p id="holeInfo">Men's Handicap: [...] • Ladies' Handicap: [...]</p>-->
+    <!--    <p id="holeInfo">Men's Handicap: [...] • Ladies' Handicap: [...]</p>-->
     <p>Tee Name - Distance</p>
     <p *ngFor="let tee of hole.tees">{{tee.tee_name}}: {{tee.distance_to_pin}}</p>
     <p>Hole #{{hole.hole_number}} Tips: </p>
     <p>{{hole.hint}}</p>
 
-    <form id="scoreForm">
-    <table id="scorecard">
-      <tr>
-        <th>Player</th>
-        <th>Strokes</th>
-      </tr>
-      <tr *ngFor="let player of players">
-        <td><label>{{player.first_name}}</label></td>
-        <td><input type="number" placeholder="Strokes" min="1" name="score[{{player.user_id}}][{{hole.hole_number}}]"/></td>
-      </tr>
-    </table>
+    <form [formGroup]="scoreForms[h]" (ngSubmit)="addScore(h)">
+      <table id="scorecard">
+        <tr>
+          <th>Player</th>
+          <th>Strokes</th>
+        </tr>
+        <ng-container formArrayName="scores">
+          <tr *ngFor="let score of scoreForms[h].get('scores')['controls']; let i = index" [formGroupName]="i">
+            <td><label>{{players[i].first_name}}</label></td>
+            <td><input type="number" placeholder="Strokes" min="1" formControlName="strokes"/></td>
+          </tr>
+        </ng-container>
+      </table>
+      <br />
+      <br />
+      <div class="btn-toolbar">
+        <button type="submit" class="btn btn-primary">Finish Current Hole</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" (click)="serviceRequest()" >Request Service</button>
+        &nbsp;
+        <button type="button" class="btn btn-danger" (click)="endGame()">End Game</button>
+      </div>
     </form>
-    <div class="btn-toolbar">
-      <button type="submit" class="btn btn-primary" (click)="getLocation()">Finish Current Hole</button>
-      <button type="submit" class="btn btn-primary" (click)="serviceRequest()" >Request Service</button>
-      <button type="button" class="btn btn-danger" (click)="endGame()">End Game</button>
-
-    </div>
   </mat-tab>
 </mat-tab-group>

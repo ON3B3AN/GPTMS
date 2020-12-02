@@ -29,7 +29,7 @@ export class CourseService {
   }
 
   getCourse(id: number): Observable<Course> {
-    const url = `${this.courseUrl}/${id}`;
+    const url = `${this.courseUrl}/${id}/records`;
     return this.http.get<Course>(url)
       .pipe(
         tap(_ => console.log(`fetched course id=${id}`)),

@@ -28,7 +28,6 @@ export class PlayComponent implements OnInit {
   ngOnInit(): void {
     this.playForm  =  this.formBuilder.group({
       course_id: ['', [Validators.required]],
-      tee: ['', [Validators.required]],
       hole: ['', [Validators.required]],
       email: ['']
     });
@@ -50,15 +49,18 @@ export class PlayComponent implements OnInit {
       return;
     }
     this.playForm.controls['email'].setValue(this.members.toString());
-    this.game = this.playForm.value;
-    this.game['size'] = this.members.length;
-    this.game.longitude = 0;
-    this.game.latitude = 0;
-    this.game.golf_cart = 1;
-    this.gameService.startGame(this.game).subscribe(data => this.game.id = data);
+    let game = this.playForm.value;
+    game['size'] = this.members.length;
+    game.longitude = 0;
+    game.latitude = 0;
+    game.golf_cart = 1;
+    this.gameService.startGame(game).subscribe(data => {
+      this.game = game;
+      this.game.id = data;
+      localStorage.setItem('game', JSON.stringify(this.game));
+    });
     this.playForm.reset();
     this.members = [];
-    localStorage.setItem('game', JSON.stringify(this.game));
   }
 
 }
