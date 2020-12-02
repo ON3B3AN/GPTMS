@@ -40,10 +40,7 @@ export class GameComponent implements OnChanges {
           this.addFormItem(item);
         });
       });
-      this.gameService.getPosition().then(pos =>
-      {
-        console.log(`Positon: ${pos.lat} ${pos.lng}`);
-      });
+      this.gameService.getPosition();
     }
   }
 

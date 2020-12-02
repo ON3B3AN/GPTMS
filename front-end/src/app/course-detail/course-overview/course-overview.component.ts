@@ -57,7 +57,7 @@ export class CourseOverviewComponent implements OnInit {
 
     tiles.addTo(this.map);
     console.log(this.course);
-    this.geocodeAddress(this.course.address).then(json => {
+    this.geocodeAddress(this.course[0].address).then(json => {
       const marker = L.marker([json[0].lat, json[0].lon], this.icon).addTo(this.map);
       this.map.panTo(marker.getLatLng());
     });
