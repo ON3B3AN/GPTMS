@@ -55,25 +55,18 @@ export class GameService {
   updatePartyGeo(party, lon, lat) {
     const url = `${this.gameUrl}/${party}/coordinates`
     return this.http.put(url, {data: {longitude: lon, latitude: lat}}, this.httpOptions).pipe(
-      tap(x => console.log(`updated party coord w/ id=${party}`)),
+      tap(_ => console.log(`updated party coord w/ id=${party}`)),
       catchError(this.handleError<any>('updatedPartyCoord'))
     );
   }
 
-  requestService() {
-
-  }
-
-  getPosition(): any {
-    if (!navigator.geolocation) {
-      console.log('location is not supported');
-    }
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log(
-        `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
+  requestService(party){
+    const url = `${this.gameUrl}/${party}/request-services`
+    return this.http.get<any>(url)
+      .pipe(
+        tap(_ => console.log(`fetched requested service id=${party}`)),
+        catchError(this.handleError<any>(`getRequestedService id=${party}`))
       );
-      return position;
-    });
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

@@ -25,7 +25,7 @@ export class CourseOverviewComponent implements OnInit {
   };
 
   dataSource: MatTableDataSource<any>;
-  labels = ['Hole','Distance','Par'];
+  labels = ['Hole', 'Distance', 'Par'];
   tees = [];
   dataColumns = [
     'hole_number',
@@ -42,7 +42,7 @@ export class CourseOverviewComponent implements OnInit {
     });
     this.courseService.getCourse(this.id)
       .subscribe(data => {
-        this.course = data
+        this.course = data;
         this.transpose();
         this.fillLabels();
       });
