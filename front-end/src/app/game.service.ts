@@ -14,7 +14,7 @@ export class GameService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  watchID: number;
+  watchId: number;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -52,19 +52,19 @@ export class GameService {
 
   }
 
-updatePartyGeo(party, longitude, latitude) {
-  const url = `${this.gameUrl}/${party}/coordinates`
-  return this.http.put<User>(url, {data: party}, this.httpOptions).pipe(
-    tap((newparty: User) => console.log(`updated party coord w/ id=${party.user_id}`)),
-    catchError(this.handleError<User>('updatedPartyCoord'))
-  );
-}
+  updatePartyGeo(party, longitude, latitude) {
+    const url = `${this.gameUrl}/${party}/coordinates`
+    return this.http.put<User>(url, {data: party}, this.httpOptions).pipe(
+      tap((newparty: User) => console.log(`updated party coord w/ id=${party.user_id}`)),
+      catchError(this.handleError<User>('updatedPartyCoord'))
+    );
+  }
 
-requestService() {
+  requestService() {
 
   }
 
-  getPosition() {
+  getPosition(): any {
     if (!navigator.geolocation) {
       console.log('location is not supported');
     }
@@ -72,8 +72,10 @@ requestService() {
       console.log(
         `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
       );
+      return position;
     });
-}
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 

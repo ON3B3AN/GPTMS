@@ -16,41 +16,42 @@ export class GameComponent implements OnChanges {
   players: any[];
   id: number[];
   scoreForms: FormGroup[] = new Array();
+  watchId: number;
 
-  constructor(private fb: FormBuilder,private gameService: GameService, private userService: UserService) {
+  constructor(private fb: FormBuilder, private gameService: GameService, private userService: UserService) {
   }
 
 
   ngOnChanges(): void {
     if (this.game) {
-      let holes = this.game.hole.split('-');
+      const holes = this.game.hole.split('-');
       this.userService.getUsers().subscribe(data => {
-        this.players = data.filter(u => this.game.email.split(',').indexOf(u.email)>-1);
+        this.players = data.filter(u => this.game.email.split(',').indexOf(u.email) > -1);
       });
       this.gameService.getRound(this.game.id, this.game.course_id, holes[0], holes[1]).subscribe(data => {
         this.course.course_name = data[1].course_name;
         this.course.address = data[1].address;
         this.course.phone = data[1].phone;
         this.course.holes = data[1].holes;
-        this.party = data[0]
+        this.party = data[0];
         console.log(data);
         console.log(this.course);
         this.course.holes.map((item, index) => {
           this.addFormItem(item);
         });
       });
-      this.gameService.getPosition().then(pos=>
-        {
-           console.log(`Positon: ${pos.lat} ${pos.lng}`);
-        });
+      this.gameService.getPosition().then(pos =>
+      {
+        console.log(`Positon: ${pos.lat} ${pos.lng}`);
+      });
     }
   }
 
-  addFormItem(item: any) {
+  addFormItem(item: any): void {
     const scores = this.players.map(x =>
       this.fb.group({
         uid: [x.user_id],
-        strokes: [""]
+        strokes: ['']
       })
     );
 
@@ -62,21 +63,38 @@ export class GameComponent implements OnChanges {
     this.scoreForms.push(formItem);
   }
 
-  addScore(hole){
-    this.gameService.getPosition().then(pos=> {
-         console.log(`Positon: ${pos.lat} ${pos.lng}`);
-      });
+  // watchPosition() {
+  //
+  //   this.watchId = navigator.geolocation.watchPosition(
+  //     (position) => {
+  //       console.log(
+  //         `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude} watchID: ${this.watchId}`
+  //       );
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //     },{
+  //       enableHighAccuracy: true,
+  //       timeout: 60000,
+  //       maximumAge: 0
+  //     });
+  // }
+
+  addScore(hole): void {
+    this.gameService.getPosition().then(pos => {
+      console.log(`Positon: ${pos.lat} ${pos.lng}`);
+    });
     console.log(hole);
-    console.log(this.scoreForms[hole]['value']);
+    console.log(this.scoreForms[hole].value);
   }
 
-  serviceRequest() {
-    console.log("User Requested Service");
+  serviceRequest(): void {
+    console.log('User Requested Service');
 
-}
-endGame(): void {
-  this.gameService.endGame()
-    console.log("Game Ended");
-}
+  }
+  endGame(): void {
+    this.gameService.endGame();
+    console.log('Game Ended');
+  }
 
 }
