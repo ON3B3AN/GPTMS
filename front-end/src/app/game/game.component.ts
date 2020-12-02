@@ -42,7 +42,7 @@ export class GameComponent implements OnChanges {
       });
       this.gameService.getPosition().then(pos =>
       {
-        console.log(`Positon: ${pos.lat} ${pos.lng}`);
+        this.gameService.updatePartyGeo(this.party.party_id, pos.coords.longitude, pos.coords.latitude);
       });
     }
   }
