@@ -43,13 +43,11 @@ export class GameComponent implements OnChanges, OnDestroy {
         this.course.holes = data[1].holes;
         this.party = data[0];
         this.startTimer();
-        console.log(data);
-        console.log(this.course);
         this.course.holes.map((item, index) => {
           this.addFormItem(item);
         });
-      });
       this.watchPosition();
+      });
     }
   }
 
