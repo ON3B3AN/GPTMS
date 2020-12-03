@@ -9,9 +9,9 @@
       <tr>
         <th>Hole:</th>
         <th *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_number}}</th>
-        <th>Out</th>
+        <th *ngIf="play.front_nine > 0">Out</th>
         <th *ngFor="let hole of play['score'] | slice:9">{{hole.hole_number}}</th>
-        <th>In</th>
+        <th *ngIf="play.back_nine > 0">In</th>
         <th>Total</th>
       </tr>
       </thead>
@@ -19,16 +19,16 @@
       <tr>
         <th>Stroke:</th>
         <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.stroke}}</td>
-        <td>{{play.front_nine}}</td>
+        <td *ngIf="play.front_nine > 0">{{play.front_nine}}</td>
         <td *ngFor="let hole of play['score'] | slice:9">{{hole.stroke}}</td>
-        <td>{{play.back_nine}}</td>
+        <td *ngIf="play.back_nine > 0">{{play.back_nine}}</td>
         <td>{{play.total_score}}</td>
       </tr><tr>
         <th>Par:</th>
         <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_par}}</td>
-        <td></td>
+        <td *ngIf="play.front_nine > 0"></td>
         <td *ngFor="let hole of play['score'] | slice:9">{{hole.hole_par}}</td>
-        <td></td>
+        <td *ngIf="play.back_nine > 0"></td>
         <td></td>
       </tr>
       </tbody>

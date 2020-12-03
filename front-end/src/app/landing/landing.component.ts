@@ -38,6 +38,6 @@ export class LandingComponent {
 
   ngOnInit(): void {
     this.userService.getUserHistory(this.authService.currentUser.user_id)
-      .subscribe(data => this.playerHistory = data);
+      .subscribe(data => this.playerHistory = (data) ? data[0] : null);
   }
 }
