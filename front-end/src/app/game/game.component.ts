@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 import { Course } from '../course';
 import { GameService } from '../game.service';
 import { UserService } from '../user.service';
-import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
+import {FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
 import {interval} from "rxjs";
 import {Time} from "@angular/common";
 
@@ -21,6 +21,7 @@ export class GameComponent implements OnChanges, OnDestroy {
   watchId: number;
   time = '  ';
   timer: any;
+  selectedIndex: number;
 
   constructor(private fb: FormBuilder, private gameService: GameService, private userService: UserService) {
   }
@@ -73,7 +74,7 @@ export class GameComponent implements OnChanges, OnDestroy {
     const scores = this.players.map(x =>
       this.fb.group({
         uid: [x.user_id],
-        strokes: ['']
+        strokes: ['', Validators.required]
       })
     );
 
@@ -101,8 +102,14 @@ export class GameComponent implements OnChanges, OnDestroy {
   }
 
   addScore(hole): void {
-    console.log(hole);
-    console.log(this.scoreForms[hole].value);
+    if (this.scoreForms[hole].invalid){
+      return;
+    }
+    const score = this.scoreForms[hole].value;
+    for (let golfer of score.scores) {
+      this.gameService.addScore(score.party, score.hole, golfer.uid, golfer.strokes).subscribe();
+    }
+    this.selectedIndex = hole + 1;
   }
 
   serviceRequest(): void {

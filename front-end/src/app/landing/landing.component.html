@@ -8,11 +8,12 @@
     </mat-grid-tile>
     <mat-grid-tile *ngFor="let i of [2]" [colspan]="( cardLayout | async )?.hist.cols" [rowspan]="( cardLayout | async )?.hist.rows">
       <app-card title="Last round">
-        <div *ngFor="let play of playerHistory">
-          <h4>{{play.course_name}}</h4><br />
-          <div>{{play.date_played}}<br />{{play.tot_time}}</div>
+        <div *ngIf="playerHistory; else noHist">
+          <h4>{{playerHistory.course_name}}</h4><br />
+          <div>{{playerHistory.date_played}}<br />{{playerHistory.tot_time}}</div>
+          <a routerLink="/history">View more</a>
         </div>
-        <a routerLink="/history">View more</a>
+        <ng-template #noHist>Please play a round to show history</ng-template>
       </app-card>
     </mat-grid-tile>
   </mat-grid-list>

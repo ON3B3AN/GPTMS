@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   navbarOpen = false;
+  user;
   isOpen = false;
 
   // tslint:disable-next-line: typedef
@@ -19,6 +20,7 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthService, public router: Router) { }
 
   ngOnInit(): void {
+    this.user = this.authService.currentUser;
   }
 
   logout(): void {
