@@ -172,3 +172,35 @@ function selectCourseRecords($course_id){
         exit;
     }
 }
+
+function updateHoles($hole_par, $avg_pop, $hint, $hole_id){
+    global $db;
+    $query = 'UPDATE hole SET hole_par = ?, avg_pop = ?, hint = ? WHERE hole_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('ssss', $hole_par, $avg_pop, $hint, $hole_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function updateTees($distance_to_pin, $tee_name, $hole_id){
+    global $db;
+    $query = 'UPDATE tee SET distance_to_pin = ?, tee_name = ? WHERE hole_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sss', $distance_to_pin, $tee_name, $hole_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}

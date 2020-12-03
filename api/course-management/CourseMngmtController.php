@@ -312,6 +312,13 @@ switch ($function) {
         $course_name = $input->data->course_name;
         $address = $input->data->address;
         $phone = $input->data->phone_number;
+        $hole_par = $input->data->hole_par;
+        $avg_pop = $input->data->avg_pop;
+        $hint = $input->data->hint;
+        $hole_id = $input->data->hole_id;
+        $distance_to_pin = $input->data->distance_to_pin;
+        $tee_name = $input->data->tee_name;
+        
         
         // Assign collection URI to course_id
         $course_id = $collectionURI;
