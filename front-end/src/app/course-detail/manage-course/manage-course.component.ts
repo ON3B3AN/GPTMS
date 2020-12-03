@@ -484,7 +484,7 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
       var layers = e.layers;
       layers.eachLayer((layer) => {
         //do whatever you want; most likely save back to db
-        if (layer.options.id) {
+        if (layer.options.id !== false) {
           const i = this.holes.findIndex(h => h.hole_number === layer.options.id);
           this.courseForm.get(`holes.${layer.options.id}.geo`).setValue('');
           console.log("Hole at index " + layer.options.id + " geo removed");
@@ -498,27 +498,28 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     i = parseInt(i);
     const hole = this.courseForm.value.holes[i].hole_number;
     this.courseForm.get(`holes.${i}.geo`).setValue(coords);
-    console.log(coords);
-    L.geoJSON(coords, {
+    var layer = L.geoJSON(coords).getLayers()[0].setStyle({
       id: i,
       weight: 1,
       fillOpacity: 0.7,
       color: 'red',
       dashArray: '3'
-    }).bindTooltip("Hole " + hole).addTo(this.courseMap);
+    }).bindTooltip("Hole " + hole);
+    this.courseMap.addLayer(layer);
   }
 
   updateMap() {
     this.courseMap.clearLayers();
     for (let [i, hole] of this.courseForm.value.holes.entries()) {
       try {
-        L.geoJSON(hole.geo, {
+        var layer = L.geoJSON(hole.geo).getLayers()[0].setStyle({
           id: i,
           weight: 1,
           fillOpacity: 0.7,
           color: 'red',
           dashArray: '3'
-        }).bindTooltip("Hole " + hole.hole_number).addTo(this.courseMap);
+        }).bindTooltip("Hole " + hole.hole_number);
+        this.courseMap.addLayer(layer);
       } catch (e) {
         console.log(hole.hole_number);
       }

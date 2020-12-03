@@ -14,6 +14,7 @@ export class GameService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
+  watchId: number;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -41,7 +42,7 @@ export class GameService {
 
   addScore(party, hole, user, stroke): Observable<any> {
     const url = `${this.gameUrl}/${party}/scores`;
-    return this.http.post<any>(url, {data: {hole_id: hole, user_id: user, stroke: stroke}}, this.httpOptions).pipe(
+    return this.http.post<any>(url, {data: {Hole_hole_id: hole, Player_User_user_id: user, stroke: stroke, total_score: 0}}, this.httpOptions).pipe(
       tap((newScore: any) => console.log(`added score for party id=${newScore.course_id}`)),
       catchError(this.handleError<any>('addScore'))
     );
@@ -51,15 +52,12 @@ export class GameService {
 
   }
 
-  getPosition(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resp => {
-          resolve({lng: resp.coords.longitude, lat: resp.coords.latitude});
-        },
-        err => {
-          reject(err);
-        });
-    });
+  updatePartyGeo(party, lon, lat) {
+    const url = `${this.gameUrl}/${party}/coordinates`
+    return this.http.put(url, {data: {longitude: lon, latitude: lat}}, this.httpOptions).pipe(
+      tap(x => console.log(`updated party coord w/ id=${party}`)),
+      catchError(this.handleError<any>('updatedPartyCoord'))
+    );
   }
 
   requestService() {

@@ -117,7 +117,6 @@ function selectRangeOfHoles($course_id, $start_hole, $end_hole) {
         $result = $statement->get_result();
         $res = array();
         while($row = $result->fetch_assoc()){
-            unset($row["hole_id"]);
             unset($row["Course_course_id"]);
             array_push($res, $row);
         }
@@ -164,7 +163,29 @@ function selectCourseRecords($course_id){
         $result = $statement->get_result();
         $res = array();
         while($row = $result->fetch_assoc()){
-            array_push($res, $row);
+            if (!$res['course_id']) {
+                $res = array(
+                    'course_id' => $row['course_id'],
+                    'course_name' => $row['course_name'],
+                    'address' => $row['address'],
+                    'phone' => $row['phone'],
+                    'holes' => array()
+                );
+            }
+            $i = array_search($row['hole_number'], array_column($res['holes'], 'hole_number'));
+            if ($i === False) {
+                $hole = array(
+                    'hole_number' => $row['hole_number'],
+                    'hole_par' => $row['hole_par'],
+                    'longitude' => $row['longitude'],
+                    'latitude' => $row['latitude'],
+                    'avg_pop' => $row['avg_pop'],
+                    'tees' => array(array('tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']))
+                );
+                array_push($res['holes'], $hole);
+            } else {
+                array_push($res['holes'][$i]['tees'], array('tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']));
+            }
         }
         $statement->close();
         return $res;
