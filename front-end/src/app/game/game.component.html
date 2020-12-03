@@ -1,4 +1,5 @@
-<mat-tab-group>
+<div style="float: right">{{time}}</div>
+<mat-tab-group style="clear: both">
   <mat-tab class="navNumbers" *ngFor="let hole of course.holes; let h = index;" label="#{{hole.hole_number}}">
     <h3 id="holeNum">Hole #{{hole.hole_number}}</h3>
     <p id="holeInfo">Par: {{hole.hole_par}} • {{hole.tees[0].distance_to_pin}} Yards</p>

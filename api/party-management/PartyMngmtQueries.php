@@ -126,11 +126,11 @@ function updatePartyCoordinates($party_id, $longitude, $latitude) {
     $query = 'UPDATE party SET longitude = ?, latitude = ? WHERE party_id = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sss', $party_id, $longitude, $latitude);
+        $statement->bind_param('ddi', $longitude, $latitude, $party_id);
         $statement->execute();
         $num_rows = $statement->affected_rows;  
         $statement->close();
-     
+
         return $num_rows;
     } catch (Exception $ex) {
         exit;

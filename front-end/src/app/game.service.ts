@@ -52,28 +52,16 @@ export class GameService {
 
   }
 
-  updatePartyGeo(party, longitude, latitude) {
+  updatePartyGeo(party, lon, lat) {
     const url = `${this.gameUrl}/${party}/coordinates`
-    return this.http.put<User>(url, {data: party}, this.httpOptions).pipe(
-      tap((newparty: User) => console.log(`updated party coord w/ id=${party.user_id}`)),
-      catchError(this.handleError<User>('updatedPartyCoord'))
+    return this.http.put(url, {data: {longitude: lon, latitude: lat}}, this.httpOptions).pipe(
+      tap(x => console.log(`updated party coord w/ id=${party}`)),
+      catchError(this.handleError<any>('updatedPartyCoord'))
     );
   }
 
   requestService() {
 
-  }
-
-  getPosition(): any {
-    if (!navigator.geolocation) {
-      console.log('location is not supported');
-    }
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log(
-        `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
-      );
-      return position;
-    });
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
