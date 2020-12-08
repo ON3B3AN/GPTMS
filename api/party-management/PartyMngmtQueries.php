@@ -136,3 +136,20 @@ function updatePartyCoordinates($party_id, $longitude, $latitude) {
         exit;
     }
 }
+
+function updateParty($party_id) {
+    global $db;
+    $query = 'UPDATE party SET end_time = CURRENT_TIME() WHERE party_id = ?';
+    
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('s', $party_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}

@@ -266,6 +266,15 @@ elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
         $function = "error";
     }
 }
+elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "PUT") {
+    // GPTMS/api/party-management/parties/1
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "endParty";
+    }
+    else {
+        $function = "error";
+    }
+}
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
     $function = "error";
 }
@@ -460,11 +469,29 @@ switch ($function) {
             http_response_code(204);
             echo http_response_code();
         }
+        
         else {
             header('Accept: application/json');
             http_response_code(404);
             echo http_response_code().": Error, party coordinates not updated";
         }
+        break;
+    case "endParty":
+        $party_id = $collectionURI;
+        
+        // Get results from SQL query
+        $result = updateParty($party_id);
+        
+        if ($result != 0) {
+            http_response_code(201);
+            echo http_response_code().": Party updated successfully";
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            echo http_response_code().": Error, score not added";
+        }
+        break;
 }
 
 
