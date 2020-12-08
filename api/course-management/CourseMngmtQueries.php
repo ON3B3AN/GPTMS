@@ -151,7 +151,7 @@ function selectTees($course_id) {
 
 function selectCourseRecords($course_id){
     global $db;
-    $query = 'SELECT course_id, course_name, address, phone, hole_number, hole_par, longitude, latitude, avg_pop, tee_name, distance_to_pin
+    $query = 'SELECT course_id, course_name, address, phone, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_name, distance_to_pin
                 from course
                 join hole on course_id = Course_course_id
                 join tee on hole_id = Hole_hole_id
@@ -176,9 +176,9 @@ function selectCourseRecords($course_id){
             if ($i === False) {
                 $hole = array(
                     'hole_number' => $row['hole_number'],
-                    'hole_par' => $row['hole_par'],
-                    'longitude' => $row['longitude'],
-                    'latitude' => $row['latitude'],
+                    'mens_par' => $row['mens_par'],
+                    'womens_par' => $row['womens_par'],
+                    'perimeter' => $row['perimeter'],
                     'avg_pop' => $row['avg_pop'],
                     'tees' => array(array('tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']))
                 );
@@ -194,12 +194,12 @@ function selectCourseRecords($course_id){
     }
 }
 
-function updateHoles($hole_par, $avg_pop, $hint, $hole_id){
+function updateHoles($mens_par, $womens_par, $avg_pop, $perimeter, $hint, $hole_id){
     global $db;
-    $query = 'UPDATE hole SET hole_par = ?, avg_pop = ?, hint = ? WHERE hole_id = ?';
+    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, perimeter = ?, hint = ? WHERE hole_id = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('ssss', $hole_par, $avg_pop, $hint, $hole_id);
+        $statement->bind_param('ssssss', $mens_par, $womens_par, $avg_pop, $perimeter, $hint, $hole_id);
         $statement->execute();
         $num_rows = $statement->affected_rows;  
         $statement->close();

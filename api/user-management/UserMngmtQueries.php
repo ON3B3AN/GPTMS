@@ -74,7 +74,8 @@ function selectAllHistory($user_id) {
                 SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
                 SUM(CASE WHEN tee_name = "tee3" THEN distance_to_pin else 0 END) as tee_3,
                 hole_number, 
-                hole_par, 
+                mens_par,
+                womens_par,
                 stroke, 
                 avg_pop
                 FROM hole
