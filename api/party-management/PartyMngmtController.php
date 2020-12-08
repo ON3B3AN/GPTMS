@@ -294,30 +294,42 @@ switch ($function) {
         $latitude = $input->data->latitude;
         $golf_cart = $input->data->golf_cart;
         
-        // Get party id from SQL query
-        $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
-        
-        $result_array = array();
-        
         // Parse emails from data object array
         $user_emails = explode(",", $email);
         
-        // Insert players into the newly created party
-        for($i = 0; $i < $party_size; $i++) {
-            $user_id_object = selectUserByEmail($user_emails[$i]);
-            $user_id = (string)$user_id_object["user_id"];            
-            $result = insertPlayer($user_id, $party_id, $handicap);
-            array_push($result_array, $result);
+        // Check if the user exists by email
+        foreach ($user_emails as &$user_email) {
+            $user_result = selectUserByEmail($user_email);
         }
-        
-        if (count($result_array) != 0) {
-            http_response_code(200);
-            echo json_encode($party_id);
+                
+        if ($user_result != NULL) {
+            // Get party id from SQL query
+            $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
+
+            $result_array = array();
+
+            // Insert players into the newly created party
+            for($i = 0; $i < $party_size; $i++) {
+                $user_id_object = selectUserByEmail($user_emails[$i]);
+                $user_id = (string)$user_id_object["user_id"];            
+                $result = insertPlayer($user_id, $party_id, $handicap);
+                array_push($result_array, $result);
+            }
+
+            if (count($result_array) != 0) {
+                http_response_code(200);
+                echo json_encode($party_id);
+            }
+            else {
+                header('Accept: application/json');
+                http_response_code(404);
+                echo http_response_code().": Error, player not added";
+            } 
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, player not added";
+            echo http_response_code().": Error, user DNE";
         }   
         break;
     case "insertScore":
