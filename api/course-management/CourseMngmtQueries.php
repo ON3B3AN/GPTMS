@@ -196,7 +196,7 @@ function selectCourseRecords($course_id){
 
 function updateHoles($mens_par, $womens_par, $avg_pop, $perimeter, $hint, $hole_id){
     global $db;
-    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, perimeter = ?, hint = ? WHERE hole_id = ?';
+    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, perimeter = PolygonFromText("polygon((?))"), hint = ? WHERE hole_id = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('ssssss', $mens_par, $womens_par, $avg_pop, $perimeter, $hint, $hole_id);
