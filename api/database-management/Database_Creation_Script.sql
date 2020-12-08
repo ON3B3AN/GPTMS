@@ -11,6 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `mydb`;
 CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
@@ -48,18 +49,19 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Hole`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Hole`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Hole` (
   `hole_id` INT NOT NULL AUTO_INCREMENT,
   `Course_course_id` INT NOT NULL,
   `hole_number` INT NOT NULL,
-  `hole_par` INT NOT NULL,
-  `longitude` DOUBLE NOT NULL,
-  `latitude` DOUBLE NOT NULL,
+  `mens_par` INT NOT NULL,
+  `womens_par` INT NOT NULL,
   `avg_pop` TIME NOT NULL,
+  `mens_handicap` INT NOT NULL,
+  `womens_handicap` INT NOT NULL,
   `hint` VARCHAR(1000) NULL,
+  `perimeter` POLYGON NULL,
   PRIMARY KEY (`hole_id`),
-  INDEX `fk_Hole_Course1_idx` (`Course_course_id` ASC) ,
+  INDEX `fk_Hole_Course1_idx` (`Course_course_id` ASC),
   CONSTRAINT `fk_Hole_Course1`
     FOREIGN KEY (`Course_course_id`)
     REFERENCES `mydb`.`Course` (`course_id`)
