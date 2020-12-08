@@ -6,13 +6,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all courses
+    * Body (app/json): {Returns all courses}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: No courses found
+    * Body (app/json): {"message":"404: No courses found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [SELECT COURSE]
 ### URI [GET] : http://localhost/course-management/courses/1
@@ -20,13 +20,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns course
+    * Body (app/json): {Returns course}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: No course with id=1 found
+    * Body (app/json): {"message":"404: No course with id=6 found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [INSERT COURSE]
 ### URI [POST] : http://localhost/course-management/courses
@@ -34,13 +34,13 @@
 #### Example Input: {"data":{"course_name":"Billy's Home","address":"105 Billy Home Lane","phone_number":"000-123-7030"}}
 #### Output: Successful
     * Header: 201: Created
-    * Body (text/html): 201: Course added successfully
+    * Body (app/json): {"message":"201: Course added successfully"}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, course not added
+    * Body (app/json): {"message":"404: Error, course not added"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [UPDATE COURSE]
 ### URI [PUT] : http://localhost/course-management/courses/1
@@ -48,16 +48,16 @@
 #### Example Input: {"data":{"course_name":"Billy's Other Home","address":"105 Billy Other Home Lane","phone_number":"000-123-5000"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): 200: Course updated successfully
+    * Body (app/json): {"message":"200: Course updated successfully"}
 #### Output: Successful (no changes were made)
     * Header: 204: No content
-    * Body: N/A
+    * Body: (app/json): {"message":"204: No changes made"}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, course not updated
+    * Body (app/json): {"message":"404: Error, course not updated"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [DELETE COURSE]
 ### URI [DELETE] : http://localhost/course-management/courses/1
@@ -65,13 +65,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): 200: Course deleted successfully
+    * Body (app/json): {"message":"200: Course deleted successfully"}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, course not deleted
+    * Body (app/json): {"message":"404: Error, course not deleted"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [SELECT HOLES]
 ### URI [GET] : http://localhost/course-management/courses/1/holes
@@ -79,13 +79,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all holes
+    * Body (app/json): {Returns all holes}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, no holes found
+    * Body (app/json): {"message":"404: Error, no holes found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [SELECT TEES]
 ### URI [GET] : http://localhost/course-management/courses/1/tees
@@ -93,13 +93,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all tees
+    * Body (app/json): {Returns all tees}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, no tees found
+    * Body (app/json): {"message":"404: Error, no tees found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [SELECT COURSE RECORDS]
 ### URI [GET] : http://localhost/course-management/courses/1/records
@@ -107,10 +107,10 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all course records (course, holes, tees)
+    * Body (app/json): {Returns all course records (course, holes, tees)}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, no course records with id=1 found
+    * Body (app/json): {"message":"404: Error, no course records with id=1 found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}

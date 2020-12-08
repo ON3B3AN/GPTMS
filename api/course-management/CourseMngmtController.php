@@ -287,7 +287,8 @@ switch ($function) {
     case 'error':
         header('Accept: application/json, charset=utf-8');
         http_response_code(501);
-        echo http_response_code().": Error, service not recognized";
+        $msg["message"] = http_response_code().": Error, service not recognized";
+        echo json_encode($msg);
         break;
     case 'selectCourse':
         // Assign collection URI to course_id
@@ -305,7 +306,8 @@ switch ($function) {
         }
         else {
             http_response_code(404);
-            echo http_response_code().": No course with id=$collectionURI found";
+            $msg["message"] = http_response_code().": No course with id=$collectionURI found";
+            echo json_encode($msg);
         }
         break;
     case 'updateCourse':
@@ -329,17 +331,20 @@ switch ($function) {
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Course updated successfully";
+            $msg["message"] = http_response_code().": Course updated successfully";
+            echo json_encode($msg);
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
             http_response_code(204);
-            echo http_response_code();
+            $msg["message"] = http_response_code().": No changes made";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, course not updated";
+            $msg["message"] = http_response_code().": Error, course not updated";
+            echo json_encode($msg);
         }
         break;
     case 'insertCourse':
@@ -353,12 +358,14 @@ switch ($function) {
         
         if ($result != 0) {
             http_response_code(201);
-            echo http_response_code().": Course added successfully";
+            $msg["message"] = http_response_code().": Course added successfully";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, course not added";
+            $msg["message"] = http_response_code().": Error, course not added";
+            echo json_encode($msg);
         }
         break;
     case 'deleteCourse':
@@ -370,11 +377,13 @@ switch ($function) {
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Course deleted successfully";
+            $msg["message"] = http_response_code().": Course deleted successfully";
+            echo json_encode($msg);
         }
         else {
             http_response_code(404);
-            echo http_response_code().": Error, course not deleted";
+            $msg["message"] = http_response_code().": Error, course not deleted";
+            echo json_encode($msg);
         }
         break;
     case "selectAllCourses":       
@@ -390,7 +399,8 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": No courses found";
+            $msg["message"] = http_response_code().": No courses found";
+            echo json_encode($msg);
         }
         break;
     case "selectHoles":
@@ -410,7 +420,8 @@ switch ($function) {
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, no holes found";
+            $msg["message"] = http_response_code().": Error, no holes found";
+            echo json_encode($msg);
         }
         break;
     case "selectTees":
@@ -434,7 +445,8 @@ switch ($function) {
         }
         else {
             http_response_code(404);
-            echo http_response_code().": Error, no tees found";
+            $msg["message"] = http_response_code().": Error, no tees found";
+            echo json_encode($msg);
         }
         break;
     case "selectCourseRecords":
@@ -453,7 +465,8 @@ switch ($function) {
         }
         else {
             http_response_code(404);
-            echo http_response_code().": No course records with id=$collectionURI found";
+            $msg["message"] = http_response_code().": No course records with id=$collectionURI found";
+            echo json_encode($msg);
         }
         break;
 
