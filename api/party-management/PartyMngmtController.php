@@ -291,7 +291,8 @@ switch ($function) {
     case 'error':
         header('Accept: application/json, charset=utf-8');
         http_response_code(501);
-        echo http_response_code().": Error, service not recognized";
+        $msg["message"] = http_response_code().": Error, service not recognized";
+        echo json_encode($msg);
         break;
     case "insertParty":
         $handicap = $input->data->handicap;
@@ -332,13 +333,15 @@ switch ($function) {
             else {
                 header('Accept: application/json');
                 http_response_code(404);
-                echo http_response_code().": Error, player not added";
+                $msg["message"] = http_response_code().": Error, player not added";
+                echo json_encode($msg);
             } 
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, user DNE";
+            $msg["message"] = http_response_code().": Error, user DNE";
+            echo json_encode($msg);
         }   
         break;
     case "insertScore":
@@ -353,12 +356,14 @@ switch ($function) {
         
         if ($result != 0) {
             http_response_code(201);
-            echo http_response_code().": Score added successfully";
+            $msg["message"] = http_response_code().": Score added successfully";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, score not added";
+            $msg["message"] = http_response_code().": Error, score not added";
+            echo json_encode($msg);
         }
         break;
     case "updateScore":
@@ -373,17 +378,20 @@ switch ($function) {
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Score updated successfully";
+            $msg["message"] = http_response_code().": Score updated successfully";
+            echo json_encode($msg);
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
             http_response_code(204);
-            echo http_response_code();
+            $msg["message"] = http_response_code().": No changes made";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, score not updated";
+            $msg["message"] = http_response_code().": Error, score not updated";
+            echo json_encode($msg);
         }
         break;
     case "selectActiveParties":
@@ -404,7 +412,8 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": Error, no active parties found";
+            $msg["message"] = http_response_code().": Error, no active parties found";
+            echo json_encode($msg);
         }
         break;
     case "startRound":
@@ -441,13 +450,15 @@ switch ($function) {
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, no round started";
+            $msg["message"] = http_response_code().": Error, no round started";
+            echo json_encode($msg);
         }
         break;
     case "requestServices":
         $party_id = $collectionURI;
         http_response_code(200);
-        echo http_response_code().": Services have been successfully requested!";
+        $msg["message"] = http_response_code().": Services have been successfully requested!";
+        echo json_encode($msg);
         break;
     case "updatePartyCoordinates":
         // Get JSON data
@@ -462,18 +473,21 @@ switch ($function) {
 
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Party coordinates updated successfully";
+            $msg["message"] = http_response_code().": Party coordinates updated successfully";
+            echo json_encode($msg);
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
             http_response_code(204);
-            echo http_response_code();
+            $msg["message"] = http_response_code().": No changes made";
+            echo json_encode($msg);
         }
         
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, party coordinates not updated";
+            $msg["message"] = http_response_code().": Error, party coordinates not updated";
+            echo json_encode($msg);
         }
         break;
     case "endParty":
@@ -484,12 +498,14 @@ switch ($function) {
         
         if ($result != 0) {
             http_response_code(201);
-            echo http_response_code().": Party updated successfully";
+            $msg["message"] = http_response_code().": Party updated successfully";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, score not added";
+            $msg["message"] = http_response_code().": Error, party not updated";
+            echo json_encode($msg);
         }
         break;
 }
