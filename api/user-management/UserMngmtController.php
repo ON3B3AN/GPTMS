@@ -419,7 +419,8 @@ switch ($function) {
             
             if ($result >= 1) {
                 http_response_code(200);
-                echo http_response_code().": Profile updated successfully";
+                $msg["message"] = http_response_code().": Profile updated successfully";
+                echo json_encode($msg);
             }
             // No changes were made (Acts as a "Save" function)
             elseif ($result === 0) {
