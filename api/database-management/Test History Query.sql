@@ -110,3 +110,12 @@ JOIN hole ON hole_id = Hole_hole_id
 JOIN course on course_id = Course_course_id
 WHERE course_id = 1;
 
+set @g = "polygon((1 1, 3 3, 3 5, 4 5, 1 1))";
+
+UPDATE `mydb`.`hole`
+ SET perimeter = PolygonFromText("polygon((1 1, 3 3, 3 5, 1 1))")
+ WHERE hole_id = 1;
+
+select perimeter from hole
+where hole_id = 1;
+
