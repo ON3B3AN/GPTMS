@@ -6,19 +6,24 @@
 #### Example Input (app/json): {"data":{"email":"tthayer@oakland.edu","password":"1234"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all user data and/or employee data associated with email and password
+    * Body (app/json): {Returns all user data and/or employee data associated with email and password}
 #### Output: Unsuccessful
     * Header: 401 Unauthorized 
-    * Body (text/html): 401: Login failed
+    * Body (app/json): {"message":"401: Login failed, incorrect email or password"}
+#### Output: Unsuccessful
+    * Header: 401 Unauthorized 
+    * Body (app/json): {"message":"401: Login failed, password or Email is not valid"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [LOG OUT]
 ### URI [DELETE] : http://localhost/user-management/users/logout
 * This URI requests the "user-management" document, “users” collection, and the “logout” controller. This request must not include any data.
 #### Example Input: N/A
-#### Output: N/A
+#### Output: Successful
+    * header: 200: Ok
+    * Body (app/json): {"message":"200: Successfully Logged Off!"}
 
 ## [SIGN UP]
 ### URI [POST] : http://localhost/user-management/users
@@ -26,13 +31,13 @@
 #### Example Input (app/json): {"data":{"first_name":"Joe","last_name":"Blow","phone":"298-999-4343","email":"email@gmail.com","password":"1234"}}
 #### Output: Successful 
     * Header: 201 Created
-    * Body (text/html): 201: Profile created successfully
+    * Body (app/json): {"message":"201: Profile created successfully"}
 #### Output: Unsuccessful 
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, profile not created
+    * Body (app/json): {"message":"404: Error, profile not created"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [SELECT ALL USER HISTORY]
 ### URI [GET] : http://localhost/user-management/users/1/history
@@ -40,13 +45,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all history associated with the given user id
+    * Body (app/json): {Returns all history associated with the given user id}
 #### Output: Unsuccessful 
     * Header: 404: Page Not Found
-    * Body (text/html): 404: No user history
+    * Body (app/json): {"message":"404: No user history"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [SELECT ALL USERS]
 ### URI [GET] : http://localhost/user-management/users
@@ -54,13 +59,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all users
+    * Body (app/json): {Returns all users}
 #### Output: Unsuccessful 
     * Header: 404: Page Not Found
-    * Body (text/html): 404: No users found
+    * Body (app/json): {"message":"404: No users found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [UPDATE USER]
 ### URI [PUT] : http://localhost/user-management/users/1
@@ -68,19 +73,19 @@
 #### Example Input: {"data":{"first_name":"Joe","last_name":"Blow","email":"jkk@gmail.com","password":"1234","check_password":"1234","phone":"000-000-0000"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): 200: Profile updated successfully
+    * Body (text/html): {"message":"200: Profile updated successfully"}
 #### Output: Successful (no changes were made)
     * Header: 204: No content
-    * Body: N/A
+    * Body: (app/json): {"message":"No changes made"}
 #### Output: Unsuccessful 
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, passwords didn't match
+    * Body (app/json): {"message":"404: Error, passwords didn't match"}
 #### Output: Unsuccessful 
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, profile not updated
+    * Body (app/json): {"message":"404: Error, profile not updated"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [DELETE USER]
 ### URI [DELETE] : http://localhost/user-management/users/1
@@ -88,10 +93,10 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): 200: Profile deleted successfully
+    * Body (app/json): {"message":"200: Profile deleted successfully"}
 #### Output: Unsuccessful 
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, profile not deleted
+    * Body (app/json): {"message":"404: Error, profile not deleted"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
