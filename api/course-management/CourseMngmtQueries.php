@@ -151,7 +151,7 @@ function selectTees($course_id) {
 
 function selectCourseRecords($course_id){
     global $db;
-    $query = 'SELECT course_id, course_name, address, phone, hole_id, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_name, distance_to_pin
+    $query = 'SELECT course_id, course_name, address, phone, hole_id, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_id, tee_name, distance_to_pin
                 from course
                 join hole on course_id = Course_course_id
                 join tee on hole_id = Hole_hole_id
@@ -181,11 +181,11 @@ function selectCourseRecords($course_id){
                     'womens_par' => $row['womens_par'],
                     'perimeter' => $row['perimeter'],
                     'avg_pop' => $row['avg_pop'],
-                    'tees' => array(array('tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']))
+                    'tees' => array(array('tee_id' => $row['tee_id'], 'tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']))
                 );
                 array_push($res['holes'], $hole);
             } else {
-                array_push($res['holes'][$i]['tees'], array('tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']));
+                array_push($res['holes'][$i]['tees'], array('tee_id' => $row['tee_id'], 'tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']));
             }
         }
         $statement->close();
@@ -195,14 +195,14 @@ function selectCourseRecords($course_id){
     }
 }
 
-function updateHoles($mens_par, $womens_par, $avg_pop, $perimeter, $hint, $hole_id){
+function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id){
     global $db;
-    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, perimeter = PolygonFromText("polygon((?))"), hint = ? WHERE hole_id = ?';
+    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, hole_number = ?, mens_handicap = ?, womens_handicap = ?, perimeter = PolygonFromText(?), hint = ? WHERE hole_id = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('ssssss', $mens_par, $womens_par, $avg_pop, $perimeter, $hint, $hole_id);
+        $statement->bind_param('sssssssss', $mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
         $statement->execute();
-        $num_rows = $statement->affected_rows;  
+        $num_rows = $statement->affected_rows;
         $statement->close();
      
         return $num_rows;
@@ -211,12 +211,12 @@ function updateHoles($mens_par, $womens_par, $avg_pop, $perimeter, $hint, $hole_
     }
 }
 
-function updateTees($distance_to_pin, $tee_name, $hole_id){
+function updateTees($distance_to_pin, $tee_name, $tee_id){
     global $db;
-    $query = 'UPDATE tee SET distance_to_pin = ?, tee_name = ? WHERE hole_id = ?';
+    $query = 'UPDATE tee SET distance_to_pin = ?, tee_name = ? WHERE tee_id = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sss', $distance_to_pin, $tee_name, $hole_id);
+        $statement->bind_param('sss', $distance_to_pin, $tee_name, $tee_id);
         $statement->execute();
         $num_rows = $statement->affected_rows;  
         $statement->close();
