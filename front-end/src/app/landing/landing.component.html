@@ -1,21 +1,23 @@
+
 <div class="grid-container">
   <h1 class="mat-h1">Dashboard</h1>
   <mat-grid-list cols="{{( cardLayout | async )?.columns}}" rowHeight="300px">
     <mat-grid-tile *ngFor="let i of [1]" [colspan]="( cardLayout | async )?.play.cols" [rowspan]="( cardLayout | async )?.play.rows">
-      <app-card title="Play game">
-        <div><button routerLink="/play" class="btn btn-secondary btn-lg">Start Game</button></div>
+      <app-card class="headers" title="Play game">
+        <div><button routerLink="/play" class="btn btn-primary btn-block">Start Game</button></div>
       </app-card>
     </mat-grid-tile>
     <mat-grid-tile *ngFor="let i of [2]" [colspan]="( cardLayout | async )?.hist.cols" [rowspan]="( cardLayout | async )?.hist.rows">
-      <app-card title="Last round">
+      <app-card class="headers" title="Last round">
         <div *ngIf="playerHistory; else noHist">
           <h4>{{playerHistory.course_name}}</h4><br />
           <div>{{playerHistory.date_played}}<br />{{playerHistory.tot_time}}</div>
-          <a routerLink="/history">View more</a>
+          <a class="historylink" routerLink="/history">View more</a>
         </div>
         <ng-template #noHist>Please play a round to show history</ng-template>
       </app-card>
     </mat-grid-tile>
   </mat-grid-list>
 </div>
+
 
