@@ -118,7 +118,8 @@
 ## [UPDATE HOLES]
 ### URI [GET] : http://localhost/course-management/courses/holes
 * This URI requests the "course-management" document, “courses” collection, "holes" controller. This request must include relevant data.
-#### Example Input: {"data":{
+#### Example Input: 
+{"data":{
     "hole1":{
 	"hole_id": 1,
 	"hole_number": 1,
