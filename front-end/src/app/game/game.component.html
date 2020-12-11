@@ -4,8 +4,9 @@
     <h3 id="holeNum">Hole #{{hole.hole_number}}</h3>
     <p id="holeInfo">Par: {{hole.hole_par}} • {{hole.tees[0].distance_to_pin}} Yards</p>
     <!--    <p id="holeInfo">Men's Handicap: [...] • Ladies' Handicap: [...]</p>-->
-    <p>Tee Name - Distance</p>
-    <p *ngFor="let tee of hole.tees">{{tee.tee_name}}: {{tee.distance_to_pin}}</p>
+    <b>Tees:</b><br />
+    <span *ngFor="let tee of hole.tees">{{tee.tee_name}}: {{tee.distance_to_pin}}<br /></span>
+    <br />
     <p>Hole #{{hole.hole_number}} Tips: </p>
     <p>{{hole.hint}}</p>
 
@@ -25,7 +26,7 @@
       <br />
       <br />
       <div class="btn-toolbar">
-        <button type="submit" class="btn btn-primary">Finish Current Hole</button>
+        <button type="submit" class="btn btn-primary">Finish Hole</button>
         &nbsp;
         <button type="button" class="btn btn-primary" (click)="serviceRequest()" >Request Service</button>
         &nbsp;
