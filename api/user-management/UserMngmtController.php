@@ -283,7 +283,8 @@ switch ($function) {
     case "error":
         header('Accept: application/json, charset=utf-8');
         http_response_code(501);
-        echo http_response_code().": Error, service not recognized";
+        $msg["message"] = http_response_code().": Error, service not recognized";
+        echo json_encode($msg);
         break;
     case "login":
         // Get JSON data
@@ -323,14 +324,16 @@ switch ($function) {
                 header('Accept: application/json, charset=utf-8');
                 header('WWW-Authenticate: Basic; realm="Access to the landing page"');
                 http_response_code(401);
-                echo http_response_code().": Login failed. Incorrect email or password";
+                $msg["message"] = http_response_code().": Login failed, incorrect email or password";
+                echo json_encode($msg);
             }
         }
         else {
             header('Accept: application/json, charset=utf-8');
             header('WWW-Authenticate: Basic; realm="Access to the landing page"');
             http_response_code(401);
-            echo http_response_code().": Login failed. Password or Email is not valid";
+            $msg["message"] = http_response_code().": Login failed, password or Email is not valid";
+            echo json_encode($msg);
         }
         break;
     case "logout":
@@ -338,7 +341,8 @@ switch ($function) {
         session_unset();
         session_destroy();
         http_response_code(200);
-        echo "Successfully Logged Off!";
+        $msg["message"] = http_response_code().": Successfully Logged Off!";
+        echo json_encode($msg);
         break;
     case "signup":
         // Get JSON data
@@ -357,13 +361,15 @@ switch ($function) {
         if ($result != NULL) {
             header('WWW-Authenticate: Basic;realm="Access to the landing page"');
             http_response_code(201);
-            echo http_response_code().": Profile created successfully";
+            $msg["message"] = http_response_code().": Profile created successfully";
+            echo json_encode($msg);
         } 
         else {
             header('WWW-Authenticate: Basic;realm="Access to the landing page"');
             header('Accept: application/json');
             http_response_code(500);
-            echo http_response_code().": Error, profile not created";
+            $msg["message"] = http_response_code().": Error, profile not created";
+            echo json_encode($msg);
         }
         break;
     case "selectAllHistory":
@@ -384,7 +390,8 @@ switch ($function) {
         else {
             header('Accept: application/json, charset=utf-8');
             http_response_code(500);
-            echo http_response_code().": No user history";
+            $msg["message"] = http_response_code().": No user history";
+            echo json_encode($msg);
         }
         break;
     case "updateUser":
@@ -400,7 +407,8 @@ switch ($function) {
         if($password != $checkPassword) {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, passwords didn't match";
+            $msg["message"] = http_response_code().": Error, passwords didn't match";
+            echo json_encode($msg);
         }
         else {
             // Assign collection URI to user_id
@@ -411,17 +419,20 @@ switch ($function) {
             
             if ($result >= 1) {
                 http_response_code(200);
-                echo http_response_code().": Profile updated successfully";
+                $msg["message"] = http_response_code().": Profile updated successfully";
+                echo json_encode($msg);
             }
             // No changes were made (Acts as a "Save" function)
             elseif ($result === 0) {
                 http_response_code(204);
-                echo http_response_code();
+                $msg["message"] = http_response_code().": No changes made";
+                echo json_encode($msg);
             }
             else {
                 header('Accept: application/json');
                 http_response_code(404);
-                echo http_response_code().": Error, profile not updated";
+                $msg["message"] = http_response_code().": Error, profile not updated";
+                echo json_encode($msg);
             }
         }
         break;
@@ -434,11 +445,13 @@ switch ($function) {
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Profile deleted successfully";
+            $msg["message"] = http_response_code().": Profile deleted successfully";
+            echo json_encode($msg);
         }
         else {
             http_response_code(404);
-            echo http_response_code().": Error, profile not deleted";
+            $msg["message"] = http_response_code().": Error, profile not deleted";
+            echo json_encode($msg);
         }
         break;
     case "selectAllUsers":
@@ -454,7 +467,8 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": No users found";
+            $msg["message"] = http_response_code().": No users found";
+            echo json_encode($msg);
         }
         break;
 }

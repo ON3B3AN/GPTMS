@@ -6,13 +6,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all employees
+    * Body (app/json): {Returns all employees}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: No employees found
+    * Body (app/json): {"message":"404: No employees found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [SELECT EMPLOYEE]
 ### URI [GET] : http://localhost/employee-management/employees/1
@@ -20,13 +20,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns employee
+    * Body (app/json): {Returns employee}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: No employee with id=1 found
+    * Body (app/json): {"message":"404: No employee with id=1 found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [INSERT EMPLOYEE]
 ### URI [POST] : http://localhost/employee-management/employees
@@ -34,13 +34,13 @@
 #### Example Input: {"data":{"User_user_id":"3","Course_course_id":"1","security_lvl":"0"}}
 #### Output: Successful
     * Header: 201: Created
-    * Body (text/html): 201: Employee added successfully
+    * Body (app/json): {"message":"201: Employee added successfully"}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, employee not added
+    * Body (app/json): {"message":"404: Error, employee not added"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [UPDATE EMPLOYEE]
 ### URI [PUT] : http://localhost/employee-management/employees/1
@@ -48,16 +48,16 @@
 #### Example Input: {"data":{"Course_course_id":"1","security_lvl":"0"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): 200: Employee updated successfully
+    * Body (app/json): {"message":"200: Employee updated successfully"}
 #### Output: Successful (no changes were made)
     * Header: 204: No content
-    * Body: N/A
+    * Body (app/json): {"message":"204: No changes made"}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, employee not updated
+    * Body (app/json): {"message":"404: Error, employee not updated"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [DELETE EMPLOYEE]
 ### URI [DELETE] : http://localhost/employee-management/employee/1
@@ -65,13 +65,13 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (text/html): 200: Employee deleted successfully
+    * Body (app/json): {"message":"200: Employee deleted successfully"}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, employee not deleted
+    * Body (app/json): {"message":"404: Error, employee not deleted"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [SELECT EMPLOYEE BY COURSE]
 ### URI [GET] : http://localhost/employee-management/employees?course_id=1
@@ -79,10 +79,10 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns all employees by course id
+    * Body (app/json): {Returns all employees by course id}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (text/html): 404: Error, no employees found
+    * Body (app/json): {"message":"404: Error, no employees found"}
 #### Output: Server Error
     * Header: 501: Not Implemented
-    * Body (text/html): 501: Error, service not recognized
+    * Body (app/json): {"message":"501: Error, service not recognized"}

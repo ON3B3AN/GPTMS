@@ -266,6 +266,15 @@ elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
         $function = "error";
     }
 }
+elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "PUT") {
+    // GPTMS/api/party-management/parties/1
+    if ($document == "party-management" && $collection == "parties" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "endParty";
+    }
+    else {
+        $function = "error";
+    }
+}
 elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
     $function = "error";
 }
@@ -282,7 +291,8 @@ switch ($function) {
     case 'error':
         header('Accept: application/json, charset=utf-8');
         http_response_code(501);
-        echo http_response_code().": Error, service not recognized";
+        $msg["message"] = http_response_code().": Error, service not recognized";
+        echo json_encode($msg);
         break;
     case "insertParty":
         $handicap = $input->data->handicap;
@@ -294,30 +304,44 @@ switch ($function) {
         $latitude = $input->data->latitude;
         $golf_cart = $input->data->golf_cart;
         
-        // Get party id from SQL query
-        $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
-        
-        $result_array = array();
-        
         // Parse emails from data object array
         $user_emails = explode(",", $email);
         
-        // Insert players into the newly created party
-        for($i = 0; $i < $party_size; $i++) {
-            $user_id_object = selectUserByEmail($user_emails[$i]);
-            $user_id = (string)$user_id_object["user_id"];            
-            $result = insertPlayer($user_id, $party_id, $handicap);
-            array_push($result_array, $result);
+        // Check if the user exists by email
+        foreach ($user_emails as &$user_email) {
+            $user_result = selectUserByEmail($user_email);
         }
-        
-        if (count($result_array) != 0) {
-            http_response_code(200);
-            echo json_encode($party_id);
+                
+        if ($user_result != NULL) {
+            // Get party id from SQL query
+            $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
+
+            $result_array = array();
+
+            // Insert players into the newly created party
+            for($i = 0; $i < $party_size; $i++) {
+                $user_id_object = selectUserByEmail($user_emails[$i]);
+                $user_id = (string)$user_id_object["user_id"];            
+                $result = insertPlayer($user_id, $party_id, $handicap);
+                array_push($result_array, $result);
+            }
+
+            if (count($result_array) != 0) {
+                http_response_code(200);
+                echo json_encode($party_id);
+            }
+            else {
+                header('Accept: application/json');
+                http_response_code(404);
+                $msg["message"] = http_response_code().": Error, player not added";
+                echo json_encode($msg);
+            } 
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, player not added";
+            $msg["message"] = http_response_code().": Error, user DNE";
+            echo json_encode($msg);
         }   
         break;
     case "insertScore":
@@ -332,12 +356,14 @@ switch ($function) {
         
         if ($result != 0) {
             http_response_code(201);
-            echo http_response_code().": Score added successfully";
+            $msg["message"] = http_response_code().": Score added successfully";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, score not added";
+            $msg["message"] = http_response_code().": Error, score not added";
+            echo json_encode($msg);
         }
         break;
     case "updateScore":
@@ -352,17 +378,20 @@ switch ($function) {
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Score updated successfully";
+            $msg["message"] = http_response_code().": Score updated successfully";
+            echo json_encode($msg);
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
             http_response_code(204);
-            echo http_response_code();
+            $msg["message"] = http_response_code().": No changes made";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, score not updated";
+            $msg["message"] = http_response_code().": Error, score not updated";
+            echo json_encode($msg);
         }
         break;
     case "selectActiveParties":
@@ -383,7 +412,8 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": Error, no active parties found";
+            $msg["message"] = http_response_code().": Error, no active parties found";
+            echo json_encode($msg);
         }
         break;
     case "startRound":
@@ -420,13 +450,15 @@ switch ($function) {
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, no round started";
+            $msg["message"] = http_response_code().": Error, no round started";
+            echo json_encode($msg);
         }
         break;
     case "requestServices":
         $party_id = $collectionURI;
         http_response_code(200);
-        echo http_response_code().": Services have been successfully requested!";
+        $msg["message"] = http_response_code().": Services have been successfully requested!";
+        echo json_encode($msg);
         break;
     case "updatePartyCoordinates":
         // Get JSON data
@@ -441,18 +473,41 @@ switch ($function) {
 
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Party coordinates updated successfully";
+            $msg["message"] = http_response_code().": Party coordinates updated successfully";
+            echo json_encode($msg);
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
             http_response_code(204);
-            echo http_response_code();
+            $msg["message"] = http_response_code().": No changes made";
+            echo json_encode($msg);
+        }
+        
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            $msg["message"] = http_response_code().": Error, party coordinates not updated";
+            echo json_encode($msg);
+        }
+        break;
+    case "endParty":
+        $party_id = $collectionURI;
+        
+        // Get results from SQL query
+        $result = updateParty($party_id);
+        
+        if ($result != 0) {
+            http_response_code(201);
+            $msg["message"] = http_response_code().": Party updated successfully";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, party coordinates not updated";
+            $msg["message"] = http_response_code().": Error, party not updated";
+            echo json_encode($msg);
         }
+        break;
 }
 
 
