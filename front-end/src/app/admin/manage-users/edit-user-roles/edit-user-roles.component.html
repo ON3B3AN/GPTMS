@@ -1,32 +1,36 @@
 <div class="admodal">
-    <h4 style="text-align:center" id="addText">{{title}}</h4>
-    <form [formGroup]="editRole" class="form-horizontal">
-        <div id=name>
-            <h5>{{user.last_name}}, {{user.first_name}}</h5>
-        </div>
-        <div *ngFor="let role of roles">
+  <h4 style="text-align:center" id="addText">Edit User Roles</h4>
+  <form [formGroup]="editRole" class="form-horizontal">
+    <div id=name>
+      <h5>{{user.last_name}}, {{user.first_name}}</h5>
+    </div>
+    <table>
+      <tr *ngFor="let role of roles">
+        <td colspan="2" *ngIf="role.Course_course_id === null; else cas">System Admin</td>
+        <ng-template #cas>
+          <td>
+            <span>{{role.course_name}}</span>
+          </td>
+          <td><select name="role-type">
+            <option value="1" [selected]="(1 === role.security_lvl)">Admin</option>
+            <option value="2" [selected]="(2 === role.security_lvl)">Staff</option>
+          </select></td>
+        </ng-template>
+        <td><button type="button" (click)="cancel()">&#215;</button></td>
+      </tr>
+    </table>
+    <hr />
+    <div>
+      <label class="control-label" for="courses">Select a Course:</label>
+      <select name="courses" id="courses">
+        <option *ngFor="let course of courses"  value="{{course.course_id}}">{{course.course_name}}</option>
+      </select>
+    </div>
+    <button type="button" (click)="ok()">OK</button>
+    <button type="button" (click)="cancel()">Cancel</button>
+    <br />
+  </form>
+</div>
+<div class="admodal-overlay" id="admodal-overlay">
+</div>
 
-            {{role.course_name}}
-            <br>
-            <select name="role-type">
-                <option value="1" [selected]="(1 === role.security_lvl)">Admin</option>
-                <option value="2" [selected]="(2 === role.security_lvl)">Staff</option>
-            </select>
-        </div>
-        <div>
-            <label for="courses">Choose a course: </label>
-            <select name="courses" id="courses">
-                <label class="col-sm-2 control-label">Select a Course: </label>
-                <option>Select</option>
-                <option *ngFor="let course of courses"  value="{{course.course_id}}">{{course.course_name}}</option>
-            </select>
-        </div>
-      <button type="button" (click)="ok()">OK</button>
-      <button type="button" (click)="cancel()">Cancel</button>
-      <br>
-      <button type="button" (click)="cancel()">Delete</button>
-    </form>
-  </div>
-  <div class="admodal-overlay" id="admodal-overlay">
-  </div>
-  
