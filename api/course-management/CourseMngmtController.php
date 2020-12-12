@@ -487,7 +487,7 @@ switch ($function) {
                     $avg_pop = $input->data->$hole->avg_pop;
                     $perimeter = $input->data->$hole->perimeter;
                     $hint = $input->data->$hole->hint;
-                    $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
+                    $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id);
                     
                     // Iterate through tees
                     $x = 1;
