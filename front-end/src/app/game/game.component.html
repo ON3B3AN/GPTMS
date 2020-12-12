@@ -7,9 +7,10 @@
     <b>Tees:</b><br />
     <span *ngFor="let tee of hole.tees">{{tee.tee_name}}: {{tee.distance_to_pin}}<br /></span>
     <br />
-    <p>Hole #{{hole.hole_number}} Tips: </p>
+    <div class="hole-hints">
+    <p class="hole-hint-num">Hole #{{hole.hole_number}} Tips: </p>
     <p>{{hole.hint}}</p>
-
+  </div>
     <form [formGroup]="scoreForms[h]" (ngSubmit)="addScore(h)">
       <table id="scorecard">
         <tr>
