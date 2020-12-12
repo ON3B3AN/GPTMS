@@ -58,17 +58,17 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Hole` (
   `avg_pop` TIME NOT NULL,
   `mens_handicap` INT NOT NULL,
   `womens_handicap` INT NOT NULL,
-  `hint` VARCHAR(1000) NULL,
+  `hint` TEXT NULL,
   `perimeter` POLYGON NULL,
   PRIMARY KEY (`hole_id`),
   INDEX `fk_Hole_Course1_idx` (`Course_course_id` ASC),
+  UNIQUE INDEX `course_hole` (`Course_course_id` ASC, `hole_number` ASC),
   CONSTRAINT `fk_Hole_Course1`
     FOREIGN KEY (`Course_course_id`)
     REFERENCES `mydb`.`Course` (`course_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Party`
@@ -173,14 +173,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Tee`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Tee`;
 CREATE TABLE IF NOT EXISTS `mydb`.`Tee` (
   `tee_id` INT NOT NULL AUTO_INCREMENT,
   `Hole_hole_id` INT NOT NULL,
   `distance_to_pin` DOUBLE NOT NULL,
   `tee_name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`tee_id`),
-  INDEX `fk_Tee_Hole1_idx` (`Hole_hole_id` ASC) ,
+  INDEX `fk_Tee_Hole1_idx` (`Hole_hole_id` ASC),
+  UNIQUE INDEX `hole_tee` (`Hole_hole_id` ASC, `tee_name` ASC),
   CONSTRAINT `fk_Tee_Hole1`
     FOREIGN KEY (`Hole_hole_id`)
     REFERENCES `mydb`.`Hole` (`hole_id`)
