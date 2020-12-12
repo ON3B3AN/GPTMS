@@ -484,13 +484,11 @@ switch ($function) {
                     $mens_handicap = $input->data->$hole->mens_handicap;
                     $womens_handicap = $input->data->$hole->womens_handicap;
                     $avg_pop = $input->data->$hole->avg_pop;
-                    $perimeter_type = $input->data->$hole->perimeter->type;
-                    $perimeter_coordinates = $input->data->$hole->perimeter->coordinates;
-                    $perimeter_coordinates_seperated = implode(",", $perimeter_coordinates);
-                    $perimeter = "'{ \"type\": \"".$perimeter_type."\", \"coordinates\": ".$perimeter_coordinates_seperated."}'";
+                    $perimeter_input = $input->data->$hole->perimeter;
+                    $perimeter =   "POLYGON((".$perimeter_input."))";
                     $hint = $input->data->$hole->hint;
                     $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
-                    echo $perimeter."\n";
+                    
                     // Iterate through tees
                     $x = 1;
                     while ($x < 8) {
