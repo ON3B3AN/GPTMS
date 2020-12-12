@@ -151,7 +151,7 @@ function selectTees($course_id) {
 
 function selectCourseRecords($course_id){
     global $db;
-    $query = 'SELECT course_id, course_name, address, phone, hole_id, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_id, tee_name, distance_to_pin
+    $query = 'SELECT course_id, course_name, address, phone, hole_id, mens_handicap, womens_handicap, hole_number, mens_par, womens_par, ST_AsGeoJSON(perimeter) AS perimeter, avg_pop, tee_id, tee_name, distance_to_pin
                 from course
                 join hole on course_id = Course_course_id
                 join tee on hole_id = Hole_hole_id
@@ -163,7 +163,7 @@ function selectCourseRecords($course_id){
         $result = $statement->get_result();
         $res = array();
         while($row = $result->fetch_assoc()){
-            if (!$res['course_id']) {
+            if (!array_key_exists('course_id', $res)) {
                 $res = array(
                     'course_id' => $row['course_id'],
                     'course_name' => $row['course_name'],
@@ -195,12 +195,12 @@ function selectCourseRecords($course_id){
     }
 }
 
-function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id){
+function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id){
     global $db;
-    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, hole_number = ?, mens_handicap = ?, womens_handicap = ?, perimeter = GeomFromText(?), hint = ? WHERE hole_id = ?';
+    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, mens_handicap = ?, womens_handicap = ?, perimeter = ST_GeomFromGeoJSON(?), hint = ? WHERE course_id = ? AND hole_number = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sssssssss', $mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
+        $statement->bind_param('sssssssss', $mens_par, $womens_par, $avg_pop, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id, $hole_number);
         $statement->execute();
         $num_rows = $statement->affected_rows;
         $statement->close();
