@@ -55,13 +55,18 @@ export class GameService {
   updatePartyGeo(party, lon, lat) {
     const url = `${this.gameUrl}/${party}/coordinates`
     return this.http.put(url, {data: {longitude: lon, latitude: lat}}, this.httpOptions).pipe(
-      tap(x => console.log(`updated party coord w/ id=${party}`)),
+      tap(_ => console.log(`updated party coord w/ id=${party}`)),
       catchError(this.handleError<any>('updatedPartyCoord'))
     );
   }
 
-  requestService() {
-
+  requestService(party){
+    const url = `${this.gameUrl}/${party}/request-services`
+    return this.http.get<any>(url)
+      .pipe(
+        tap(_ => console.log(`fetched requested service id=${party}`)),
+        catchError(this.handleError<any>(`getRequestedService id=${party}`))
+      );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

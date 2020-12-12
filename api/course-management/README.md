@@ -114,3 +114,69 @@
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (app/json): {"message":"501: Error, service not recognized"}
+
+## [UPDATE HOLES]
+### URI [GET] : http://localhost/course-management/courses/holes
+* This URI requests the "course-management" document, “courses” collection, "holes" controller. This request must include relevant data.
+#### Example Input: 
+    {"data":{
+        "hole1":{
+            "hole_id": 1,
+            "hole_number": 1,
+            "mens_par": 5,
+            "womens_par": 5,
+            "mens_handicap": 9,
+            "womens_handicap": 11,
+            "avg_pop": "12:00:00",
+            "perimeter":"1 1, 3 3, 3 5, 1 1",
+            "hint": "hello",
+            "tees":{
+                "tee1":{
+                    "tee_id": 1,
+                    "tee_name": "Tournamentzzzzzzzz",
+                    "distance_to_pin": 400
+                },
+                "tee2":{
+                    "tee_id": 2,
+                    "tee_name": "Grizzleyzzzzzzz",
+                    "distance_to_pin": 300
+                }
+            }
+        },
+        "hole2":{
+                "hole_id": 2,
+                "hole_number": 2,
+                "mens_par": 5,
+                "womens_par": 6,
+                "mens_handicap": 9,
+                "womens_handicap": 11,
+                "avg_pop": "12:00:00",
+                "perimeter":"1 1, 3 3, 3 5, 1 1",
+                "hint": "hello",
+                "tees":{
+                    "tee1":{
+                    "tee_id": 6,
+                    "tee_name": "Tournament",
+                    "distance_to_pin": 400
+                    },
+                    "tee2":{
+                    "tee_id": 7,
+                    "tee_name": "Grizzley",
+                    "distance_to_pin": 300
+                    }
+                }
+            }
+        }
+    }
+#### Output: Successful
+    * Header: 200: Ok
+    * Body (app/json): {"message":"200: Holes and tees updated successfully!"}
+#### Output: Successful
+    * Header: 204: No Content Found
+    * Body (app/json): {"message":"204: No changes made"}
+#### Output: Unsuccessful
+    * Header: 404: Page Not Found
+    * Body (app/json): {"message":"404: Error, holes or tees not updated"}
+#### Output: Server Error
+    * Header: 501: Not Implemented
+    * Body (app/json): {"message":"501: Error, service not recognized"}

@@ -42,7 +42,11 @@ export class PlayComponent implements OnInit {
   addPlayer(){
     this.members.push(this.playForm.controls['email'].value);
     this.playForm.controls['email'].setValue('');
+  }
 
+  removePlayer(member) {
+    let index = this.members.indexOf(member)
+    this.members.splice(index, 1);
   }
   start() {
     if (this.playForm.invalid || this.members.length < 1){

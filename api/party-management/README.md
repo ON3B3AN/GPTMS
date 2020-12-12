@@ -6,7 +6,7 @@
 #### Example Input: N/A
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): 200: Returns all active party and player data based on course id
+    * Body (app/json): {Returns all active party and player data based on course id}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (app/json): {"message": "404: Error, no active parties found"}
@@ -20,7 +20,7 @@
 #### Example Input: {"data":{"handicap":"15","email":"smith@gmail.com,barker@gmail.com,email@gmail.com","course_id":"1","size":"3","longitude":"0","latitude":"0","golf_cart":"1"}}
 #### Output: Successful
     * Header: 200: Ok
-    * Body (app/json): Returns party id
+    * Body (app/json): {returns party id}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
     * Body (app/json): {"message": "404: Error, player and party not added"}
