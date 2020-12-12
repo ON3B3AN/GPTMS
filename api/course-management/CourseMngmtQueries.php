@@ -151,7 +151,7 @@ function selectTees($course_id) {
 
 function selectCourseRecords($course_id){
     global $db;
-    $query = 'SELECT course_id, course_name, address, phone, hole_id, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_id, tee_name, distance_to_pin
+    $query = 'SELECT course_id, course_name, address, phone, hole_id, mens_handicap, womens_handicap, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_id, tee_name, distance_to_pin
                 from course
                 join hole on course_id = Course_course_id
                 join tee on hole_id = Hole_hole_id
@@ -197,7 +197,7 @@ function selectCourseRecords($course_id){
 
 function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id){
     global $db;
-    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, hole_number = ?, mens_handicap = ?, womens_handicap = ?, perimeter = GeomFromText(?), hint = ? WHERE hole_id = ?';
+    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, hole_number = ?, mens_handicap = ?, womens_handicap = ?, perimeter = ST_GeomFromGeoJSON(?), hint = ? WHERE hole_id = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('sssssssss', $mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
