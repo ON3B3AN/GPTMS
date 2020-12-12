@@ -8,7 +8,7 @@
         <th>First Name</th>
         <th>Email</th>
         <th>Phone Number</th>
-        <th>Role</th>
+        <th>Roles</th>
 
     </tr>
     <tr *ngFor="let user of users">
@@ -16,7 +16,7 @@
         <td id="fName">{{user.first_name}}</td>
         <td id="email">{{user.email}}</td>
         <td id="phone">{{user.phone}}</td>
-        <td id="role"><button (click)="editRole(user.user_id)" style="cursor: pointer">View Role</button></td>
+        <td id="role"><button (click)="editRole(user.user_id)" style="cursor: pointer">View Roles</button></td>
 
     </tr>
 </table>

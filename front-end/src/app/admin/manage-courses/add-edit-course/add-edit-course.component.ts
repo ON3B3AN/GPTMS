@@ -33,6 +33,7 @@ export class AddEditCourseComponent implements OnInit, OnChanges {
       this.courseService.getCourse(this.id)
         .subscribe(data => {
           this.course = data;
+          console.log(data);
           this.editCourse.patchValue(this.course);
         });
     } else {
