@@ -34,10 +34,12 @@ import { GameComponent } from './game/game.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CardComponent } from './landing/card/card.component';
 import { CourseOverviewComponent } from './course-detail/course-overview/course-overview.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FooterComponent,
     LoginComponent,
     SignupComponent,
     LandingComponent,
