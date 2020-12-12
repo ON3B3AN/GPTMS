@@ -472,39 +472,41 @@ switch ($function) {
         
         // Iterate through holes
         $i = 1;
-        while ($i < 18) {
+        while ($i < 30) {
             $hole = "hole".strval($i);
-            try {
-                // Get JSON data 
-                $hole_id = $input->data->$hole->hole_id;
-                $hole_number = $input->data->$hole->hole_number;
-                $mens_par = $input->data->$hole->mens_par;
-                $womens_par = $input->data->$hole->womens_par;
-                $mens_handicap = $input->data->$hole->mens_handicap;
-                $womens_handicap = $input->data->$hole->womens_handicap;
-                $avg_pop = $input->data->$hole->avg_pop;
-                $perimeter = $input->data->$hole->perimeter;
-                $perimeter =   "\""."polygon((".$perimeter."))"."\"";
-                $hint = $input->data->$hole->hint;
-                $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
-                
-                // Iterate through tees
-                $x = 1;
-                while ($x < 6) {
-                    $tee = "tee".strval($x);
-                    try {
-                        // Get JSON data 
-                        $tee_id = $input->data->$hole->tees->$tee->tee_id;
-                        $distance_to_pin = $input->data->$hole->tees->$tee->distance_to_pin;
-                        $tee_name = $input->data->$hole->tees->$tee->tee_name;
-                        $tee_result += updateTees($distance_to_pin, $tee_name, $tee_id);
-                    } catch (Exception $ex) {
-                        continue;
+            if ($input->data->$hole->hole_id != "") {
+                try {
+                    // Get JSON data 
+                    $hole_id = $input->data->$hole->hole_id;
+                    $hole_number = $input->data->$hole->hole_number;
+                    $mens_par = $input->data->$hole->mens_par;
+                    $womens_par = $input->data->$hole->womens_par;
+                    $mens_handicap = $input->data->$hole->mens_handicap;
+                    $womens_handicap = $input->data->$hole->womens_handicap;
+                    $avg_pop = $input->data->$hole->avg_pop;
+                    $perimeter_input = $input->data->$hole->perimeter;
+                    $perimeter =   "POLYGON((".$perimeter_input."))";
+                    $hint = $input->data->$hole->hint;
+                    $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
+                    
+                    // Iterate through tees
+                    $x = 1;
+                    while ($x < 8) {
+                        $tee = "tee".strval($x);
+                        try {
+                            // Get JSON data 
+                            $tee_id = $input->data->$hole->tees->$tee->tee_id;
+                            $distance_to_pin = $input->data->$hole->tees->$tee->distance_to_pin;
+                            $tee_name = $input->data->$hole->tees->$tee->tee_name;
+                            $tee_result += updateTees($distance_to_pin, $tee_name, $tee_id);
+                        } catch (Exception $ex) {
+                            continue;
+                        }
+                        $x += 1;
                     }
-                    $x += 1;
+                } catch (Exception $ex) {
+                    continue;
                 }
-            } catch (Exception $ex) {
-                continue;
             }
             $i += 1;
         }
