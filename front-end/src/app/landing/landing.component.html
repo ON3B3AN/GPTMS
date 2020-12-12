@@ -8,6 +8,7 @@
   <mat-grid-list cols="{{( cardLayout | async )?.columns}}" rowHeight="300px">
     <mat-grid-tile *ngFor="let i of [1]" [colspan]="( cardLayout | async )?.play.cols" [rowspan]="( cardLayout | async )?.play.rows">
       <app-card class="playGame" title="Play Game">
+        
         <div><button routerLink="/play" class="btn btn-primary btn-block">Start Game</button></div>
       </app-card>
     </mat-grid-tile>
