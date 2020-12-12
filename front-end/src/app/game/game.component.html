@@ -6,9 +6,10 @@
     <!--    <p id="holeInfo">Men's Handicap: [...] • Ladies' Handicap: [...]</p>-->
     <p>Tee Name - Distance</p>
     <p *ngFor="let tee of hole.tees">{{tee.tee_name}}: {{tee.distance_to_pin}}</p>
-    <p>Hole #{{hole.hole_number}} Tips: </p>
+    <div class="hole-hints">
+    <p class="hole-hint-num">Hole #{{hole.hole_number}} Tips: </p>
     <p>{{hole.hint}}</p>
-
+  </div>
     <form [formGroup]="scoreForms[h]" (ngSubmit)="addScore(h)">
       <table id="scorecard">
         <tr>

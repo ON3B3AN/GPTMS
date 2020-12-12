@@ -16,7 +16,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr class="table-secondary">
         <th>Stroke:</th>
         <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.stroke}}</td>
         <td *ngIf="play.front_nine > 0">{{play.front_nine}}</td>
@@ -24,7 +24,7 @@
         <td *ngIf="play.back_nine > 0">{{play.back_nine}}</td>
         <td>{{play.total_score}}</td>
       </tr>
-      <tr >
+      <tr class="table-primary">
         <th>Par:</th>
         <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_par}}</td>
         <td *ngIf="play.front_nine > 0"></td>
