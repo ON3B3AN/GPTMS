@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Hole` (
   `avg_pop` TIME NOT NULL,
   `mens_handicap` INT NOT NULL,
   `womens_handicap` INT NOT NULL,
-  `hint` VARCHAR(1000) NULL,
+  `hint` TEXT NULL,
   `perimeter` POLYGON NULL,
   PRIMARY KEY (`hole_id`),
   INDEX `fk_Hole_Course1_idx` (`Course_course_id` ASC),

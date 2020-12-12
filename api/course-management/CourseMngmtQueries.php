@@ -151,7 +151,7 @@ function selectTees($course_id) {
 
 function selectCourseRecords($course_id){
     global $db;
-    $query = 'SELECT course_id, course_name, address, phone, hole_id, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_id, tee_name, distance_to_pin
+    $query = 'SELECT course_id, course_name, address, phone, hole_id, mens_handicap, womens_handicap, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_id, tee_name, distance_to_pin
                 from course
                 join hole on course_id = Course_course_id
                 join tee on hole_id = Hole_hole_id
