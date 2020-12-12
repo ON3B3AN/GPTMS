@@ -5,6 +5,7 @@ import * as L from 'leaflet';
 
 import {CourseService} from '../course.service';
 import {Course} from '../course';
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-course-detail',
@@ -14,10 +15,12 @@ import {Course} from '../course';
 export class CourseDetailComponent implements OnInit {
   id: number;
   course: Course;
+  user;
 
-  constructor(private courseService: CourseService, private route: ActivatedRoute) {  }
+  constructor(private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute) {  }
 
   ngOnInit(): void {
+    this.user = this.authService.currentUser;
     this.route.params.subscribe(params => {
       this.id = +params.id;
     });

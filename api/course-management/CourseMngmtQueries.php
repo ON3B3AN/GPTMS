@@ -151,7 +151,7 @@ function selectTees($course_id) {
 
 function selectCourseRecords($course_id){
     global $db;
-    $query = 'SELECT course_id, course_name, address, phone, hole_number, hole_par, longitude, latitude, avg_pop, tee_name, distance_to_pin
+    $query = 'SELECT course_id, course_name, address, phone, hole_id, hole_number, mens_par, womens_par, perimeter, avg_pop, tee_id, tee_name, distance_to_pin
                 from course
                 join hole on course_id = Course_course_id
                 join tee on hole_id = Hole_hole_id
@@ -175,20 +175,53 @@ function selectCourseRecords($course_id){
             $i = array_search($row['hole_number'], array_column($res['holes'], 'hole_number'));
             if ($i === False) {
                 $hole = array(
+                    'hole_id' => $row['hole_id'],
                     'hole_number' => $row['hole_number'],
-                    'hole_par' => $row['hole_par'],
-                    'longitude' => $row['longitude'],
-                    'latitude' => $row['latitude'],
+                    'mens_par' => $row['mens_par'],
+                    'womens_par' => $row['womens_par'],
+                    'perimeter' => $row['perimeter'],
                     'avg_pop' => $row['avg_pop'],
-                    'tees' => array(array('tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']))
+                    'tees' => array(array('tee_id' => $row['tee_id'], 'tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']))
                 );
                 array_push($res['holes'], $hole);
             } else {
-                array_push($res['holes'][$i]['tees'], array('tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']));
+                array_push($res['holes'][$i]['tees'], array('tee_id' => $row['tee_id'], 'tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']));
             }
         }
         $statement->close();
         return $res;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id){
+    global $db;
+    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, hole_number = ?, mens_handicap = ?, womens_handicap = ?, perimeter = PolygonFromText(?), hint = ? WHERE hole_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sssssssss', $mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function updateTees($distance_to_pin, $tee_name, $tee_id){
+    global $db;
+    $query = 'UPDATE tee SET distance_to_pin = ?, tee_name = ? WHERE tee_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sss', $distance_to_pin, $tee_name, $tee_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
     } catch (Exception $ex) {
         exit;
     }

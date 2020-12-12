@@ -278,7 +278,8 @@ switch ($function) {
     case "error":
         header('Accept: application/json, charset=utf-8');
         http_response_code(501);
-        echo http_response_code().": Error, service not recognized";
+        $msg["message"] = http_response_code().": Error, service not recognized";
+        echo json_encode($msg);
         break;
     case "insertEmployee":
         // Get JSON data
@@ -291,12 +292,14 @@ switch ($function) {
         
         if ($result != NULL) {
             http_response_code(201);
-            echo http_response_code().": Employee created successfully";
+            $msg["message"] = http_response_code().": Employee created successfully";
+            echo json_encode($msg);
         } 
         else {
             header('Accept: application/json');
             http_response_code(500);
-            echo http_response_code().": Error, employee not created";
+            $msg["message"] = http_response_code().": Error, employee not created";
+            echo json_encode($msg);
         }
         break;
     case "updateEmployee":
@@ -312,17 +315,20 @@ switch ($function) {
 
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Employee updated successfully";
+            $msg["message"] = http_response_code().": Employee updated successfully";
+            echo json_encode($msg);
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
             http_response_code(204);
-            echo http_response_code();
+            $msg["message"] = http_response_code().": No changes made";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, employee not updated";
+            $msg["message"] = http_response_code().": Error, employee not updated";
+            echo json_encode($msg);
         }
         
         break;
@@ -335,11 +341,13 @@ switch ($function) {
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Employee deleted successfully";
+            $msg["message"] = http_response_code().": Employee deleted successfully";
+            echo json_encode($msg);
         }
         else {
             http_response_code(404);
-            echo http_response_code().": Error, employee not deleted";
+            $msg["message"] = http_response_code().": Error, employee not deleted";
+            echo json_encode($msg);
         }
         break;
     case "selectAllEmployees":
@@ -355,7 +363,8 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": No employees found";
+            $msg["message"] = http_response_code().": No employees found";
+            echo json_encode($msg);
         }
         break;
     case "selectEmployeeByCourse":
@@ -377,7 +386,8 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": No employees found";
+            $msg["message"] = http_response_code().": No employees found";
+            echo json_encode($msg);
         }
         break;
     case "selectEmployee":
@@ -396,7 +406,8 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": No employees found";
+            $msg["message"] = http_response_code().": No employees found";
+            echo json_encode($msg);
         }
         break;
 }

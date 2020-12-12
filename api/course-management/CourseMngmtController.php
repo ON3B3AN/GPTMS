@@ -2,6 +2,7 @@
 /***********************
  * Cross-Origin Policy
 ************************/
+error_reporting(0);
 
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -260,6 +261,10 @@ elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
     if ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "updateCourse";
     }
+    // GPTMS/api/course-management/courses/holes
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI == NULL && $controller == "holes" && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+        $function = "updateHoles";
+    }
     else {
         $function = "error";
     }
@@ -286,7 +291,8 @@ switch ($function) {
     case 'error':
         header('Accept: application/json, charset=utf-8');
         http_response_code(501);
-        echo http_response_code().": Error, service not recognized";
+        $msg["message"] = http_response_code().": Error, service not recognized";
+        echo json_encode($msg);
         break;
     case 'selectCourse':
         // Assign collection URI to course_id
@@ -304,7 +310,8 @@ switch ($function) {
         }
         else {
             http_response_code(404);
-            echo http_response_code().": No course with id=$collectionURI found";
+            $msg["message"] = http_response_code().": No course with id=$collectionURI found";
+            echo json_encode($msg);
         }
         break;
     case 'updateCourse':
@@ -312,7 +319,7 @@ switch ($function) {
         $course_name = $input->data->course_name;
         $address = $input->data->address;
         $phone = $input->data->phone_number;
-        
+            
         // Assign collection URI to course_id
         $course_id = $collectionURI;
 
@@ -321,17 +328,20 @@ switch ($function) {
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Course updated successfully";
+            $msg["message"] = http_response_code().": Course updated successfully";
+            echo json_encode($msg);
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result === 0) {
             http_response_code(204);
-            echo http_response_code();
+            $msg["message"] = http_response_code().": No changes made";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, course not updated";
+            $msg["message"] = http_response_code().": Error, course not updated";
+            echo json_encode($msg);
         }
         break;
     case 'insertCourse':
@@ -345,12 +355,14 @@ switch ($function) {
         
         if ($result != 0) {
             http_response_code(201);
-            echo http_response_code().": Course added successfully";
+            $msg["message"] = http_response_code().": Course added successfully";
+            echo json_encode($msg);
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, course not added";
+            $msg["message"] = http_response_code().": Error, course not added";
+            echo json_encode($msg);
         }
         break;
     case 'deleteCourse':
@@ -362,11 +374,13 @@ switch ($function) {
         
         if ($result >= 1) {
             http_response_code(200);
-            echo http_response_code().": Course deleted successfully";
+            $msg["message"] = http_response_code().": Course deleted successfully";
+            echo json_encode($msg);
         }
         else {
             http_response_code(404);
-            echo http_response_code().": Error, course not deleted";
+            $msg["message"] = http_response_code().": Error, course not deleted";
+            echo json_encode($msg);
         }
         break;
     case "selectAllCourses":       
@@ -382,7 +396,8 @@ switch ($function) {
         } 
         else {
             http_response_code(404);
-            echo http_response_code().": No courses found";
+            $msg["message"] = http_response_code().": No courses found";
+            echo json_encode($msg);
         }
         break;
     case "selectHoles":
@@ -402,7 +417,8 @@ switch ($function) {
         else {
             header('Accept: application/json');
             http_response_code(404);
-            echo http_response_code().": Error, no holes found";
+            $msg["message"] = http_response_code().": Error, no holes found";
+            echo json_encode($msg);
         }
         break;
     case "selectTees":
@@ -426,7 +442,8 @@ switch ($function) {
         }
         else {
             http_response_code(404);
-            echo http_response_code().": Error, no tees found";
+            $msg["message"] = http_response_code().": Error, no tees found";
+            echo json_encode($msg);
         }
         break;
     case "selectCourseRecords":
@@ -445,10 +462,73 @@ switch ($function) {
         }
         else {
             http_response_code(404);
-            echo http_response_code().": No course records with id=$collectionURI found";
+            $msg["message"] = http_response_code().": No course records with id=$collectionURI found";
+            echo json_encode($msg);
         }
         break;
-
+    case "updateHoles":
+        $hole_result = 0;
+        $tee_result = 0;
+        
+        // Iterate through holes
+        $i = 1;
+        while ($i < 18) {
+            $hole = "hole".strval($i);
+            try {
+                // Get JSON data 
+                $hole_id = $input->data->$hole->hole_id;
+                $hole_number = $input->data->$hole->hole_number;
+                $mens_par = $input->data->$hole->mens_par;
+                $womens_par = $input->data->$hole->womens_par;
+                $mens_handicap = $input->data->$hole->mens_handicap;
+                $womens_handicap = $input->data->$hole->womens_handicap;
+                $avg_pop = $input->data->$hole->avg_pop;
+                $perimeter = $input->data->$hole->perimeter;
+                $perimeter =   "\""."polygon((".$perimeter."))"."\"";
+                $hint = $input->data->$hole->hint;
+                $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
+                
+                // Iterate through tees
+                $x = 1;
+                while ($x < 6) {
+                    $tee = "tee".strval($x);
+                    try {
+                        // Get JSON data 
+                        $tee_id = $input->data->$hole->tees->$tee->tee_id;
+                        $distance_to_pin = $input->data->$hole->tees->$tee->distance_to_pin;
+                        $tee_name = $input->data->$hole->tees->$tee->tee_name;
+                        $tee_result += updateTees($distance_to_pin, $tee_name, $tee_id);
+                    } catch (Exception $ex) {
+                        continue;
+                    }
+                    $x += 1;
+                }
+            } catch (Exception $ex) {
+                continue;
+            }
+            $i += 1;
+        }
+        $result = $hole_result + $tee_result;
+        
+        if ($result >= 1) {
+            http_response_code(200);
+            $msg["message"] = http_response_code().": Holes and tees updated successfully!";
+            echo json_encode($msg);
+        }
+        // No changes were made (Acts as a "Save" function)
+        elseif ($result == 0) {
+            http_response_code(204);
+            $msg["message"] = http_response_code().": No changes made";
+            echo $msg;
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            $msg["message"] = http_response_code().": Error, holes or tees not updated";
+            echo json_encode($msg);
+        }
+        break;
+    
 }
 
 

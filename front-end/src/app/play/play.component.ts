@@ -58,6 +58,7 @@ export class PlayComponent implements OnInit {
     game.longitude = 0;
     game.latitude = 0;
     game.golf_cart = 1;
+    game.handicap = 0;
     this.gameService.startGame(game).subscribe(data => {
       this.game = game;
       this.game.id = data;
