@@ -121,7 +121,6 @@
 #### Example Input: 
     {"data":{
         "hole1":{
-            "hole_id": 1,
             "hole_number": 1,
             "mens_par": 5,
             "womens_par": 5,
@@ -144,7 +143,6 @@
             }
         },
         "hole2":{
-                "hole_id": 2,
                 "hole_number": 2,
                 "mens_par": 5,
                 "womens_par": 6,

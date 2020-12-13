@@ -262,7 +262,7 @@ elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
         $function = "updateCourse";
     }
     // GPTMS/api/course-management/courses/1/holes
-    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == "holes" && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "holes" && $storeURI == NULL) {
         $function = "updateHoles";
     }
     else {
@@ -469,15 +469,15 @@ switch ($function) {
         case "updateHoles":
         $hole_result = 0;
         $tee_result = 0;
-        
+        $course_id = $collectionURI;
         // Iterate through holes
         $i = 1;
         while ($i < 30) {
             $hole = "hole".strval($i);
-            if ($input->data->$hole->hole_id != "") {
+            if ($input->data->$hole->hole_number != "") {
                 try {
                     // Get JSON data 
-                    $hole_id = $input->data->$hole->hole_id;
+//                    $course_id = $collectionURI;
                     $hole_number = $input->data->$hole->hole_number;
                     $mens_par = $input->data->$hole->mens_par;
                     $womens_par = $input->data->$hole->womens_par;
@@ -490,8 +490,9 @@ switch ($function) {
                         $coordinates[] = "[ ".$perimeter_coordinates[0][$c][0].", ".$perimeter_coordinates[0][$c][1]." ]";
                     }
                     $perimeter = ("{ \"type\": \"".$perimeter_type."\", \"coordinates\": [ [ ".implode(", ", $coordinates)." ] ] }");
+                    echo($perimeter."\n");
                     $hint = $input->data->$hole->hint;
-                    $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
+                    $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id);
 
                     // Iterate through tees
                     $x = 1;
