@@ -7,7 +7,7 @@
     <table class="table table-striped">
       <thead class="thead-dark">
       <tr>
-        <th>Hole:</th>
+        <th>Hole</th>
         <th *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_number}}</th>
         <th *ngIf="play.front_nine > 0">Out</th>
         <th *ngFor="let hole of play['score'] | slice:9">{{hole.hole_number}}</th>
@@ -17,21 +17,32 @@
       </thead>
       <tbody>
       <tr>
-        <th>Stroke:</th>
+        <th>Strokes</th>
         <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.stroke}}</td>
         <td *ngIf="play.front_nine > 0">{{play.front_nine}}</td>
         <td *ngFor="let hole of play['score'] | slice:9">{{hole.stroke}}</td>
         <td *ngIf="play.back_nine > 0">{{play.back_nine}}</td>
         <td>{{play.total_score}}</td>
       </tr><tr>
-        <th>Par:</th>
-        <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_par}}</td>
+        <th>Men's Par</th>
+        <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.mens_par}}</td>
         <td *ngIf="play.front_nine > 0"></td>
-        <td *ngFor="let hole of play['score'] | slice:9">{{hole.hole_par}}</td>
+        <td *ngFor="let hole of play['score'] | slice:9">{{hole.mens_par}}</td>
+        <td *ngIf="play.back_nine > 0"></td>
+        <td></td>
+      </tr><tr>
+        <th>Ladies' Par</th>
+        <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.womens_par}}</td>
+        <td *ngIf="play.front_nine > 0"></td>
+        <td *ngFor="let hole of play['score'] | slice:9">{{hole.womens_par}}</td>
         <td *ngIf="play.back_nine > 0"></td>
         <td></td>
       </tr>
       </tbody>
     </table>
   </div>
+</div>
+
+<div id="logo">
+  <img src="https://i.imgur.com/hdyVn8H.png" alt="GPTMS Logo" id="logo">
 </div>
