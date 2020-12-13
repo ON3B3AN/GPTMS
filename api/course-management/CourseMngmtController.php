@@ -492,7 +492,7 @@ switch ($function) {
                     $perimeter = ("{ \"type\": \"".$perimeter_type."\", \"coordinates\": [ [ ".implode(", ", $coordinates)." ] ] }");
                     $hint = $input->data->$hole->hint;
                     $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
-                    
+
                     // Iterate through tees
                     $x = 1;
                     while ($x < 8) {
