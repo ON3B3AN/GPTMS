@@ -6,7 +6,7 @@
   <div class="table-responsive">
     <table class="table table-sm table-bordered">
       <thead >
-      <tr class="table-primary">
+      <tr class="table-success">
         <th>Hole:</th>
         <th *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_number}}</th>
         <th *ngIf="play.front_nine > 0">Out</th>
@@ -24,7 +24,7 @@
         <td *ngIf="play.back_nine > 0">{{play.back_nine}}</td>
         <td>{{play.total_score}}</td>
       </tr>
-      <tr class="table-primary">
+      <tr class="table-success">
         <th>Par:</th>
         <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_par}}</td>
         <td *ngIf="play.front_nine > 0"></td>
