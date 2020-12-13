@@ -195,12 +195,12 @@ function selectCourseRecords($course_id){
     }
 }
 
-function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id){
+function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id){
     global $db;
-    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, mens_handicap = ?, womens_handicap = ?, perimeter = ST_GeomFromGeoJSON(?), hint = ? WHERE course_id = ? AND hole_number = ?';
+    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, hole_number = ?, mens_handicap = ?, womens_handicap = ?, perimeter = ST_GeomFromGeoJSON(?), hint = ? WHERE hole_id = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sssssssss', $mens_par, $womens_par, $avg_pop, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id, $hole_number);
+        $statement->bind_param('sssssssss', $mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
         $statement->execute();
         $num_rows = $statement->affected_rows;
         $statement->close();

@@ -466,7 +466,7 @@ switch ($function) {
             echo json_encode($msg);
         }
         break;
-    case "updateHoles":
+        case "updateHoles":
         $hole_result = 0;
         $tee_result = 0;
         
@@ -477,18 +477,22 @@ switch ($function) {
             if ($input->data->$hole->hole_id != "") {
                 try {
                     // Get JSON data 
-                    $course_id = $collectionURI;
-                    //$hole_id = $input->data->$hole->hole_id;
+                    $hole_id = $input->data->$hole->hole_id;
                     $hole_number = $input->data->$hole->hole_number;
                     $mens_par = $input->data->$hole->mens_par;
                     $womens_par = $input->data->$hole->womens_par;
                     $mens_handicap = $input->data->$hole->mens_handicap;
                     $womens_handicap = $input->data->$hole->womens_handicap;
                     $avg_pop = $input->data->$hole->avg_pop;
-                    $perimeter = $input->data->$hole->perimeter;
+                    $perimeter_type = $input->data->$hole->perimeter->type;
+                    $perimeter_coordinates = $input->data->$hole->perimeter->coordinates;
+                    for ($c = 0; $c < count($perimeter_coordinates[0]); $c++){
+                        $coordinates[] = "[ ".$perimeter_coordinates[0][$c][0].", ".$perimeter_coordinates[0][$c][1]." ]";
+                    }
+                    $perimeter = ("{ \"type\": \"".$perimeter_type."\", \"coordinates\": [ [ ".implode(", ", $coordinates)." ] ] }");
                     $hint = $input->data->$hole->hint;
-                    $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id);
-                    
+                    $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $hole_id);
+
                     // Iterate through tees
                     $x = 1;
                     while ($x < 8) {
