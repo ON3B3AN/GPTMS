@@ -28,6 +28,7 @@ export class GameService {
 
   endGame() {
     localStorage.removeItem('game');
+    localStorage.removeItem('cHole');
     this.router.navigate(['/landing']);
   }
 
