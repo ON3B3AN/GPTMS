@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
+import {User} from '../user';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   navbarOpen = false;
-  user;
+  user: User;
   isOpen = false;
 
   // tslint:disable-next-line: typedef
@@ -17,11 +18,13 @@ export class NavbarComponent implements OnInit {
     this.navbarOpen = !this.navbarOpen;
   }
 
-  constructor(private authService: AuthService, public router: Router) { }
-
-  ngOnInit(): void {
-    this.user = this.authService.currentUser;
+  constructor(private authService: AuthService, public router: Router) {
+    this.authService.currentUser.subscribe(u => {
+      this.user = u;
+    });
   }
+
+  ngOnInit(): void { }
 
   logout(): void {
     this.authService.logout();

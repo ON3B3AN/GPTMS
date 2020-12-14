@@ -37,8 +37,8 @@ export class AuthService {
     return localStorage.getItem('user') !== null;
   }
 
-  public get currentUser(): User {
-    return this.userSubject.value;
+  public get currentUser(): Observable<User> {
+    return this.user;
   }
 
   public logout() {
