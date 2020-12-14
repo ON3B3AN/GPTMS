@@ -311,40 +311,37 @@ switch ($function) {
         // Check if the user exists by email
         foreach ($user_emails as &$user_email) {
             $user_result = selectUserByEmail($user_email);
-        }
-                
-        if ($user_result != NULL) {
-            // Get party id from SQL query
-            $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
-
-            $result_array = array();
-
-            // Insert players into the newly created party
-            for($i = 0; $i < $party_size; $i++) {
-                $user_id_object = selectUserByEmail($user_emails[$i]);
-                $user_id = (string)$user_id_object["user_id"];            
-                $result = insertPlayer($user_id, $party_id, $handicap);
-                array_push($result_array, $result);
-            }
-
-            if (count($result_array) != 0) {
-                http_response_code(200);
-                echo json_encode($party_id);
-            }
-            else {
+            
+            if ($user_result == NULL) {
                 header('Accept: application/json');
                 http_response_code(404);
-                $msg["message"] = http_response_code().": Error, player not added";
+                $msg["message"] = "Error, user: ".$user_email." DNE";
                 echo json_encode($msg);
-            } 
+            }
+            else {
+                // Get party id from SQL query
+                $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
+                $result_array = array();
+
+                // Insert players into the newly created party
+                for($i = 0; $i < $party_size; $i++) {
+                    $user_id_object = selectUserByEmail($user_emails[$i]);
+                    $user_id = (string)$user_id_object["user_id"];            
+                    $result = insertPlayer($user_id, $party_id, $handicap);
+                    array_push($result_array, $result);
+                }
+            }
+        }
+        
+        // Returns party id if all emails are valid
+        if (in_array(-1, $result_array)) {
+            break;
         }
         else {
-            header('Accept: application/json');
-            http_response_code(404);
-            $msg["message"] = http_response_code().": Error, user DNE";
-            echo json_encode($msg);
-        }   
-        break;
+            http_response_code(200);
+            echo json_encode($party_id);
+        }
+        break;    
     case "insertScore":
         $hole_id = $input->data->Hole_hole_id;
         $user_id = $input->data->Player_User_user_id;
