@@ -20,6 +20,8 @@ export class GameComponent implements OnChanges, OnDestroy {
   scoreForms: FormGroup[] = new Array();
   watchId: number;
   time = '  ';
+  timeColor = 'inherit';
+  timeWarning = false;
   timer: any;
   selectedIndex: number;
 
@@ -47,7 +49,12 @@ export class GameComponent implements OnChanges, OnDestroy {
         this.course.holes.map((item, index) => {
           this.addFormItem(item);
         });
-      this.watchPosition();
+        if (!localStorage.getItem('cHole')) {
+          localStorage.setItem('cHole', '0');
+        } else {
+          this.selectedIndex = parseInt(localStorage.getItem('cHole'));
+        }
+        this.watchPosition();
       });
     }
   }
@@ -55,7 +62,28 @@ export class GameComponent implements OnChanges, OnDestroy {
   startTimer(): void {
     const start = Date.parse(`${this.party.date}T${this.party.start_time}`);
     this.timer = interval(1000).subscribe(_ => {
+      const times = [];
+      this.course.holes.filter((h, i) => i <= parseInt(localStorage.getItem('cHole'))).map(i => {
+        const tVal = i.avg_pop.split(':');
+        const t_ms = 3600000 * tVal[0] + 60000 * tVal[1] + 1000 * tVal[2];
+        times.push(t_ms);
+      });
+      const pace = times.reduce((s, v) => s + v);
+
       let timeVal = Date.now() - start;
+      if (timeVal > pace * 1.05) {
+        this.timeColor = 'red';
+        if (!this.timeWarning) {
+          this.timeWarning = true;
+          alert('Please speed up or allow anyone behind you to play through.');
+        }
+      } else if (timeVal > pace * 0.95) {
+        this.timeColor = 'orange';
+      } else if (!this.timeWarning) {
+        this.timeColor = 'inherit';
+      }
+      if (timeVal < pace - 240000) this.timeWarning = false;
+
       const ms = timeVal % 1000;
       timeVal = (timeVal - ms) / 1000;
       const s = timeVal % 60;
@@ -110,6 +138,7 @@ export class GameComponent implements OnChanges, OnDestroy {
       this.gameService.addScore(score.party, score.hole, golfer.uid, golfer.strokes).subscribe();
     }
     this.selectedIndex = hole + 1;
+    localStorage.setItem('cHole', String(this.selectedIndex));
   }
 
   serviceRequest(): void {

@@ -7,7 +7,7 @@ export interface Hole {
   mens_handicap: number;
   womens_handicap: number;
   perimeter?: any;
-  avg_pop: number;
+  avg_pop: any;
   tees: Tee[];
 }
 
