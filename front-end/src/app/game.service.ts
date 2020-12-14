@@ -61,10 +61,10 @@ export class GameService {
   }
 
   requestService(party){
-    const url = `${this.gameUrl}/${party}/request-services`
+    const url = `${this.gameUrl}/${party}/request-services`;
     return this.http.get<any>(url)
       .pipe(
-        tap(_ => console.log(`fetched requested service id=${party}`)),
+        tap(_ => alert('Services Requested')),
         catchError(this.handleError<any>(`getRequestedService id=${party}`))
       );
   }

@@ -3,9 +3,9 @@
   <mat-tab class="navNumbers" *ngFor="let hole of course.holes; let h = index;" label="#{{hole.hole_number}}">
     <img src="/assets/courseImages/{{game.course_id}}_{{hole.hole_number}}.png" alt="Hole Layout" class="holeMap"/>
     <h3 id="holeNum">Hole #{{hole.hole_number}}</h3>
-    <p id="holeInfo">Par: {{hole.hole_par}} • {{hole.tees[0].distance_to_pin}} Yards</p>
-    <!--    <p id="holeInfo">Men's Handicap: [...] • Ladies' Handicap: [...]</p>-->
-    
+    <p id="holeInfo">Par: {{hole.mens_par}}<ng-template *ngIf="hole.womens_par !== hole.mens_par">({{hole.womens_par}})</ng-template> • {{hole.tees[0].distance_to_pin}} Yards</p>
+    <p id="holeInfo">Men's Handicap: {{hole.mens_handicap}} • Ladies' Handicap: {{hole.womens_handicap}}</p>
+
     <br /><b>Tees:</b><br />
     <table class="teeTable">
      <tr *ngFor="let tee of hole.tees">

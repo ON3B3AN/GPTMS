@@ -114,6 +114,7 @@ export class GameComponent implements OnChanges, OnDestroy {
 
   serviceRequest(): void {
     console.log('User Requested Service');
+    this.gameService.requestService(this.party.party_id).subscribe();
 
   }
   endGame(): void {
