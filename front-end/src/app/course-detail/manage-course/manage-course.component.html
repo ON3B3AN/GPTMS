@@ -24,25 +24,25 @@
       <tr>
         <th>Men's Par</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <input type="number"  formControlName="mens_par" min="3" max="7">
+          <input type="number"  formControlName="mens_par" min="3" max="7" />
         </td>
       </tr>
       <tr>
         <th>Ladies' Par</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <input type="number"  formControlName="womens_par" min="3" max="7">
+          <input type="number"  formControlName="womens_par" min="3" max="7" />
         </td>
       </tr>
       <tr>
         <th>Men's Handicap</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <input type="number"  formControlName="mens_handicap" min="1" max="{{courseForm.get('holes')['controls'].length}}">
+          <input type="number"  formControlName="mens_handicap" min="1" max="{{courseForm.get('holes')['controls'].length}}" />
         </td>
       </tr>
       <tr>
         <th>Ladies Handicap</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <input type="number"  formControlName="womens_handicap" min="1" max="{{courseForm.get('holes')['controls'].length}}">
+          <input type="number"  formControlName="womens_handicap" min="1" max="{{courseForm.get('holes')['controls'].length}}" />
         </td>
       </tr>
       <tr>
@@ -60,4 +60,3 @@
 <div class="map-container">
   <div id="cMap"></div>
 </div>
-<pre>{{submission | json}}</pre>

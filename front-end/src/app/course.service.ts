@@ -73,6 +73,15 @@ export class CourseService {
     );
   }
 
+  updateHoles(courseId: number, holes: any): Observable<Hole[]> {
+    const url = `${this.courseUrl}/${courseId}/holes`;
+    return this.http.put<any>(url, {data: holes}, this.httpOptions)
+      .pipe(
+        tap(_ => console.log(`updated holes for course id=${courseId}\``)),
+        catchError(this.handleError<Hole[]>(`updateHoles, course id=${courseId}`))
+      );
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.message});

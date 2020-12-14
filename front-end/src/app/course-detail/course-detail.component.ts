@@ -20,7 +20,9 @@ export class CourseDetailComponent implements OnInit {
   constructor(private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute) {  }
 
   ngOnInit(): void {
-    this.user = this.authService.currentUser;
+    this.authService.currentUser.subscribe(u => {
+      this.user = u;
+    });
     this.route.params.subscribe(params => {
       this.id = +params.id;
     });

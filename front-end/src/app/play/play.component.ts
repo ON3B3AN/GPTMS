@@ -67,12 +67,16 @@ export class PlayComponent implements OnInit {
     game.golf_cart = 1;
     game.handicap = 0;
     this.gameService.startGame(game).subscribe(data => {
-      this.game = game;
-      this.game.id = data;
-      localStorage.setItem('game', JSON.stringify(this.game));
+      if (data) {
+        this.game = game;
+        this.game.id = data;
+        console.log('HELLO WORLD');
+        console.log(data);
+        localStorage.setItem('game', JSON.stringify(this.game));
+        this.playForm.reset();
+        this.members = [];
+      }
     });
-    this.playForm.reset();
-    this.members = [];
   }
 
 }
