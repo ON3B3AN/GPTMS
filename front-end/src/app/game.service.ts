@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {MessageService} from 'primeng/api';
 import {User} from './user';
 import { Router } from '@angular/router';
 
@@ -16,7 +17,7 @@ export class GameService {
   };
   watchId: number;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private messageService: MessageService) {}
 
   startGame(info: any) {
     console.log(info);
@@ -76,6 +77,7 @@ export class GameService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.message});
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead

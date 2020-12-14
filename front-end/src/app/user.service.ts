@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {User} from './user';
+import {MessageService} from "primeng/api";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class UserService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private messageService: MessageService) { }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.userUrl)
@@ -82,6 +83,7 @@ export class UserService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.message});
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead

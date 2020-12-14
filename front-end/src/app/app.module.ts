@@ -11,9 +11,12 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MatTabsModule} from '@angular/material/tabs';
-
-
+import { MatTabsModule } from '@angular/material/tabs';
+import { MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +34,6 @@ import { CourseDetailComponent } from './course-detail/course-detail.component';
 
 import { ManageCourseComponent } from './course-detail/manage-course/manage-course.component';
 import { GameComponent } from './game/game.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CardComponent } from './landing/card/card.component';
 import { CourseOverviewComponent } from './course-detail/course-overview/course-overview.component';
 import { FooterComponent } from './footer/footer.component';
@@ -73,9 +75,12 @@ import { FooterComponent } from './footer/footer.component';
     MatButtonModule,
     LayoutModule,
     MatTabsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MessagesModule,
+    MessageModule,
+    ToastModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

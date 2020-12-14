@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Router } from '@angular/router';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {MessageService} from 'primeng/api';
 import {User} from './user';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class AuthService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, private messageService: MessageService) {
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
   }
@@ -31,8 +32,9 @@ export class AuthService {
         this.userSubject.next(user);
         return user;
       }),
-        catchError(this.handleError));
+        catchError(this.handleError('login')));
   }
+
   public isLoggedIn(): boolean {
     return localStorage.getItem('user') !== null;
   }
@@ -47,10 +49,17 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    console.log(error);
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
 
-    // return an observable with a user friendly message
-    return throwError('Error! something went wrong.');
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+      this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.message});
+      // TODO: better job of transforming error for user consumption
+      console.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   }
 }
