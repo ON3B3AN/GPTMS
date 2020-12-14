@@ -321,7 +321,6 @@ switch ($function) {
                 $error = "User email: ".$user_email." DNE";
                 $msg["error ".$error_count] = $error;
                 $error_count += 1;
-//                array_push($msg, $error);
             }
             else {
                 // Get party id from SQL query
