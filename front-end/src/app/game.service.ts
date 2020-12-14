@@ -26,9 +26,14 @@ export class GameService {
     );
   }
 
-  endGame() {
+  endGame(party) {
+    const url = `${this.gameUrl}/${party}`;
     localStorage.removeItem('game');
-    this.router.navigate(['/landing']);
+    localStorage.removeItem('cHole');
+    return this.http.put(url, this.httpOptions).pipe(
+      tap(_ => console.log(`ended game for id=${party}`)),
+      catchError(this.handleError<any>('endGame'))
+    );
   }
 
   getRound(party, course, start_hole, end_hole) {
@@ -53,7 +58,7 @@ export class GameService {
   }
 
   updatePartyGeo(party, lon, lat) {
-    const url = `${this.gameUrl}/${party}/coordinates`
+    const url = `${this.gameUrl}/${party}/coordinates`;
     return this.http.put(url, {data: {longitude: lon, latitude: lat}}, this.httpOptions).pipe(
       tap(_ => console.log(`updated party coord w/ id=${party}`)),
       catchError(this.handleError<any>('updatedPartyCoord'))

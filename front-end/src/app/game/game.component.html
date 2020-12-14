@@ -1,4 +1,4 @@
-<div style="float: right">{{time}}</div>
+<div style="float: right; color: {{timeColor}};">{{time}}</div>
 <mat-tab-group style="clear: both"  [selectedIndex]="selectedIndex">
   <mat-tab class="navNumbers" *ngFor="let hole of course.holes; let h = index;" label="#{{hole.hole_number}}">
     <img src="/assets/courseImages/{{game.course_id}}_{{hole.hole_number}}.png" alt="Hole Layout" class="holeMap"/>

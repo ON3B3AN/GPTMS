@@ -14,10 +14,13 @@ export class ProfileComponent implements OnInit {
   userForm: FormGroup;
   user: User;
 
-  constructor(private authService: AuthService, private userService: UserService, private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private userService: UserService, private formBuilder: FormBuilder) {
+    this.authService.currentUser.subscribe(u => {
+      this.user = u;
+    });
+  }
 
   ngOnInit(): void {
-    this.user = this.authService.currentUser;
     this.userForm  =  this.formBuilder.group({
       user_id: [this.user.user_id],
       first_name: [this.user.first_name, Validators.required],
