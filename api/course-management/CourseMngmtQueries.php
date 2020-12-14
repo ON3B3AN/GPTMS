@@ -215,14 +215,13 @@ function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handi
 
 
 
-//We need to switch the update to an insert since we're doing kill and fill
-//needs to update based on course id and hole number
-function updateTees($distance_to_pin, $tee_name, $tee_id){
+// Kill-and-Fill tees. hole_id is based on course id and hole number
+function insertTees($distance_to_pin, $tee_name, $course_id, $hole_number){
     global $db;
-    $query = 'UPDATE tee SET distance_to_pin = ?, tee_name = ? WHERE tee_id = ?';
+    $query = 'INSERT INTO tee (`Hole_hole_id`, `distance_to_pin`, `tee_name`) VALUES ((SELECT hole_id FROM hole WHERE Course_course_id = ? AND hole_number = ?), ?, ?)';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sss', $distance_to_pin, $tee_name, $tee_id);
+        $statement->bind_param('sssss', $distance_to_pin, $tee_name, $course_id, $hole_number);
         $statement->execute();
         $num_rows = $statement->affected_rows;  
         $statement->close();
