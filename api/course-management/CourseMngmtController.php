@@ -495,7 +495,7 @@ switch ($function) {
                         $coordinates[] = "[ ".$perimeter_coordinates[0][$c][0].", ".$perimeter_coordinates[0][$c][1]." ]";
                     }
                     $perimeter = ("{ \"type\": \"".$perimeter_type."\", \"coordinates\": [ [ ".implode(", ", $coordinates)." ] ] }");
-                    echo($perimeter."\n");
+                    
 //                    $hint = $input->data->$hole->hint;
                     $hole_result += updateHoles($mens_par, $womens_par, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $course_id);
 
