@@ -309,14 +309,19 @@ switch ($function) {
         $user_emails = explode(",", $email);
         
         // Check if the user exists by email
+        $msg = array();
+        $error_count = 1;
         foreach ($user_emails as &$user_email) {
             $user_result = selectUserByEmail($user_email);
             
+            // Add error message if email isn't valid
             if ($user_result == NULL) {
                 header('Accept: application/json');
                 http_response_code(404);
-                $msg["message"] = "Error, user: ".$user_email." DNE";
-                echo json_encode($msg);
+                $error = "User email: ".$user_email." DNE";
+                $msg["error ".$error_count] = $error;
+                $error_count += 1;
+//                array_push($msg, $error);
             }
             else {
                 // Get party id from SQL query
@@ -332,10 +337,10 @@ switch ($function) {
                 }
             }
         }
-        
+
         // Returns party id if all emails are valid
         if (in_array(-1, $result_array)) {
-            break;
+            echo json_encode($msg);
         }
         else {
             http_response_code(200);
@@ -425,7 +430,6 @@ switch ($function) {
         unset($party_info["Course_course_id"]);
         $course_info = selectCourse($course_id);
         $hole_info = selectRangeOfHoles($course_id, $start_hole, $end_hole);
-        //unset($hole_info["Course_course_id"]);
         $tee_info = selectTees($course_id);
         
         foreach ($hole_info as &$hole) {
@@ -441,7 +445,7 @@ switch ($function) {
         if ($result_array != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
-            //print_r($result_array);
+
             // Return game round data as JSON array
             echo json_encode($result_array);
         } 
