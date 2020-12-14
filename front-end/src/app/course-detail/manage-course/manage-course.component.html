@@ -16,7 +16,7 @@
         <ng-container *ngFor="let hole of courseForm.get('holes')['controls'] let h = index" [formGroupName]="h">
           <ng-container formArrayName="tees">
             <td [formGroupName]="t">
-              <input type="number" formControlName="distance" min="1" max="1999" />
+              <input type="number" formControlName="distance_to_pin" min="1" max="1999" />
             </td>
           </ng-container>
         </ng-container>
@@ -24,31 +24,31 @@
       <tr>
         <th>Men's Par</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <input type="number"  formControlName="par_men" min="3" max="7">
+          <input type="number"  formControlName="mens_par" min="3" max="7">
         </td>
       </tr>
       <tr>
         <th>Ladies' Par</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <input type="number"  formControlName="par_ladies" min="3" max="7">
+          <input type="number"  formControlName="womens_par" min="3" max="7">
         </td>
       </tr>
       <tr>
         <th>Men's Handicap</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <input type="number"  formControlName="handicap_men" min="1" max="{{courseForm.get('holes')['controls'].length}}">
+          <input type="number"  formControlName="mens_handicap" min="1" max="{{courseForm.get('holes')['controls'].length}}">
         </td>
       </tr>
       <tr>
         <th>Ladies Handicap</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <input type="number"  formControlName="handicap_ladies" min="1" max="{{courseForm.get('holes')['controls'].length}}">
+          <input type="number"  formControlName="womens_handicap" min="1" max="{{courseForm.get('holes')['controls'].length}}">
         </td>
       </tr>
       <tr>
         <th>Mapped</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
-          <span *ngIf="hole.get('geo').value !== ''; else nogeo">Yes</span>
+          <span *ngIf="hole.get('perimeter').value !== ''; else nogeo">Yes</span>
           <ng-template #nogeo>No</ng-template>
         </td>
       </tr>
@@ -60,3 +60,4 @@
 <div class="map-container">
   <div id="cMap"></div>
 </div>
+<pre>{{submission | json}}</pre>
