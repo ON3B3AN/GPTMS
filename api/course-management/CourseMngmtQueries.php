@@ -213,6 +213,10 @@ function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handi
     }
 }
 
+
+
+//We need to switch the update to an insert since we're doing kill and fill
+//needs to update based on course id and hole number
 function updateTees($distance_to_pin, $tee_name, $tee_id){
     global $db;
     $query = 'UPDATE tee SET distance_to_pin = ?, tee_name = ? WHERE tee_id = ?';
@@ -228,3 +232,36 @@ function updateTees($distance_to_pin, $tee_name, $tee_id){
         exit;
     }
 }
+
+function deleteHoles($course_id, $hole_number) {
+    global $db;
+    $query = 'DELETE FROM hole WHERE Course_course_number = ? AND hole_number = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('ss', $course_id, $hole_number);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function deleteTees($course_id, $hole_number) {
+    global $db;
+    $query = 'DELETE tee FROM tee JOIN hole ON tee.Hole_hole_id = hole.hole_id WHERE tee.Course_course_id hole_number = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('ss', $course_id, $hole_number);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+

@@ -470,6 +470,11 @@ switch ($function) {
         $hole_result = 0;
         $tee_result = 0;
         $course_id = $collectionURI;
+        
+        //array of numbers 1-18. Used to keep track of which holes were
+        //deleted on the front end, so that means they are to be deleted
+        //from the database.
+        $holesToDelete = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
         // Iterate through holes
         $i = 1;
         while ($i < 30) {
@@ -477,7 +482,6 @@ switch ($function) {
             if ($input->data->$hole->hole_number != "") {
                 try {
                     // Get JSON data 
-//                    $course_id = $collectionURI;
                     $hole_number = $input->data->$hole->hole_number;
                     $mens_par = $input->data->$hole->mens_par;
                     $womens_par = $input->data->$hole->womens_par;
@@ -494,13 +498,24 @@ switch ($function) {
                     $hint = $input->data->$hole->hint;
                     $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id);
 
+                    //removes a hole number from the array if that number was not
+                    //deleted on the front end
+                    for ($j = 0; $j < sizeof($holesToDelete); $j++) {
+                        if ($hole_number == $holesToDelete[$j]){
+                            unset($holesToDelete[$j]);
+                        }
+                    }
+                    
+                    //kill part for the kill and fill. Kills all tees for a given hole.
+                    //Fill part not implemented yet.
+                    deleteTees($course_id, $hole_number);
+                    
                     // Iterate through tees
                     $x = 1;
                     while ($x < 8) {
                         $tee = "tee".strval($x);
                         try {
-                            // Get JSON data 
-                            $tee_id = $input->data->$hole->tees->$tee->tee_id;
+                            // Get JSON data
                             $distance_to_pin = $input->data->$hole->tees->$tee->distance_to_pin;
                             $tee_name = $input->data->$hole->tees->$tee->tee_name;
                             $tee_result += updateTees($distance_to_pin, $tee_name, $tee_id);
@@ -515,6 +530,16 @@ switch ($function) {
             }
             $i += 1;
         }
+        
+        //if there is any holes that were deleted on front end
+        //this finds which ones by hole number and course number and deletes them
+        if(sizeof($holesToDelete) > 0){
+            for ($k = 0; $k < sizeof($holesToDelete); $k++){
+                deleteHoles($course_number, $holesToDelete[$k]);
+            }
+        }
+        
+        
         $result = $hole_result + $tee_result;
         
         if ($result >= 1) {
