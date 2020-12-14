@@ -466,6 +466,7 @@ switch ($function) {
             echo json_encode($msg);
         }
         break;
+        // Updates Holes and Tees data
         case "updateHoles":
         $hole_result = 0;
         $tee_result = 0;
@@ -518,7 +519,7 @@ switch ($function) {
                             // Get JSON data
                             $distance_to_pin = $input->data->$hole->tees->$tee->distance_to_pin;
                             $tee_name = $input->data->$hole->tees->$tee->tee_name;
-                            $tee_result += updateTees($distance_to_pin, $tee_name, $tee_id);
+                            $tee_result += insertTees($distance_to_pin, $tee_name, $course_id, $hole_number);
                         } catch (Exception $ex) {
                             continue;
                         }
