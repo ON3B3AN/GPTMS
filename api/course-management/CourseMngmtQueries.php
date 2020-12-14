@@ -118,6 +118,7 @@ function selectRangeOfHoles($course_id, $start_hole, $end_hole) {
         $res = array();
         while($row = $result->fetch_assoc()){
             unset($row["Course_course_id"]);
+            unset($row["perimeter"]);
             array_push($res, $row);
         }
         $statement->close();
