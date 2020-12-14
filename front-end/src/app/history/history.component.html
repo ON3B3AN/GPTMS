@@ -1,13 +1,13 @@
-<h2 class="h2" style="text-align:center">Player History</h2>
+<h2 style="text-align:center">Player History</h2>
 
 <div *ngFor="let play of playerHistory">
-  <div class="round-info" style="float: right">{{play.date_played}}<br />{{play.tot_time}}</div>
-  <h4 class="course">{{play.course_name}}</h4>
+  <div style="float: right">{{play.date_played}}<br />{{play.tot_time}}</div>
+  <h4>{{play.course_name}}</h4>
   <div class="table-responsive">
-    <table class="table table-sm table-bordered">
-      <thead >
-      <tr class="table-success">
-        <th>Hole:</th>
+    <table class="table table-striped">
+      <thead class="thead-dark">
+      <tr>
+        <th>Hole</th>
         <th *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_number}}</th>
         <th *ngIf="play.front_nine > 0">Out</th>
         <th *ngFor="let hole of play['score'] | slice:9">{{hole.hole_number}}</th>
@@ -16,19 +16,25 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="table-secondary">
-        <th>Stroke:</th>
+      <tr>
+        <th>Strokes</th>
         <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.stroke}}</td>
         <td *ngIf="play.front_nine > 0">{{play.front_nine}}</td>
         <td *ngFor="let hole of play['score'] | slice:9">{{hole.stroke}}</td>
         <td *ngIf="play.back_nine > 0">{{play.back_nine}}</td>
         <td>{{play.total_score}}</td>
-      </tr>
-      <tr class="table-success">
-        <th>Par:</th>
-        <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.hole_par}}</td>
+      </tr><tr>
+        <th>Men's Par</th>
+        <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.mens_par}}</td>
         <td *ngIf="play.front_nine > 0"></td>
-        <td *ngFor="let hole of play['score'] | slice:9">{{hole.hole_par}}</td>
+        <td *ngFor="let hole of play['score'] | slice:9">{{hole.mens_par}}</td>
+        <td *ngIf="play.back_nine > 0"></td>
+        <td></td>
+      </tr><tr>
+        <th>Ladies' Par</th>
+        <td *ngFor="let hole of play['score'] | slice:0:9">{{hole.womens_par}}</td>
+        <td *ngIf="play.front_nine > 0"></td>
+        <td *ngFor="let hole of play['score'] | slice:9">{{hole.womens_par}}</td>
         <td *ngIf="play.back_nine > 0"></td>
         <td></td>
       </tr>

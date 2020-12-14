@@ -1,6 +1,7 @@
 <div class="map-container">
   <div id="oMap"></div>
 </div>
+<br />
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container [matColumnDef]="'label'" sticky="true">
     <th mat-cell *matCellDef="let row"> {{row['label']}} </th>

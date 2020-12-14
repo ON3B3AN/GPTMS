@@ -1,4 +1,4 @@
-import { Component, OnInit, Host } from '@angular/core';
+import {Component, OnInit, Host, AfterViewInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import * as L from 'leaflet';
 import { Course } from 'src/app/course';
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './course-overview.component.html',
   styleUrls: ['./course-overview.component.sass']
 })
-export class CourseOverviewComponent implements OnInit {
+export class CourseOverviewComponent implements OnInit, AfterViewInit {
   course: Course;
   id: number;
   private map;
@@ -25,22 +25,22 @@ export class CourseOverviewComponent implements OnInit {
   };
 
   dataSource: MatTableDataSource<any>;
-  labels = ['Hole', 'Distance', 'Men\'s Par', 'Ladies\' Par'];
+  labels = ['Hole', 'Distance', 'Men\'s Par', 'Ladies\' Par', 'Men\'s Handicap', 'Ladies\' Handicap'];
   tees = [];
   dataColumns = [
     'hole_number',
     'tees',
     'mens_par',
-    'womens_par'
+    'womens_par',
+    'mens_handicap',
+    'womens_handicap'
   ];
   displayedColumns = [];
 
   constructor(private courseService: CourseService, private route: ActivatedRoute) {  }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.id = +params.id;
-    });
+    this.id = parseInt(this.route.parent.snapshot.paramMap.get('id'));
     this.courseService.getCourse(this.id)
       .subscribe(data => {
         this.course = data;
@@ -60,14 +60,15 @@ export class CourseOverviewComponent implements OnInit {
     console.log(this.course);
     this.geocodeAddress(this.course.address).then(json => {
       const marker = L.marker([json[0].lat, json[0].lon], this.icon).addTo(this.map);
-      this.map.panTo(marker.getLatLng());
+      this.map.setView(marker.getLatLng(), 14);
     });
   }
 
   private initMap(): void {
     this.map = L.map('oMap', {
-      center: [ 42.42283075, -83.12516904 ],
-      zoom: 14
+      center: [0, 0],
+      zoom: 2,
+      scrollWheelZoom: false
     });
   }
 

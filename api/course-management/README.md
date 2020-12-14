@@ -121,14 +121,13 @@
 #### Example Input: 
     {"data":{
         "hole1":{
-            "hole_id": 1,
             "hole_number": 1,
             "mens_par": 5,
             "womens_par": 5,
             "mens_handicap": 9,
             "womens_handicap": 11,
             "avg_pop": "12:00:00",
-            "perimeter":"1 1, 3 3, 3 5, 1 1",
+            "perimeter":{ "type": "Polygon", "coordinates": [ [ [ 1.0, 1.0 ], [ 3.0, 3.0 ], [ 3.0, 5.0 ], [ 1.0, 1.0 ] ] ] },
             "hint": "hello",
             "tees":{
                 "tee1":{
@@ -144,14 +143,13 @@
             }
         },
         "hole2":{
-                "hole_id": 2,
                 "hole_number": 2,
                 "mens_par": 5,
                 "womens_par": 6,
                 "mens_handicap": 9,
                 "womens_handicap": 11,
                 "avg_pop": "12:00:00",
-                "perimeter":"1 1, 3 3, 3 5, 1 1",
+                "perimeter":{ "type": "Polygon", "coordinates": [ [ [ 1.0, 1.0 ], [ 3.0, 3.0 ], [ 3.0, 5.0 ], [ 1.0, 1.0 ] ] ] },
                 "hint": "hello",
                 "tees":{
                     "tee1":{

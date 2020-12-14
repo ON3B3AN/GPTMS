@@ -179,6 +179,8 @@ function selectCourseRecords($course_id){
                     'hole_number' => $row['hole_number'],
                     'mens_par' => $row['mens_par'],
                     'womens_par' => $row['womens_par'],
+                    'mens_handicap' => $row['mens_handicap'],
+                    'womens_handicap' => $row['womens_handicap'],
                     'perimeter' => $row['perimeter'],
                     'avg_pop' => $row['avg_pop'],
                     'tees' => array(array('tee_id' => $row['tee_id'], 'tee_name' => $row['tee_name'], 'distance_to_pin' => $row['distance_to_pin']))
@@ -197,7 +199,7 @@ function selectCourseRecords($course_id){
 
 function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id){
     global $db;
-    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, mens_handicap = ?, womens_handicap = ?, perimeter = ST_GeomFromGeoJSON(?), hint = ? WHERE course_id = ? AND hole_number = ?';
+    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, avg_pop = ?, mens_handicap = ?, womens_handicap = ?, perimeter = ST_GeomFromGeoJSON(?), hint = ? WHERE Course_course_id = ? AND hole_number = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('sssssssss', $mens_par, $womens_par, $avg_pop, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id, $hole_number);
@@ -211,6 +213,10 @@ function updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handi
     }
 }
 
+
+
+//We need to switch the update to an insert since we're doing kill and fill
+//needs to update based on course id and hole number
 function updateTees($distance_to_pin, $tee_name, $tee_id){
     global $db;
     $query = 'UPDATE tee SET distance_to_pin = ?, tee_name = ? WHERE tee_id = ?';
@@ -226,3 +232,36 @@ function updateTees($distance_to_pin, $tee_name, $tee_id){
         exit;
     }
 }
+
+function deleteHoles($course_id, $hole_number) {
+    global $db;
+    $query = 'DELETE FROM hole WHERE Course_course_number = ? AND hole_number = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('ss', $course_id, $hole_number);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function deleteTees($course_id, $hole_number) {
+    global $db;
+    $query = 'DELETE tee FROM tee JOIN hole ON tee.Hole_hole_id = hole.hole_id WHERE tee.Course_course_id hole_number = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('ss', $course_id, $hole_number);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;  
+        $statement->close();
+     
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
