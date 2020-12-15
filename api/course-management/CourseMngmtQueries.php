@@ -154,8 +154,8 @@ function selectCourseRecords($course_id){
     global $db;
     $query = 'SELECT course_id, course_name, address, phone, hole_id, mens_handicap, womens_handicap, hole_number, mens_par, womens_par, ST_AsGeoJSON(perimeter) AS perimeter, avg_pop, tee_id, tee_name, distance_to_pin
                 from course
-                join hole on course_id = Course_course_id
-                join tee on hole_id = Hole_hole_id
+                LEFT JOIN hole on course_id = Course_course_id
+                LEFT JOIN tee on hole_id = Hole_hole_id
                 where course_id = ?';
     try {
         $statement = $db->prepare($query);
