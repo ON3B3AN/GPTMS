@@ -116,7 +116,7 @@
     * Body (app/json): {"message":"501: Error, service not recognized"}
 
 ## [UPDATE HOLES]
-### URI [GET] : http://localhost/course-management/courses/holes
+### URI [PUT] : http://localhost/course-management/courses/1/holes
 * This URI requests the "course-management" document, “courses” collection, "holes" controller. This request must include relevant data.
 #### Example Input: 
     {"data":{

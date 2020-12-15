@@ -251,7 +251,7 @@ function deleteHoles($course_id, $hole_number) {
 
 function deleteTees($course_id, $hole_number) {
     global $db;
-    $query = 'DELETE tee FROM tee JOIN hole ON tee.Hole_hole_id = hole.hole_id WHERE tee.Course_course_id hole_number = ?';
+    $query = 'DELETE tee FROM tee JOIN hole ON tee.Hole_hole_id = hole.hole_id WHERE hole.Course_course_id = ? AND hole.hole_number = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('ss', $course_id, $hole_number);

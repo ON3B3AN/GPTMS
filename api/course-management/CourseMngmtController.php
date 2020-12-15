@@ -507,8 +507,7 @@ switch ($function) {
                         }
                     }
                     
-                    //kill part for the kill and fill. Kills all tees for a given hole.
-                    //Fill part not implemented yet.
+                    //kill part for the kill and fill. Kills all tees for a given hole
                     deleteTees($course_id, $hole_number);
                     
                     // Iterate through tees
