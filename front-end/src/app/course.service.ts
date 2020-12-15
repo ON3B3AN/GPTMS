@@ -67,7 +67,7 @@ export class CourseService {
 
   updateCourse(course: Course): Observable<any> {
     const url = `${this.courseUrl}/${course.course_id}`;
-    return this.http.post(url, {data: course}, this.httpOptions).pipe(
+    return this.http.put(url, {data: course}, this.httpOptions).pipe(
       tap(_ => console.log(`updated course id=${course.course_id}`)),
       catchError(this.handleError<any>('updateCourse'))
     );
