@@ -9,7 +9,7 @@ import {Course} from "../../course";
 })
 export class ManageCoursesComponent implements OnInit {
   courses: Course[];
-  selectedCourse: number;
+  selectedCourse: Course;
   showEditor = false;
 
   constructor(private courseService: CourseService) { }
@@ -20,14 +20,18 @@ export class ManageCoursesComponent implements OnInit {
   }
 
   editCourse(id?: number): void {
-    this.selectedCourse = (id) ? id : null;
+    this.selectedCourse = (id) ? this.courses.filter(c => c.course_id === id)[0] : new Course();
+    console.log(this.selectedCourse);
     this.showEditor = true;
   }
 
   deleteCourse(id): void {}
 
-  closeModal(course: Course) {
+  closeModal(course: Course): void {
     this.showEditor = false;
-    if (course) console.log("WOOT!");
+    if (course) {
+      this.courseService.getCourses()
+        .subscribe(data => this.courses = data);
+    }
   }
 }

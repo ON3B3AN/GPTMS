@@ -244,7 +244,7 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
   }
 
   updateCourse(): void {
-    const holes = this.courseForm.value.holes;
+    const holes = JSON.parse(JSON.stringify(this.courseForm.value.holes));
     const newHoles = {};
     for (const [i, hole] of holes.entries()) {
       const tees = {};
