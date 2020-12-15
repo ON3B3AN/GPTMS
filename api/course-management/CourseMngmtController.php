@@ -495,7 +495,7 @@ switch ($function) {
                     }
                     $perimeter = ("{ \"type\": \"".$perimeter_type."\", \"coordinates\": [ [ ".implode(", ", $coordinates)." ] ] }");
                     $hole_result += updateHoles($mens_par, $womens_par, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $course_id);
-                    
+                    print_r($hole_result);
                     //removes a hole number from the array if that number was not
                     //deleted on the front end
                     for ($j = 0; $j < sizeof($holesToDelete); $j++) {

@@ -200,10 +200,17 @@ function selectCourseRecords($course_id){
 
 function updateHoles($mens_par, $womens_par, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $course_id){
     global $db;
-    $query = 'UPDATE hole SET mens_par = ?, womens_par = ?, mens_handicap = ?, womens_handicap = ?, perimeter = ST_GeomFromGeoJSON(?) WHERE Course_course_id = ? AND hole_number = ?';
+    $query = "INSERT INTO hole (`Course_course_id`,
+        `hole_number`,
+        `mens_par`,
+        `womens_par`,
+        `avg_pop`,
+        `mens_handicap`,
+        `womens_handicap`,
+        `hint`, `perimeter`) VALUES (?, ?, ?, ?, '00:05:00', ?, ?, 'hello', ST_GeomFromGeoJSON(?)) ON DUPLICATE KEY UPDATE mens_par = VALUES(mens_par), womens_par = VALUES(womens_par), mens_handicap = VALUES(mens_handicap), womens_handicap = VALUES(womens_handicap), perimeter = VALUES(perimeter)";
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sssssss', $mens_par, $womens_par, $mens_handicap, $womens_handicap, $perimeter, $course_id, $hole_number);
+        $statement->bind_param('sssssss', $course_id, $hole_number, $mens_par, $womens_par, $mens_handicap, $womens_handicap, $perimeter);
         $statement->execute();
         $num_rows = $statement->affected_rows;
         $statement->close();
