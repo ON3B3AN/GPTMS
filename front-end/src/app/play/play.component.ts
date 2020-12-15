@@ -79,6 +79,10 @@ export class PlayComponent implements OnInit {
     });
   }
 
+  back(): void {
+    window.history.back();
+  }
+
 }
 
 

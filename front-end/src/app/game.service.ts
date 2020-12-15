@@ -77,12 +77,12 @@ export class GameService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      if (typeof error.error.message === 'string') {
-        this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.message});
-      } else {
+      if (Array.isArray(error.error.message)) {
         for (const msg of error.error.message) {
           this.messageService.add({severity: 'error', summary: 'Error', detail: msg});
         }
+      } else {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.message});
       }
 
       // TODO: send the error to remote logging infrastructure
