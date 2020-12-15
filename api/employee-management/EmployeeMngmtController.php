@@ -66,7 +66,7 @@ $url = explode('/', trim(filter_input(INPUT_SERVER, 'REQUEST_URI'),'/'));
  * -------- Resource Options --------
  * Document => employee-management
  * Collection => employees
- * Collection URI => emp_id
+ * Collection URI => user_id
  * Store => N/A
  * Store URI => N/A
  * Controller => N/A
@@ -308,10 +308,10 @@ switch ($function) {
         $security_lvl = $input->data->security_lvl;
         
         // Assign collection URI to emp_id
-        $emp_id = $collectionURI;
+        $user_id = $collectionURI;
 
         // Get the updated row count from the SQL query
-        $result = updateEmployee($course_id, $security_lvl, $emp_id);
+        $result = updateEmployee($course_id, $security_lvl, $user_id);
 
         if ($result >= 1) {
             http_response_code(200);

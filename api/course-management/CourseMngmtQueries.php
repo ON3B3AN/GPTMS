@@ -217,14 +217,14 @@ function updateHoles($mens_par, $womens_par, $hole_number, $mens_handicap, $wome
 
 
 // Kill-and-Fill tees. hole_id is based on course id and hole number
-function insertTees($distance_to_pin, $tee_name, $course_id, $hole_number){
+function insertTees($course_id, $hole_number, $distance_to_pin, $tee_name){
     global $db;
     $query = 'INSERT INTO tee (`Hole_hole_id`, `distance_to_pin`, `tee_name`) VALUES ((SELECT hole_id FROM hole WHERE Course_course_id = ? AND hole_number = ?), ?, ?)';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sssss', $distance_to_pin, $tee_name, $course_id, $hole_number);
+        $statement->bind_param('ssss', $course_id, $hole_number, $distance_to_pin, $tee_name);
         $statement->execute();
-        $num_rows = $statement->affected_rows;  
+        $num_rows = $statement->affected_rows;
         $statement->close();
      
         return $num_rows;
