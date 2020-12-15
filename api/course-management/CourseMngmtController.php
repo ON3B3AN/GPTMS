@@ -318,7 +318,7 @@ switch ($function) {
         // Get JSON data
         $course_name = $input->data->course_name;
         $address = $input->data->address;
-        $phone = $input->data->phone_number;
+        $phone = $input->data->phone;
             
         // Assign collection URI to course_id
         $course_id = $collectionURI;
@@ -348,7 +348,7 @@ switch ($function) {
         // Get JSON data
         $course_name = $input->data->course_name;
         $address = $input->data->address;
-        $phone = $input->data->phone_number;
+        $phone = $input->data->phone;
         
         // Get the last inserted row number from SQL query
         $result = insertCourse($course_name, $address, $phone);
