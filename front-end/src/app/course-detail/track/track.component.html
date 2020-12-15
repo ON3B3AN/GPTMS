@@ -4,13 +4,13 @@
 <ng-template #noGeo>
   <div class="grid-container" #noGeo>
     <mat-grid-list cols="{{columns | async}}" rowHeight="200px">
-      <mat-grid-tile *ngFor="let hole of course.holes" [colspan]="1" [rowspan]="1">
-        <mat-card class="dashboard-card">
+      <mat-grid-tile *ngFor="let card of cards" [colspan]="1" [rowspan]="1">
+        <mat-card class="dashboard-card" style="background-color: {{card.color}}">
           <mat-card-header>
-            <mat-card-title>Hole {{hole.hole_number}}</mat-card-title>
+            <mat-card-title>Hole {{card.title}}</mat-card-title>
           </mat-card-header>
           <mat-card-content class="dashboard-card-content">
-            <p>Active parties: 0</p>
+            <p>Active parties: <span *ngIf="card.title == 1; else noA">1</span><ng-template #noA>0</ng-template></p>
           </mat-card-content>
         </mat-card>
       </mat-grid-tile>

@@ -26,7 +26,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
     })
   );
   cards = [];
-  colors = ['grey', 'green', 'orange', 'red'];
+  colors = [];
 
   constructor(private courseService: CourseService, private route: ActivatedRoute,
               private breakpointObserver: BreakpointObserver) { }
@@ -36,6 +36,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
     this.courseService.getCourse(this.id)
       .subscribe(data => {
         this.course = data;
+        this.colorCourse(data.course_id);
         this.course.holes.map((item) => {
           if (item.perimeter === null) {
             this.dispMap = false;
@@ -56,7 +57,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
               id: hole.hole_number,
               weight: 1,
               fillOpacity: 0.7,
-              color: 'grey',
+              color: this.colors[hole.hole_number - 1] || 'grey',
               dashArray: '3'
             }).bindTooltip('Hole ' + hole.hole_number).addTo(this.courseMap);
             i++;
@@ -64,7 +65,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
           this.map.fitBounds(this.courseMap.getBounds());
         } else {
           this.course.holes.forEach(hole => {
-            const card = {title: hole.hole_number};
+            const card = {title: hole.hole_number, color: this.colors[hole.hole_number - 1] || 'grey'};
             this.cards.push(card);
           });
         }
@@ -80,4 +81,11 @@ export class TrackComponent implements OnInit, AfterViewInit {
     });
   }
 
+  colorCourse(id) {
+    if (id === 1) {
+      this.colors = ['red', 'green', 'green', 'orange', 'green', 'grey', 'green'];
+    } else if (id === 2) {
+      this.colors = ['green'];
+    }
+  }
 }
