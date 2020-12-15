@@ -201,7 +201,75 @@ function selectUserByEmail($email) {
         $result = $statement->get_result();
         $res = $result->fetch_assoc();
         $statement->close();
-        
+
+        return $res;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function addRole($course_id, $security_lvl, $user_id){
+    global $db;
+    $query = 'INSERT INTO employee (Course_course_id, security_lvl, User_user_id) VALUES (?, ?, ?)';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sss', $course_id, $security_lvl, $user_id);
+        $statement->execute();
+        $row_num = $statement->insert_id;
+        $statement->close();
+
+        return $row_num;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function updateRole($course_id, $security_lvl, $user_id) {
+    global $db;
+    $query = 'UPDATE employee SET security_lvl = ? WHERE User_user_id = ? AND Course_course_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('sss', $security_lvl, $user_id, $course_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;
+        $statement->close();
+
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function deleteRole($course_id, $user_id) {
+    global $db;
+    $query = 'DELETE FROM employee WHERE Course_course_id = ? AND User_user_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('ss', $course_id, $user_id);
+        $statement->execute();
+        $num_rows = $statement->affected_rows;
+        $statement->close();
+
+        return $num_rows;
+    } catch (Exception $ex) {
+        exit;
+    }
+}
+
+function selectUserRoles($user_id) {
+    global $db;
+    $query = 'SELECT * FROM employee WHERE User_user_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('s', $user_id);
+        $statement->execute();
+        $result = $statement->get_result();
+        $res = array();
+        while($row = $result->fetch_assoc()){
+            array_push($res, $row);
+        }
+        $statement->close();
+
         return $res;
     } catch (Exception $ex) {
         exit;

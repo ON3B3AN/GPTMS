@@ -59,16 +59,16 @@ export class CourseService {
   /**** Saving ****/
 
   addCourse(course: Course): Observable<Course> {
-    return this.http.post<Course>(this.courseUrl + '/', {data: course}, this.httpOptions).pipe(
-      tap((newCourse: Course) => console.log(`added course w/ id=${newCourse.course_id}`)),
+    return this.http.post<any>(this.courseUrl + '/', {data: course}, this.httpOptions).pipe(
+      tap((resp) => this.messageService.add({severity: 'success', summary: 'Success', detail: resp.message})),
       catchError(this.handleError<Course>('addCourse'))
     );
   }
 
   updateCourse(course: Course): Observable<any> {
     const url = `${this.courseUrl}/${course.course_id}`;
-    return this.http.put(url, {data: course}, this.httpOptions).pipe(
-      tap(_ => console.log(`updated course id=${course.course_id}`)),
+    return this.http.put<any>(url, {data: course}, this.httpOptions).pipe(
+      tap((resp) => this.messageService.add({severity: 'success', summary: 'Success', detail: resp.message})),
       catchError(this.handleError<any>('updateCourse'))
     );
   }
@@ -77,7 +77,7 @@ export class CourseService {
     const url = `${this.courseUrl}/${courseId}/holes`;
     return this.http.put<any>(url, {data: holes}, this.httpOptions)
       .pipe(
-        tap(_ => console.log(`updated holes for course id=${courseId}\``)),
+        tap((resp) => this.messageService.add({severity: 'success', summary: 'Success', detail: resp.message})),
         catchError(this.handleError<Hole[]>(`updateHoles, course id=${courseId}`))
       );
   }

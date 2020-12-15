@@ -5,11 +5,17 @@ export class User {
   phone: string;
   email: string;
   password?: string;
-  role?: any;
+  role?: Role;
   constructor() {
     this.first_name = '';
     this.last_name = '';
     this.phone = '';
     this.email = '';
   }
+}
+
+export interface Role {
+  user_id?: number;
+  course_id: number;
+  security_lvl: number;
 }

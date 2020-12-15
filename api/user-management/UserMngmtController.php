@@ -231,6 +231,10 @@ if ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "POST") {
     elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "signup";
     }
+    // GPTMS/api/user-management/users/1/roles
+    elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "roles" && $storeURI == NULL) {
+        $function = "addRole";
+    }
     else {
         $function = "error";
     }
@@ -244,6 +248,10 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI == NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "selectAllUsers";
     }
+    // GPTMS/api/user-management/users/1/roles
+    elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "roles" && $storeURI == NULL) {
+        $function = "selectUserRoles";
+    }
     else {
         $function = "error";
     }
@@ -252,6 +260,10 @@ elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "PUT") {
     // GPTMS/api/user-management/users/1
     if ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "updateUser";
+    }
+    // GPTMS/api/user-management/users/1/roles
+    elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "roles" && $storeURI == NULL) {
+        $function = "updateRole";
     }
     else {
         $function = "error";
@@ -265,6 +277,15 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
     // GPTMS/api/user-management/users/1
     elseif ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == NULL && $storeURI == NULL) {
         $function = "deleteProfile";
+    }
+    else {
+        $function = "error";
+    }
+}
+elseif ($exists == TRUE && $_SERVER['REQUEST_METHOD'] == "DELETE") {
+    // GPTMS/api/user-management/users/1/roles
+    if ($document == "user-management" && $collection == "users" && $controller == NULL && $collectionURI != NULL && $filter == NULL && $filterVal == NULL && $store == "roles" && $storeURI == NULL) {
+        $function = "deleteRole";
     }
     else {
         $function = "error";
@@ -469,6 +490,93 @@ switch ($function) {
             http_response_code(404);
             $msg["message"] = http_response_code().": No users found";
             echo json_encode($msg);
+        }
+        break;
+    case "addRole":
+        // Get JSON data
+        $course_id = $input->data->course_id;
+        $security_lvl = $input->data->security_lvl;
+
+        $user_id = $collectionURI;
+
+        // Get the updated row count from the SQL query
+        $result = addRole($course_id, $security_lvl, $user_id);
+
+        if ($result != NULL) {
+            http_response_code(201);
+            $msg["message"] = "Role added to user";
+            echo json_encode($msg);
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            $msg["message"] = "Role not added";
+            echo json_encode($msg);
+        }
+        break;
+    case "updateRole":
+        // Get JSON data
+        $course_id = $input->data->course_id;
+        $security_lvl = $input->data->security_lvl;
+
+        $user_id = $collectionURI;
+
+        // Get the updated row count from the SQL query
+        $result = updateRole($course_id, $security_lvl, $user_id);
+
+        if ($result >= 1) {
+            http_response_code(200);
+            $msg["message"] = "Role updated successfully";
+            echo json_encode($msg);
+        }
+        // No changes were made (Acts as a "Save" function)
+        elseif ($result === 0) {
+            http_response_code(204);
+            $msg["message"] = "No changes made";
+            echo json_encode($msg);
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            $msg["message"] = "Role not updated";
+            echo json_encode($msg);
+        }
+        break;
+    case "deleteRole":
+        // Get JSON data
+        $course_id = $input->data->course_id;
+
+        $user_id = $collectionURI;
+
+        // Get the updated row count from the SQL query
+        $result = deleteRole($course_id, $user_id);
+
+        if ($result >= 1) {
+            http_response_code(200);
+            $msg["message"] = "Role deleted successfully";
+            echo json_encode($msg);
+        }
+        else {
+            http_response_code(404);
+            $msg["message"] = "Role not deleted";
+            echo json_encode($msg);
+        }
+        break;
+    case "selectUserRoles":
+        $user_id = $collectionURI;
+
+        // Get result from SQL query
+        $result = selectUserRoles($user_id);
+
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+
+            // Return user data as JSON array
+            echo json_encode($result);
+        }
+        else {
+            echo json_encode(Array());
         }
         break;
 }

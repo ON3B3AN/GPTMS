@@ -272,3 +272,19 @@ function deleteTees($course_id, $hole_number) {
     }
 }
 
+function selectCourseStaff($course_id) {
+    global $db;
+    $query = 'SELECT * FROM employee WHERE Course_course_id = ?';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bind_param('s', $course_id);
+        $statement->execute();
+        $result = $statement->get_result();
+        $result = $result->fetch_assoc();
+        $statement->close();
+
+        return $result;
+    } catch (Exception $ex) {
+        exit;
+    }
+}

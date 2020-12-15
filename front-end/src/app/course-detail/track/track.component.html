@@ -1,3 +1,19 @@
-<div class="map-container">
+<div class="map-container" *ngIf="dispMap; else noGeo">
   <div id="tMap"></div>
 </div>
+<ng-template #noGeo>
+  <div class="grid-container" #noGeo>
+    <mat-grid-list cols="{{columns | async}}" rowHeight="200px">
+      <mat-grid-tile *ngFor="let hole of course.holes" [colspan]="1" [rowspan]="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>Hole {{hole.hole_number}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <p>Active parties: 0</p>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</ng-template>

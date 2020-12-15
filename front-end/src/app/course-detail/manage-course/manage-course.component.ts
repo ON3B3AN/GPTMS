@@ -42,7 +42,13 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
         this.teeNames = this.course.holes[0].tees.map(a => a.tee_name);
         console.log(this.course);
         this.updateMap();
-        this.map.fitBounds(this.courseMap.getBounds());
+        if (this.course.holes.length < 2) {
+          this.geocodeAddress(this.course.address).then(json => {
+            this.map.setView([json[0].lat, json[0].lon], 14);
+          });
+        } else {
+          this.map.fitBounds(this.courseMap.getBounds());
+        }
       });
   }
 
@@ -255,5 +261,12 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
       newHoles['hole' + (i + 1)] = hole;
     }
     this.courseService.updateHoles(this.course.course_id, newHoles).subscribe();
+  }
+
+  private geocodeAddress(address: string): Promise<any> {
+    const json = fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURI(address)).then(function(response) {
+      return response.json();
+    });
+    return json;
   }
 }

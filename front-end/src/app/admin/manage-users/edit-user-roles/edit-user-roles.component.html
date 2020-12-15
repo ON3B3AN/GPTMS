@@ -1,6 +1,5 @@
 <div class="admodal">
   <h4 style="text-align:center" id="addText">Edit User Roles</h4>
-  <form [formGroup]="editRole" class="form-horizontal">
     <div id=name>
       <h5>{{user.last_name}}, {{user.first_name}}</h5>
     </div>
@@ -11,25 +10,24 @@
           <td>
             <span>{{role.course_name}}</span>
           </td>
-          <td><select name="role-type">
+          <td><select name="role-type" (change)="updateRole(role.Course_course_id, $event)">
             <option value="1" [selected]="(1 === role.security_lvl)">Admin</option>
             <option value="2" [selected]="(2 === role.security_lvl)">Staff</option>
           </select></td>
         </ng-template>
-        <td><button type="button" (click)="cancel()">&#215;</button></td>
+        <td><button type="button" (click)="deleteRole(role.Course_course_id)">&#215;</button></td>
       </tr>
     </table>
     <hr />
     <div>
       <label class="control-label" for="courses">Select a Course:</label>
-      <select name="courses" id="courses">
+      <select name="courses" id="courses" (change)="addRole($event)">
         <option *ngFor="let course of courses"  value="{{course.course_id}}">{{course.course_name}}</option>
       </select>
     </div>
     <button type="button" (click)="ok()">OK</button>
     <button type="button" (click)="cancel()">Cancel</button>
     <br />
-  </form>
 </div>
 <div class="admodal-overlay" id="admodal-overlay">
 </div>

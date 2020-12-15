@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
-import {User} from './user';
+import {Role, User} from './user';
 import {MessageService} from "primeng/api";
 
 @Injectable({
@@ -45,6 +45,23 @@ export class UserService {
       );
   }
 
+  getUserRoles(id: number): Observable<any> {
+    const url = `${this.userUrl}/${id}/roles`;
+    return this.http.get<any[]>(url)
+      .pipe(
+        tap(_ => console.log(`fetched roles for user id=${id}`)),
+        catchError(this.handleError<any>(`getUserRoles id=${id}`))
+      );
+  }
+
+  getEmployees(): Observable<any[]> {
+    return this.http.get<any[]>(this.empUrl)
+      .pipe(
+        tap(_ => console.log(`fetched all employees`)),
+        catchError(this.handleError<any[]>(`getEmployees`))
+      );
+  }
+
   /**** Saving ****/
 
   addUser(user: User) {
@@ -58,24 +75,34 @@ export class UserService {
   updateUser(user: User): Observable<any> {
     const url = `${this.userUrl}/${user.user_id}`;
     return this.http.put<User>(url, {data: user}, this.httpOptions).pipe(
-      tap((newUser: User) => console.log(`updated user w/ id=${user.user_id}`)),
+      tap(_ => console.log(`updated user w/ id=${user.user_id}`)),
       catchError(this.handleError<User>('updatedUser'))
     );
   } // user profile update
 
-  getEmployees(): Observable<any[]> {
-    return this.http.get<any[]>(this.empUrl)
-      .pipe(
-        tap(_ => console.log(`fetched all employees`)),
-        catchError(this.handleError<any[]>(`getEmployees`))
-      );
+  addRole(user_id: number, role: any) {
+    const url = `${this.userUrl}/${user_id}/roles`;
+    return this.http.post<any>(url, {data: role}, this.httpOptions).pipe(
+      tap(_ => console.log(`added role for user id=${user_id} on course id=${role.course_id}`)),
+      catchError(this.handleError<any>('addRole'))
+    );
   }
 
-  addEmployee(emp: any) {
-    console.log(emp);
-    return this.http.post<any>(this.empUrl, {data: emp}, this.httpOptions).pipe(
-      tap((newEmp: any) => console.log(`added employee w/ id=${newEmp.emp_id}`)),
-      catchError(this.handleError<any>('addEmployee'))
+  updateRole(user_id: number, role: Role) {
+    const url = `${this.userUrl}/${user_id}/roles`;
+    return this.http.put<any>(url, {data: role}, this.httpOptions).pipe(
+      tap(_ => console.log(`updated role for user id=${user_id} on course id=${role.course_id}`)),
+      catchError(this.handleError<any>('updateRole'))
+    );
+  }
+
+  deleteRole(user_id: number, course_id: number) {
+    const url = `${this.userUrl}/${user_id}/roles`;
+    const options = {...this.httpOptions};
+    options['body'] = {data: {course_id}};
+    return this.http.delete<any>(url, options).pipe(
+      tap(_ => console.log(`deleted role for user id=${user_id} on course id=${course_id}`)),
+      catchError(this.handleError<any>('updateRole'))
     );
   }
 

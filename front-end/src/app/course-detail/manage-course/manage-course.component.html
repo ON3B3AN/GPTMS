@@ -7,11 +7,11 @@
         <th>Hole</th>
         <td *ngFor="let hole of courseForm.get('holes')['controls']; let h = index" [formGroupName]="h">
           <input type="number" formControlName="hole_number" min="1" max="99" />
-          <button type="button" (click)="removeHole(h)">X</button>
+          <button type="button" (click)="removeHole(h)">&#215;</button>
         </td>
       </tr>
       <tr *ngFor="let teeName of teeNames; let t = index">
-        <th><input type="text" value="{{teeName}}" (change)="updateTee(t,$event)" maxlength="16" /><button type="button" (click)="removeTee(t)">X</button>
+        <th><input type="text" value="{{teeName}}" (change)="updateTee(t,$event)" maxlength="16" /><button type="button" (click)="removeTee(t)">&#215;</button>
         </th>
         <ng-container *ngFor="let hole of courseForm.get('holes')['controls'] let h = index" [formGroupName]="h">
           <ng-container formArrayName="tees">

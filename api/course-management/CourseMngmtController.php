@@ -252,6 +252,10 @@ elseif ($exists == FALSE && $_SERVER['REQUEST_METHOD'] == "GET") {
     elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "records" && $storeURI == NULL) {
         $function = "selectCourseRecords";
     }
+    // GPTMS/api/course-management/courses/1/staff
+    elseif ($document == "course-management" && $collection == "courses" && $collectionURI != NULL && $controller == NULL && $filter == NULL && $filterVal == NULL && $store == "staff" && $storeURI == NULL) {
+        $function = "selectCourseStaff";
+    }
     else {
         $function = "error";
     }
@@ -557,6 +561,27 @@ switch ($function) {
             header('Accept: application/json');
             http_response_code(404);
             $msg["message"] = "Error, holes or tees not updated";
+            echo json_encode($msg);
+        }
+        break;
+    case "selectCourseStaff":
+        // Assign collection URI to course_id
+        $course_id = $collectionURI;
+
+        // Get result from SQL query
+        $result = selectCourseStaff($course_id);
+
+        if ($result != NULL) {
+            header('Content-Type: application/json, charset=utf-8');
+            http_response_code(200);
+
+            // Return course data as JSON array
+            echo json_encode($result);
+        }
+        else {
+            header('Accept: application/json');
+            http_response_code(404);
+            $msg["message"] = "No staff found";
             echo json_encode($msg);
         }
         break;
