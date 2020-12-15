@@ -396,7 +396,7 @@ switch ($function) {
         $emp_id = $collectionURI;
         
         // Get result from SQL query
-        $result = selectEmployee(emp_id);
+        $result = selectEmployee($emp_id);
         
         if ($result != NULL) {
             header('Content-Type: application/json, charset=utf-8');
