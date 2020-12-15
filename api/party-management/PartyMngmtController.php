@@ -318,8 +318,8 @@ switch ($function) {
             if ($user_result == NULL) {
                 header('Accept: application/json');
                 http_response_code(404);
-                $error = "User email: ".$user_email." DNE";
-                $msg["error ".$error_count] = $error;
+                $error = "User email: ".$user_email." does not exist";
+                $msg["message"] = $error;
                 $error_count += 1;
             }
             else {
