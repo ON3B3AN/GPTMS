@@ -488,17 +488,14 @@ switch ($function) {
                     $womens_par = $input->data->$hole->womens_par;
                     $mens_handicap = $input->data->$hole->mens_handicap;
                     $womens_handicap = $input->data->$hole->womens_handicap;
-//                    $avg_pop = $input->data->$hole->avg_pop;
                     $perimeter_type = $input->data->$hole->perimeter->type;
                     $perimeter_coordinates = $input->data->$hole->perimeter->coordinates;
                     for ($c = 0; $c < count($perimeter_coordinates[0]); $c++){
                         $coordinates[] = "[ ".$perimeter_coordinates[0][$c][0].", ".$perimeter_coordinates[0][$c][1]." ]";
                     }
                     $perimeter = ("{ \"type\": \"".$perimeter_type."\", \"coordinates\": [ [ ".implode(", ", $coordinates)." ] ] }");
-                    
-//                    $hint = $input->data->$hole->hint;
                     $hole_result += updateHoles($mens_par, $womens_par, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $course_id);
-                    echo $hole_result;
+                    
                     //removes a hole number from the array if that number was not
                     //deleted on the front end
                     for ($j = 0; $j < sizeof($holesToDelete); $j++) {
@@ -506,6 +503,8 @@ switch ($function) {
                             unset($holesToDelete[$j]);
                         }
                     }
+                    
+                    $holesToDelete = array_values($holesToDelete);
                     
                     //kill part for the kill and fill. Kills all tees for a given hole
                     deleteTees($course_id, $hole_number);
@@ -520,7 +519,6 @@ switch ($function) {
                                 $distance_to_pin = $input->data->$hole->tees->$tee->distance_to_pin;
                                 $tee_name = $input->data->$hole->tees->$tee->tee_name;
                                 $tee_result += insertTees($course_id, $hole_number, $distance_to_pin, $tee_name);
-                                echo $tee_result;
                             } catch (Exception $ex) {
                                 continue;
                             }
@@ -533,7 +531,7 @@ switch ($function) {
             }
             $i += 1;
         }
-        
+
         //if there is any holes that were deleted on front end
         //this finds which ones by hole number and course number and deletes them
         if(sizeof($holesToDelete) > 0){
@@ -542,24 +540,23 @@ switch ($function) {
             }
         }
         
-        echo $hole_result." ".$tee_result;
         $result = $hole_result + $tee_result;
         
         if ($result >= 1) {
             http_response_code(200);
-            $msg["message"] = http_response_code().": Holes and tees updated successfully!";
+            $msg["message"] = "Holes and tees updated successfully!";
             echo json_encode($msg);
         }
         // No changes were made (Acts as a "Save" function)
         elseif ($result == 0) {
             http_response_code(204);
-            $msg["message"] = http_response_code().": No changes made";
+            $msg["message"] = "No changes made";
             echo $msg;
         }
         else {
             header('Accept: application/json');
             http_response_code(404);
-            $msg["message"] = http_response_code().": Error, holes or tees not updated";
+            $msg["message"] = "Error, holes or tees not updated";
             echo json_encode($msg);
         }
         break;

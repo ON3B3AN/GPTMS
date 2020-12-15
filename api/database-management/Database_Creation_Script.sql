@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Hole` (
   CONSTRAINT `fk_Hole_Course1`
     FOREIGN KEY (`Course_course_id`)
     REFERENCES `mydb`.`Course` (`course_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Party` (
   CONSTRAINT `fk_Party_Course1`
     FOREIGN KEY (`Course_course_id`)
     REFERENCES `mydb`.`Course` (`course_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -109,12 +109,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Player` (
   CONSTRAINT `fk_Player_User`
     FOREIGN KEY (`User_user_id`)
     REFERENCES `mydb`.`User` (`user_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Player_Party1`
     FOREIGN KEY (`Party_party_id`)
     REFERENCES `mydb`.`Party` (`party_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -135,12 +135,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Score` (
   CONSTRAINT `fk_Score_Hole1`
     FOREIGN KEY (`Hole_hole_id`)
     REFERENCES `mydb`.`Hole` (`hole_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Score_Player1`
     FOREIGN KEY (`Player_User_user_id` , `Player_Party_party_id`)
     REFERENCES `mydb`.`Player` (`User_user_id` , `Party_party_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -160,12 +160,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Employee` (
   CONSTRAINT `fk_Employee_User1`
     FOREIGN KEY (`User_user_id`)
     REFERENCES `mydb`.`User` (`user_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Employee_Course1`
     FOREIGN KEY (`Course_course_id`)
     REFERENCES `mydb`.`Course` (`course_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Tee` (
   CONSTRAINT `fk_Tee_Hole1`
     FOREIGN KEY (`Hole_hole_id`)
     REFERENCES `mydb`.`Hole` (`hole_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

@@ -235,7 +235,7 @@ function insertTees($course_id, $hole_number, $distance_to_pin, $tee_name){
 
 function deleteHoles($course_id, $hole_number) {
     global $db;
-    $query = 'DELETE FROM hole WHERE Course_course_number = ? AND hole_number = ?';
+    $query = 'DELETE FROM hole WHERE Course_course_id = ? AND hole_number = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('ss', $course_id, $hole_number);

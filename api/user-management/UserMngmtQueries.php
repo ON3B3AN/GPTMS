@@ -68,7 +68,7 @@ function selectAllHistory($user_id) {
                 JOIN score ON hole_id = Hole_hole_id AND party_id = Player_Party_party_id
                 WHERE Player_User_user_id = ?
                 GROUP BY party_id
-                ORDER BY party.date, party.end_time';
+                ORDER BY party.date DESC, party.end_time';
     
     $query2 = 'SELECT SUM(CASE WHEN tee_name = "tee1" THEN distance_to_pin else 0 END) as tee_1,
                 SUM(CASE WHEN tee_name = "tee2" THEN distance_to_pin else 0 END) as tee_2,
@@ -85,7 +85,7 @@ function selectAllHistory($user_id) {
                 JOIN party ON player.Party_party_id = party_id
                 WHERE player.User_user_id = ? AND party_id = ?
                 group by hole_id, party.date, start_time
-                ORDER BY hole_number, party.date, end_time';
+                ORDER BY hole_number, party.date DESC, end_time';
     
     try {
         $statement = $db->prepare($query);

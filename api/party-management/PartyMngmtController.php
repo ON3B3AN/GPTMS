@@ -309,7 +309,7 @@ switch ($function) {
         $user_emails = explode(",", $email);
         
         // Check if the user exists by email
-        $msg = array();
+        $msg["message"] = array();
         $error_count = 1;
         foreach ($user_emails as &$user_email) {
             $user_result = selectUserByEmail($user_email);
@@ -318,8 +318,9 @@ switch ($function) {
             if ($user_result == NULL) {
                 header('Accept: application/json');
                 http_response_code(404);
-                $error = "User email: ".$user_email." DNE";
-                $msg["error ".$error_count] = $error;
+                $error = "User email: ".$user_email." does not exist";
+//                $msg["message"] = $error;
+                array_push($msg["message"], $error);
                 $error_count += 1;
             }
             else {
