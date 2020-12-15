@@ -535,8 +535,9 @@ switch ($function) {
         //if there is any holes that were deleted on front end
         //this finds which ones by hole number and course number and deletes them
         if(sizeof($holesToDelete) > 0){
-            for ($k = 0; $k < sizeof($holesToDelete); $k++){
-                deleteHoles($course_number, $holesToDelete[$k]);
+            for ($j = 0; $j < sizeof($holesToDelete); $j++) {
+//                $holes_deleted = implode(",", $holesToDelete);
+                deleteHoles($course_id, $holesToDelete[$j]);
             }
         }
         
