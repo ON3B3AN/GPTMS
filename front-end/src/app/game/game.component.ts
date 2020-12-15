@@ -165,7 +165,6 @@ export class GameComponent implements OnChanges, OnDestroy {
       navigator.geolocation.clearWatch(this.watchId);
       this.watchId = null;
     }
-    this.timer.unsubscribe();
   }
 
 }
