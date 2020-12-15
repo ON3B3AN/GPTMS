@@ -12,28 +12,10 @@ function login($email, $pwd) {
         $statement->close();
         $user_id = $res["user_id"];
         
-        if(checkEmployee($user_id)){
-            $query2 = 'SELECT user_id, first_name, last_name, email, phone, emp_id, Course_course_id, security_lvl
-                        FROM user
-                        JOIN employee
-                        ON user_id = User_user_id
-                        WHERE user_id = ?';
-            try {
-                $statement2 = $db->prepare($query2);
-                $statement2->bind_param('s', $user_id);
-                $statement2->execute();
-                $result2 = $statement2->get_result();
-                $res2 = $result2->fetch_assoc();
-                $statement2->close();
-                return $res2;
-            } catch (Exception $e) {
-                exit;
-            } 
-            
-        } else {
-            return $res;
-        }
-        
+        $roles = selectUserRoles($user_id);
+        $res["roles"] = $roles;
+
+        return $res;
     } catch (Exception $ex) {
         exit;
     }  
@@ -258,7 +240,7 @@ function deleteRole($course_id, $user_id) {
 
 function selectUserRoles($user_id) {
     global $db;
-    $query = 'SELECT * FROM employee WHERE User_user_id = ?';
+    $query = 'SELECT Course_course_id, security_lvl FROM employee WHERE User_user_id = ?';
     try {
         $statement = $db->prepare($query);
         $statement->bind_param('s', $user_id);

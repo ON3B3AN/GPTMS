@@ -5,7 +5,7 @@ export class User {
   phone: string;
   email: string;
   password?: string;
-  role?: Role;
+  roles?: Role[];
   constructor() {
     this.first_name = '';
     this.last_name = '';

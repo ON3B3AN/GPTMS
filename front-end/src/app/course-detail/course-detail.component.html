@@ -1,5 +1,5 @@
-<div *ngIf="course.course_id == 1 && user.user_id < 2" style="float: right">
-  <a routerLink="./" routerLinkActive="active">Overview</a> | <a routerLink="track" routerLinkActive="active">Track Course</a> | <a routerLink="manage" routerLinkActive="active">Manage Course</a>
+<div *ngIf="staff > 0" style="float: right">
+  <a routerLink="./" routerLinkActive="active">Overview</a> | <a routerLink="track" routerLinkActive="active">Track Course</a><span *ngIf="staff === 1"> | <a routerLink="manage" routerLinkActive="active">Manage Course</a></span>
 </div>
 <h2>{{course.course_name}}</h2>
 <address>{{course.address}}<br />{{course.phone}}</address>

@@ -16,15 +16,20 @@ export class CourseDetailComponent implements OnInit {
   id: number;
   course: Course;
   user;
+  staff = null;
 
   constructor(private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute) {  }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(u => {
-      this.user = u;
-    });
     this.route.params.subscribe(params => {
       this.id = +params.id;
+    });
+    this.authService.currentUser.subscribe(u => {
+      this.user = u;
+      const roles = this.user.roles.filter(x => x.Course_course_id === this.id);
+      if (roles.length) {
+        this.staff = roles[0].security_lvl;
+      }
     });
     this.courseService.getCourse(this.id)
       .subscribe(data => this.course = data);

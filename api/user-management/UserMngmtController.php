@@ -328,7 +328,7 @@ switch ($function) {
                 // Start session
                 session_start();
                 
-                // Set session variable for user id, emplpoyee id, and employee level
+                // Set session variable for user id, employee id, and employee level
                 $_SESSION["user_id"] = $user_id;
 
                 // Check if session was set
