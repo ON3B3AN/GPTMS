@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import { AuthService } from '../auth.service';
 import { GameService } from "../game.service";
 import { Hole } from '../hole';
+import {User} from "../user";
 
 @Component({
   selector: 'app-play',
@@ -20,9 +21,14 @@ export class PlayComponent implements OnInit {
   rounds = [{key: '1-9', value: 'Front 9'}, {key: '10-18', value: 'Back 9'}, {key: '1-18', value: 'Full 18'}];
   members: any = [];
   game: any;
+  user: User;
 
-  constructor(private courseService: CourseService, private gameService: GameService, private formBuilder: FormBuilder) {
+  constructor(private courseService: CourseService, private gameService: GameService,
+              private formBuilder: FormBuilder, private authService: AuthService) {
     this.game = JSON.parse(localStorage.getItem('game'));
+    this.authService.currentUser.subscribe(u => {
+      this.user = u;
+    });
   }
 
   ngOnInit(): void {
@@ -31,6 +37,7 @@ export class PlayComponent implements OnInit {
       hole: ['', [Validators.required]],
       email: ['']
     });
+    this.members.push(this.user.email);
     this.courseService.getCourses()
       .subscribe(data => this.courses = data);
   }
@@ -45,7 +52,7 @@ export class PlayComponent implements OnInit {
   }
 
   removePlayer(member) {
-    let index = this.members.indexOf(member)
+    let index = this.members.indexOf(member);
     this.members.splice(index, 1);
   }
   start() {
@@ -60,12 +67,16 @@ export class PlayComponent implements OnInit {
     game.golf_cart = 1;
     game.handicap = 0;
     this.gameService.startGame(game).subscribe(data => {
-      this.game = game;
-      this.game.id = data;
-      localStorage.setItem('game', JSON.stringify(this.game));
+      if (data) {
+        this.game = game;
+        this.game.id = data;
+        console.log('HELLO WORLD');
+        console.log(data);
+        localStorage.setItem('game', JSON.stringify(this.game));
+        this.playForm.reset();
+        this.members = [];
+      }
     });
-    this.playForm.reset();
-    this.members = [];
   }
 
 }

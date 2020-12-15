@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {MessageService} from 'primeng/api';
 import {User} from './user';
 import { Router } from '@angular/router';
 
@@ -16,7 +17,7 @@ export class GameService {
   };
   watchId: number;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private messageService: MessageService) {}
 
   startGame(info: any) {
     console.log(info);
@@ -26,10 +27,14 @@ export class GameService {
     );
   }
 
-  endGame() {
+  endGame(party) {
+    const url = `${this.gameUrl}/${party}`;
     localStorage.removeItem('game');
     localStorage.removeItem('cHole');
-    this.router.navigate(['/landing']);
+    return this.http.put(url, this.httpOptions).pipe(
+      tap(_ => console.log(`ended game for id=${party}`)),
+      catchError(this.handleError<any>('endGame'))
+    );
   }
 
   getRound(party, course, start_hole, end_hole) {
@@ -54,7 +59,7 @@ export class GameService {
   }
 
   updatePartyGeo(party, lon, lat) {
-    const url = `${this.gameUrl}/${party}/coordinates`
+    const url = `${this.gameUrl}/${party}/coordinates`;
     return this.http.put(url, {data: {longitude: lon, latitude: lat}}, this.httpOptions).pipe(
       tap(_ => console.log(`updated party coord w/ id=${party}`)),
       catchError(this.handleError<any>('updatedPartyCoord'))
@@ -72,6 +77,13 @@ export class GameService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
+      if (typeof error.error.message === 'string') {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.message});
+      } else {
+        for (const msg of error.error.message) {
+          this.messageService.add({severity: 'error', summary: 'Error', detail: msg});
+        }
+      }
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead

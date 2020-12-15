@@ -2,6 +2,7 @@
 /***********************
  * Cross-Origin Policy
 ************************/
+error_reporting(0);
 
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -308,42 +309,43 @@ switch ($function) {
         $user_emails = explode(",", $email);
         
         // Check if the user exists by email
+        $msg = array();
+        $error_count = 1;
         foreach ($user_emails as &$user_email) {
             $user_result = selectUserByEmail($user_email);
-        }
-                
-        if ($user_result != NULL) {
-            // Get party id from SQL query
-            $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
-
-            $result_array = array();
-
-            // Insert players into the newly created party
-            for($i = 0; $i < $party_size; $i++) {
-                $user_id_object = selectUserByEmail($user_emails[$i]);
-                $user_id = (string)$user_id_object["user_id"];            
-                $result = insertPlayer($user_id, $party_id, $handicap);
-                array_push($result_array, $result);
-            }
-
-            if (count($result_array) != 0) {
-                http_response_code(200);
-                echo json_encode($party_id);
-            }
-            else {
+            
+            // Add error message if email isn't valid
+            if ($user_result == NULL) {
                 header('Accept: application/json');
                 http_response_code(404);
-                $msg["message"] = http_response_code().": Error, player not added";
-                echo json_encode($msg);
-            } 
+                $error = "User email: ".$user_email." DNE";
+                $msg["error ".$error_count] = $error;
+                $error_count += 1;
+            }
+            else {
+                // Get party id from SQL query
+                $party_id = insertParty($course_id, $size, $longitude, $latitude, $golf_cart);
+                $result_array = array();
+
+                // Insert players into the newly created party
+                for($i = 0; $i < $party_size; $i++) {
+                    $user_id_object = selectUserByEmail($user_emails[$i]);
+                    $user_id = (string)$user_id_object["user_id"];            
+                    $result = insertPlayer($user_id, $party_id, $handicap);
+                    array_push($result_array, $result);
+                }
+            }
+        }
+
+        // Returns party id if all emails are valid
+        if (in_array(-1, $result_array)) {
+            echo json_encode($msg);
         }
         else {
-            header('Accept: application/json');
-            http_response_code(404);
-            $msg["message"] = http_response_code().": Error, user DNE";
-            echo json_encode($msg);
-        }   
-        break;
+            http_response_code(200);
+            echo json_encode($party_id);
+        }
+        break;    
     case "insertScore":
         $hole_id = $input->data->Hole_hole_id;
         $user_id = $input->data->Player_User_user_id;
@@ -427,7 +429,6 @@ switch ($function) {
         unset($party_info["Course_course_id"]);
         $course_info = selectCourse($course_id);
         $hole_info = selectRangeOfHoles($course_id, $start_hole, $end_hole);
-        unset($hole_info["Course_course_id"]);
         $tee_info = selectTees($course_id);
         
         foreach ($hole_info as &$hole) {
@@ -443,7 +444,7 @@ switch ($function) {
         if ($result_array != NULL) {
             header('Content-Type: application/json, charset=utf-8');
             http_response_code(200);
-            
+
             // Return game round data as JSON array
             echo json_encode($result_array);
         } 

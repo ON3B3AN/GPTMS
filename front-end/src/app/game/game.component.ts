@@ -5,6 +5,8 @@ import { UserService } from '../user.service';
 import {FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
 import {interval} from "rxjs";
 import {Time} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-game',
@@ -25,7 +27,8 @@ export class GameComponent implements OnChanges, OnDestroy {
   timer: any;
   selectedIndex: number;
 
-  constructor(private fb: FormBuilder, private gameService: GameService, private userService: UserService) {
+  constructor(private fb: FormBuilder, private gameService: GameService,
+              private userService: UserService, private router: Router) {
   }
 
 
@@ -147,13 +150,14 @@ export class GameComponent implements OnChanges, OnDestroy {
 
   }
   endGame(): void {
-    this.gameService.endGame();
-    console.log('Game Ended');
     if (this.watchId) {
       navigator.geolocation.clearWatch(this.watchId);
       this.watchId = null;
     }
     this.timer.unsubscribe();
+    this.gameService.endGame(this.party.party_id).subscribe();
+    console.log('Game Ended');
+    this.router.navigate(['/landing']);
   }
 
   ngOnDestroy(): void {

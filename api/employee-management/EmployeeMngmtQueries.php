@@ -17,12 +17,12 @@ function insertEmployee($user_id, $course_id, $security_lvl){
     }
 }
 
-function updateEmployee($course_id, $security_lvl, $emp_id) {
+function updateEmployee($course_id, $security_lvl, $user_id) {
     global $db;
-    $query = 'UPDATE employee SET Course_course_id = ?, security_lvl = ? WHERE emp_id = ?';
+    $query = 'UPDATE employee SET Course_course_id = ?, security_lvl = ? WHERE User_user_id = ?';
     try {
         $statement = $db->prepare($query);
-        $statement->bind_param('sss', $course_id, $security_lvl, $emp_id);
+        $statement->bind_param('sss', $course_id, $security_lvl, $user_id);
         $statement->execute();
         $num_rows = $statement->affected_rows;  
         $statement->close();

@@ -9,16 +9,12 @@ import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/
   styleUrls: ['./add-edit-course.component.sass']
 })
 export class AddEditCourseComponent implements OnInit, OnChanges {
-  @Input() id: number;
+  @Input() course: Course;
   @Output() close = new EventEmitter<any>();
-  course: Course;
   editCourse: FormGroup;
   title: string = 'Add Course';
 
-  constructor(private formBuilder: FormBuilder, private courseService: CourseService) { }
-
-  ngOnInit(): void {
-    this.course = new Course();
+  constructor(private formBuilder: FormBuilder, private courseService: CourseService) {
     this.editCourse = this.formBuilder.group({
       course_name: [''],
       address: [''],
@@ -26,16 +22,12 @@ export class AddEditCourseComponent implements OnInit, OnChanges {
     });
   }
 
+  ngOnInit(): void { }
+
   ngOnChanges(): void {
-    this.course = new Course();
-    if (this.id) {
+    if (this.course.course_id) {
       this.title = 'Edit Course';
-      this.courseService.getCourse(this.id)
-        .subscribe(data => {
-          this.course = data;
-          console.log(data);
-          this.editCourse.patchValue(this.course);
-        });
+      this.editCourse.patchValue(this.course);
     } else {
       this.title = 'Add Course';
       this.editCourse.reset();
@@ -43,7 +35,14 @@ export class AddEditCourseComponent implements OnInit, OnChanges {
   }
 
   ok() {
-    this.close.emit(this.course);
+    const course = this.editCourse.value;
+    if (this.course.course_id) {
+      course.course_id = this.course.course_id;
+      this.courseService.updateCourse(course).subscribe();
+    } else {
+      this.courseService.addCourse(course).subscribe();
+    }
+    this.close.emit(course);
   }
 
   cancel() {

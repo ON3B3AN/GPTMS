@@ -4,6 +4,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Course } from './course';
 import { Hole } from './hole';
+import {MessageService} from "primeng/api";
 
 
 @Injectable({
@@ -18,7 +19,7 @@ export class CourseService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor( private http: HttpClient ) { }
+  constructor( private http: HttpClient, private messageService: MessageService ) { }
 
   getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(this.courseUrl + '/')
@@ -66,14 +67,24 @@ export class CourseService {
 
   updateCourse(course: Course): Observable<any> {
     const url = `${this.courseUrl}/${course.course_id}`;
-    return this.http.post(url, {data: course}, this.httpOptions).pipe(
+    return this.http.put(url, {data: course}, this.httpOptions).pipe(
       tap(_ => console.log(`updated course id=${course.course_id}`)),
       catchError(this.handleError<any>('updateCourse'))
     );
   }
 
+  updateHoles(courseId: number, holes: any): Observable<Hole[]> {
+    const url = `${this.courseUrl}/${courseId}/holes`;
+    return this.http.put<any>(url, {data: holes}, this.httpOptions)
+      .pipe(
+        tap(_ => console.log(`updated holes for course id=${courseId}\``)),
+        catchError(this.handleError<Hole[]>(`updateHoles, course id=${courseId}`))
+      );
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.message});
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead

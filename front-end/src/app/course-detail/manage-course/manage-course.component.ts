@@ -59,7 +59,8 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
   private initMap(): void {
     this.map = L.map('cMap', {
       center: [0, 0],
-      zoom: 2
+      zoom: 2,
+      scrollWheelZoom: false
     });
     this.courseMap = new L.FeatureGroup();
     this.map.addLayer(this.courseMap);
@@ -197,7 +198,7 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     (this.courseForm.get('holes') as FormArray).push(formItem);
   }
 
-  addHole() {
+  addHole(): void {
     const item = {
       hole_number: this.courseForm.get('holes')['controls'].length + 1,
       mens_par: null,
@@ -211,7 +212,7 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     this.updateMap();
   }
 
-  addTee() {
+  addTee(): void {
     for (let hole of this.courseForm.get('holes')['controls']) {
       (hole.get("tees") as FormArray).push(
         this.fb.group({
@@ -223,7 +224,7 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     this.teeNames.push('');
   }
 
-  updateTee(t: number, event) {
+  updateTee(t: number, event): void {
     for (let hole of this.courseForm.get('holes')['controls']) {
       hole.get(`tees.${t}.name`)
         .setValue(event.target.value, {emitEvent:false});
@@ -231,19 +232,28 @@ export class ManageCourseComponent implements OnInit, AfterViewInit {
     this.teeNames[t] = event.target.value;
   }
 
-  removeTee(t: number) {
+  removeTee(t: number): void {
     for (let hole of this.courseForm.get('holes')['controls']) {
       (hole.get("tees") as FormArray).removeAt(t);
     }
     this.teeNames.splice(t, 1);
   }
-  removeHole(h: number) {
+  removeHole(h: number): void {
     (this.courseForm.get("holes") as FormArray).removeAt(h);
     this.updateMap();
   }
 
-  updateCourse() {
-    const holes = this.courseForm.value.holes;
-    this.submission = holes;
+  updateCourse(): void {
+    const holes = JSON.parse(JSON.stringify(this.courseForm.value.holes));
+    const newHoles = {};
+    for (const [i, hole] of holes.entries()) {
+      const tees = {};
+      for (const [t, tee] of hole.tees.entries()) {
+        tees['tee' + (t + 1)] = tee;
+      }
+      hole.tees = tees;
+      newHoles['hole' + (i + 1)] = hole;
+    }
+    this.courseService.updateHoles(this.course.course_id, newHoles).subscribe();
   }
 }

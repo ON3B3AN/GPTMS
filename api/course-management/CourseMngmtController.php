@@ -318,7 +318,7 @@ switch ($function) {
         // Get JSON data
         $course_name = $input->data->course_name;
         $address = $input->data->address;
-        $phone = $input->data->phone_number;
+        $phone = $input->data->phone;
             
         // Assign collection URI to course_id
         $course_id = $collectionURI;
@@ -348,7 +348,7 @@ switch ($function) {
         // Get JSON data
         $course_name = $input->data->course_name;
         $address = $input->data->address;
-        $phone = $input->data->phone_number;
+        $phone = $input->data->phone;
         
         // Get the last inserted row number from SQL query
         $result = insertCourse($course_name, $address, $phone);
@@ -488,17 +488,17 @@ switch ($function) {
                     $womens_par = $input->data->$hole->womens_par;
                     $mens_handicap = $input->data->$hole->mens_handicap;
                     $womens_handicap = $input->data->$hole->womens_handicap;
-                    $avg_pop = $input->data->$hole->avg_pop;
+//                    $avg_pop = $input->data->$hole->avg_pop;
                     $perimeter_type = $input->data->$hole->perimeter->type;
                     $perimeter_coordinates = $input->data->$hole->perimeter->coordinates;
                     for ($c = 0; $c < count($perimeter_coordinates[0]); $c++){
                         $coordinates[] = "[ ".$perimeter_coordinates[0][$c][0].", ".$perimeter_coordinates[0][$c][1]." ]";
                     }
                     $perimeter = ("{ \"type\": \"".$perimeter_type."\", \"coordinates\": [ [ ".implode(", ", $coordinates)." ] ] }");
-                    echo($perimeter."\n");
-                    $hint = $input->data->$hole->hint;
-                    $hole_result += updateHoles($mens_par, $womens_par, $avg_pop, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $hint, $course_id);
-
+                    
+//                    $hint = $input->data->$hole->hint;
+                    $hole_result += updateHoles($mens_par, $womens_par, $hole_number, $mens_handicap, $womens_handicap, $perimeter, $course_id);
+                    echo $hole_result;
                     //removes a hole number from the array if that number was not
                     //deleted on the front end
                     for ($j = 0; $j < sizeof($holesToDelete); $j++) {
@@ -507,21 +507,23 @@ switch ($function) {
                         }
                     }
                     
-                    //kill part for the kill and fill. Kills all tees for a given hole.
-                    //Fill part not implemented yet.
+                    //kill part for the kill and fill. Kills all tees for a given hole
                     deleteTees($course_id, $hole_number);
                     
                     // Iterate through tees
                     $x = 1;
                     while ($x < 8) {
                         $tee = "tee".strval($x);
-                        try {
-                            // Get JSON data
-                            $distance_to_pin = $input->data->$hole->tees->$tee->distance_to_pin;
-                            $tee_name = $input->data->$hole->tees->$tee->tee_name;
-                            $tee_result += insertTees($distance_to_pin, $tee_name, $course_id, $hole_number);
-                        } catch (Exception $ex) {
-                            continue;
+                        if ($input->data->$hole->tees->$tee->tee_name != "") {
+                            try {
+                                // Get JSON data
+                                $distance_to_pin = $input->data->$hole->tees->$tee->distance_to_pin;
+                                $tee_name = $input->data->$hole->tees->$tee->tee_name;
+                                $tee_result += insertTees($course_id, $hole_number, $distance_to_pin, $tee_name);
+                                echo $tee_result;
+                            } catch (Exception $ex) {
+                                continue;
+                            }
                         }
                         $x += 1;
                     }
@@ -540,7 +542,7 @@ switch ($function) {
             }
         }
         
-        
+        echo $hole_result." ".$tee_result;
         $result = $hole_result + $tee_result;
         
         if ($result >= 1) {
