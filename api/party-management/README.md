@@ -23,7 +23,7 @@
     * Body (app/json): {returns party id}
 #### Output: Unsuccessful
     * Header: 404: Page Not Found
-    * Body (app/json): {"message": "404: Error, player and party not added"}
+    * Body (app/json): {"error 1":"User email: smiith@gmail.com DNE","error 2":"User email: emaail@gmail.com DNE"}
 #### Output: Server Error
     * Header: 501: Not Implemented
     * Body (app/json): {"message": "501: Error, service not recognized"}

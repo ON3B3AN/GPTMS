@@ -44,7 +44,7 @@
 
 ## [UPDATE EMPLOYEE]
 ### URI [PUT] : http://localhost/employee-management/employees/1
-* This URI requests the "employee-management" document, “employees” collection, and "1" collection URI (represents employee id). This request must include relevant data.
+* This URI requests the "employee-management" document, “employees” collection, and "1" collection URI (represents user id). This request must include relevant data.
 #### Example Input: {"data":{"Course_course_id":"1","security_lvl":"0"}}
 #### Output: Successful
     * Header: 200: Ok
